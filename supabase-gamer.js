@@ -403,7 +403,7 @@ class SupabaseGamerPage {
 
             console.log('Deletion successful, reloading games...');
             this.showNotification('Game deleted successfully!', 'success');
-            this.loadGames();
+            this.loadGamesFromSupabase();
 
         } catch (error) {
             console.error('Error deleting game:', error);
