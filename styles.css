@@ -43,10 +43,32 @@ body {
     font-weight: var(--font-weight-normal);
     line-height: 1.6;
     color: var(--dark-brown);
-    background: linear-gradient(135deg, var(--warm-beige) 0%, var(--light-brown) 25%, var(--secondary-orange) 50%, var(--primary-orange) 75%, var(--earth-brown) 100%);
+    background: linear-gradient(135deg, var(--primary-orange) 0%, var(--earth-brown) 100%);
     background-attachment: fixed;
     min-height: 100vh;
     overflow-x: hidden;
+}
+
+/* Header */
+.header {
+    position: fixed;
+    top: var(--spacing-md);
+    left: var(--spacing-lg);
+    z-index: 1001;
+}
+
+.site-title {
+    font-size: 2rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--dark-brown);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 0;
+    transition: var(--transition-normal);
+}
+
+.site-title:hover {
+    color: var(--primary-orange);
+    transform: scale(1.05);
 }
 
 /* Navigation */
@@ -153,13 +175,22 @@ body {
 
 /* Introduction Section */
 .intro-section {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.95);
     padding: var(--spacing-xl);
     border-radius: 20px;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     animation: slideInUp 1.2s ease-out 0.3s both;
+}
+
+.intro-name {
+    font-size: 1.8rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--dark-brown);
+    line-height: 1.4;
+    margin: 0 0 var(--spacing-md) 0;
+    text-align: center;
 }
 
 .intro-text {
@@ -169,6 +200,7 @@ body {
     line-height: 1.8;
     max-width: 600px;
     margin: 0 auto;
+    text-align: center;
 }
 
 /* Animations */
@@ -205,6 +237,15 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .header {
+        top: var(--spacing-sm);
+        left: var(--spacing-md);
+    }
+    
+    .site-title {
+        font-size: 1.5rem;
+    }
+    
     .nav {
         padding: var(--spacing-sm) var(--spacing-md);
     }
@@ -241,6 +282,10 @@ body {
         margin: 0 var(--spacing-sm);
     }
     
+    .intro-name {
+        font-size: 1.5rem;
+    }
+    
     .intro-text {
         font-size: 1.1rem;
         line-height: 1.7;
@@ -248,6 +293,15 @@ body {
 }
 
 @media (max-width: 480px) {
+    .header {
+        top: var(--spacing-xs);
+        left: var(--spacing-sm);
+    }
+    
+    .site-title {
+        font-size: 1.25rem;
+    }
+    
     .nav-buttons {
         gap: var(--spacing-xs);
     }
@@ -266,6 +320,10 @@ body {
     .intro-section {
         padding: var(--spacing-md);
         border-radius: 15px;
+    }
+    
+    .intro-name {
+        font-size: 1.25rem;
     }
     
     .intro-text {
