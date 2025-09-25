@@ -43,7 +43,7 @@ body {
     font-weight: var(--font-weight-normal);
     line-height: 1.6;
     color: var(--dark-brown);
-    background: linear-gradient(135deg, var(--primary-orange) 0%, var(--earth-brown) 100%);
+    background: linear-gradient(135deg, #FF8C42 0%, #FF6B35 50%, #FF8C42 100%);
     background-attachment: fixed;
     min-height: 100vh;
     overflow-x: hidden;
@@ -79,9 +79,9 @@ body {
     right: 0;
     z-index: 1000;
     padding: var(--spacing-md) var(--spacing-lg);
-    background: rgba(245, 230, 211, 0.95);
+    background: rgba(255, 140, 66, 0.1);
     backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 107, 53, 0.1);
+    border-bottom: 1px solid rgba(255, 107, 53, 0.2);
     transition: var(--transition-normal);
 }
 
@@ -122,9 +122,9 @@ body {
 }
 
 .developer-btn:hover {
-    background: var(--earth-brown);
+    background: var(--primary-orange);
     color: white;
-    border-color: var(--earth-brown);
+    border-color: var(--primary-orange);
 }
 
 .btn-icon {
@@ -175,12 +175,12 @@ body {
 
 /* Introduction Section */
 .intro-section {
-    background: rgba(255, 255, 255, 0.95);
+    background: transparent;
     padding: var(--spacing-xl);
     border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: none;
+    backdrop-filter: none;
+    border: none;
     animation: slideInUp 1.2s ease-out 0.3s both;
 }
 
