@@ -235,7 +235,8 @@
 }
 
 .total-rating-text {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
 }
 
 /* Loading State */

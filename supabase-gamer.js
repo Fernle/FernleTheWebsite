@@ -399,11 +399,11 @@ class SupabaseGamerPage {
 
     createGameCard(game) {
         const categoryNames = {
-            gameplay: 'Oynanış',
-            graphics: 'Görsellik',
-            audio: 'Ses & Müzik',
-            atmosphere: 'Atmosfer',
-            satisfaction: 'Tatmin'
+            gameplay: 'Gameplay',
+            graphics: 'Graphics',
+            audio: 'Audio',
+            atmosphere: 'Atmosphere',
+            satisfaction: 'Satisfaction'
         };
         
         const ratings = {
