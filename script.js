@@ -17,9 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.style.transform = '';
             }, 150);
             
-            // For now, just show alert (will be replaced with actual navigation)
+            // Navigation handling
             if (page === 'gamer') {
-                showComingSoon('The Gamer');
+                window.location.href = 'gamer.html';
             } else if (page === 'developer') {
                 showComingSoon('The Developer');
             }
