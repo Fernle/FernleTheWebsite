@@ -353,6 +353,35 @@ class SupabaseGamerPage {
         }
     }
 
+    async deleteGame(gameId) {
+        if (!this.isAdmin) {
+            this.showNotification('Admin access required', 'error');
+            return;
+        }
+
+        // Show confirmation dialog
+        const confirmed = confirm('Are you sure you want to delete this game? This action cannot be undone.');
+        if (!confirmed) return;
+
+        try {
+            this.showNotification('Deleting game...', 'info');
+
+            const { error } = await window.supabase
+                .from('games')
+                .delete()
+                .eq('id', gameId);
+
+            if (error) throw error;
+
+            this.showNotification('Game deleted successfully!', 'success');
+            this.loadGames();
+
+        } catch (error) {
+            console.error('Error deleting game:', error);
+            this.showNotification('Error deleting game: ' + error.message, 'error');
+        }
+    }
+
     renderGames() {
         const gamesGrid = document.getElementById('games-grid');
         const loading = document.getElementById('loading');
@@ -423,12 +452,23 @@ class SupabaseGamerPage {
         
         const totalStarsHtml = this.createStars(game.total_rating, 5, true);
         
+        const deleteButton = this.isAdmin ? `
+            <div class="game-actions">
+                <button class="delete-btn" onclick="gamerPage.deleteGame(${game.id})" title="Delete Game">
+                    🗑️
+                </button>
+            </div>
+        ` : '';
+
         return `
             <div class="game-card">
                 <img src="${game.image_url}" alt="${game.name}" class="game-image" 
                      onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=='">
                 <div class="game-content">
-                    <h3 class="game-name">${game.name}</h3>
+                    <div class="game-header">
+                        <h3 class="game-name">${game.name}</h3>
+                        ${deleteButton}
+                    </div>
                     <div class="game-ratings">
                         ${ratingsHtml}
                     </div>
