@@ -11,6 +11,11 @@ class SupabaseGamerPage {
     }
 
     async init() {
+        console.log('GamerPage initializing...');
+        console.log('Supabase client:', window.supabase);
+        console.log('Supabase URL:', window.supabase?.supabaseUrl);
+        console.log('Supabase Key:', window.supabase?.supabaseKey ? 'Present' : 'Missing');
+        
         this.setupEventListeners();
         await this.loadGamesFromSupabase();
         this.checkAdminStatus();
@@ -360,25 +365,43 @@ class SupabaseGamerPage {
     }
 
     async deleteGame(gameId) {
+        console.log('deleteGame called with ID:', gameId);
+        console.log('isAdmin status:', this.isAdmin);
+        
         if (!this.isAdmin) {
+            console.log('Admin access denied');
             this.showNotification('Admin access required', 'error');
             return;
         }
 
         // Show confirmation dialog
+        console.log('Showing confirmation dialog');
         const confirmed = confirm('Are you sure you want to delete this game? This action cannot be undone.');
-        if (!confirmed) return;
+        console.log('Confirmation result:', confirmed);
+        
+        if (!confirmed) {
+            console.log('User cancelled deletion');
+            return;
+        }
 
         try {
+            console.log('Starting deletion process...');
             this.showNotification('Deleting game...', 'info');
 
+            console.log('Calling Supabase delete...');
             const { error } = await window.supabase
                 .from('games')
                 .delete()
                 .eq('id', gameId);
 
-            if (error) throw error;
+            console.log('Supabase response:', { error });
 
+            if (error) {
+                console.error('Supabase error:', error);
+                throw error;
+            }
+
+            console.log('Deletion successful, reloading games...');
             this.showNotification('Game deleted successfully!', 'success');
             this.loadGames();
 
