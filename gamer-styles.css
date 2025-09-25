@@ -201,17 +201,17 @@
 .star.half {
     background: #ffd700;
     position: relative;
+    overflow: hidden;
 }
 
-.star.half::after {
+.star.half::before {
     content: '';
     position: absolute;
     top: 0;
-    right: 0;
+    left: 50%;
     width: 50%;
     height: 100%;
     background: #ddd;
-    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
 }
 
 .game-total {
