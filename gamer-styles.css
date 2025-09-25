@@ -1,10 +1,23 @@
 /* Gamer Page Specific Styles */
 
+/* Gamer Main Content */
+.gamer-main {
+    align-items: flex-start !important;
+}
+
 /* Page Header */
 .page-header {
     text-align: center;
-    margin-bottom: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
     animation: fadeInUp 1s ease-out;
+    position: sticky;
+    top: 100px;
+    z-index: 100;
+    background: rgba(255, 140, 66, 0.1);
+    backdrop-filter: blur(10px);
+    padding: var(--spacing-md);
+    border-radius: 15px;
+    margin-bottom: var(--spacing-lg);
 }
 
 .page-title {
@@ -72,30 +85,36 @@
 .sorting-controls {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-lg);
-    background: rgba(255, 255, 255, 0.8);
-    padding: var(--spacing-md);
-    border-radius: 15px;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: 20px;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .sorting-controls label {
     font-weight: var(--font-weight-medium);
     color: var(--dark-brown);
+    font-size: 0.8rem;
 }
 
 .sort-select {
-    padding: var(--spacing-xs) var(--spacing-sm);
-    border: 2px solid var(--primary-orange);
-    border-radius: 8px;
+    padding: var(--spacing-xs) var(--spacing-xs);
+    border: 1px solid var(--primary-orange);
+    border-radius: 15px;
     background: white;
     color: var(--dark-brown);
     font-family: var(--font-family);
     cursor: pointer;
     transition: var(--transition-normal);
+    font-size: 0.8rem;
+    min-width: 120px;
 }
 
 .sort-select:focus {
@@ -107,16 +126,17 @@
 /* Games Grid */
 .games-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: var(--spacing-lg);
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--spacing-md);
     margin-bottom: var(--spacing-xl);
+    position: relative;
 }
 
 .game-card {
     background: rgba(255, 255, 255, 0.95);
-    border-radius: 15px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     transition: var(--transition-normal);
@@ -130,20 +150,20 @@
 
 .game-image {
     width: 100%;
-    height: 200px;
+    height: 150px;
     object-fit: cover;
     background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
 }
 
 .game-content {
-    padding: var(--spacing-lg);
+    padding: var(--spacing-md);
 }
 
 .game-name {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-weight: var(--font-weight-semibold);
     color: var(--dark-brown);
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
     line-height: 1.3;
 }
 
@@ -158,8 +178,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: var(--dark-brown);
+    margin-bottom: var(--spacing-xs);
 }
 
 .rating-label {
@@ -172,11 +193,12 @@
 }
 
 .star {
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     background: #ddd;
-    border-radius: 50%;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
     transition: var(--transition-fast);
+    display: inline-block;
 }
 
 .star.filled {
@@ -203,8 +225,8 @@
 }
 
 .total-stars .star {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
 }
 
 .total-rating-text {
