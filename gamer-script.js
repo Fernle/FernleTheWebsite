@@ -402,14 +402,14 @@ class GamerPage {
     createStars(rating, maxStars = 1, showHalf = false) {
         let starsHtml = '';
         const fullStars = Math.floor(rating);
-        const hasHalfStar = showHalf && (rating % 1) >= 0.5;
+        const hasHalfStar = (rating % 1) >= 0.5;
         
         // Add full stars
         for (let i = 0; i < fullStars; i++) {
             starsHtml += '<span class="star filled"></span>';
         }
         
-        // Add half star if needed
+        // Add half star if needed (for ratings like 0.5, 1.5, etc.)
         if (hasHalfStar) {
             starsHtml += '<span class="star half"></span>';
         }
