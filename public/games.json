@@ -1,0 +1,46 @@
+{
+  "games": [
+    {
+      "id": 1,
+      "name": "The Witcher 3: Wild Hunt",
+      "image": "https://cdn.akamai.steamstatic.com/steam/apps/292030/header.jpg",
+      "ratings": {
+        "gameplay": 1,
+        "graphics": 1,
+        "audio": 1,
+        "atmosphere": 1,
+        "satisfaction": 1
+      },
+      "totalRating": 5,
+      "addedDate": "2024-01-15"
+    },
+    {
+      "id": 2,
+      "name": "Dark Souls III",
+      "image": "https://cdn.akamai.steamstatic.com/steam/apps/374320/header.jpg",
+      "ratings": {
+        "gameplay": 1,
+        "graphics": 0.5,
+        "audio": 1,
+        "atmosphere": 1,
+        "satisfaction": 0.5
+      },
+      "totalRating": 4,
+      "addedDate": "2024-01-16"
+    },
+    {
+      "id": 3,
+      "name": "Hollow Knight",
+      "image": "https://cdn.akamai.steamstatic.com/steam/apps/367520/header.jpg",
+      "ratings": {
+        "gameplay": 1,
+        "graphics": 1,
+        "audio": 1,
+        "atmosphere": 1,
+        "satisfaction": 1
+      },
+      "totalRating": 5,
+      "addedDate": "2024-01-17"
+    }
+  ]
+}

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Gamer - Fernle's Game Reviews</title>
+    <meta name="description" content="Ahmet Fernle Emir's game reviews and ratings">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="gamer-styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="index.html" class="site-title">Fernle</a>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-buttons">
+            <a href="gamer.html" class="nav-btn gamer-btn active">
+                <span class="btn-icon">🎮</span>
+                <span class="btn-text">the Gamer</span>
+            </a>
+            <a href="#" class="nav-btn developer-btn" data-page="developer">
+                <span class="btn-icon">💻</span>
+                <span class="btn-text">the Developer</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main gamer-main">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Game Reviews & Ratings</h1>
+                <p class="page-subtitle">My personal gaming journey and experiences</p>
+            </div>
+
+            <!-- Admin Section (Hidden by default) -->
+            <div id="admin-section" class="admin-section" style="display: none;">
+                <div class="admin-controls">
+                    <button id="add-game-btn" class="admin-btn">Add New Game</button>
+                    <button id="logout-btn" class="admin-btn secondary">Logout</button>
+                </div>
+            </div>
+
+            <!-- Sorting Controls -->
+            <div class="sorting-controls">
+                <label for="sort-select">Sort by:</label>
+                <select id="sort-select" class="sort-select">
+                    <option value="alphabetical">Alphabetical (A-Z)</option>
+                    <option value="rating-high">Highest Rating</option>
+                    <option value="rating-low">Lowest Rating</option>
+                </select>
+            </div>
+
+            <!-- Games Grid -->
+            <div id="games-grid" class="games-grid">
+                <!-- Games will be loaded here dynamically -->
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading" class="loading">
+                <div class="loading-spinner"></div>
+                <p>Loading games...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="empty-state" style="display: none;">
+                <div class="empty-icon">🎮</div>
+                <h3>No games found</h3>
+                <p>No games have been added yet. Check back later!</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Game Modal -->
+    <div id="add-game-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Game</h2>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            
+            <form id="add-game-form" class="add-game-form">
+                <!-- Game Name -->
+                <div class="form-group">
+                    <label for="game-name">Game Name *</label>
+                    <input type="text" id="game-name" name="gameName" required>
+                </div>
+
+                <!-- Game Image -->
+                <div class="form-group">
+                    <label for="game-image">Game Image *</label>
+                    <div class="image-input-container">
+                        <input type="url" id="game-image-url" name="gameImageUrl" placeholder="Image URL">
+                        <span class="or-text">OR</span>
+                        <input type="file" id="game-image-file" name="gameImageFile" accept="image/*">
+                    </div>
+                    <div class="image-preview" id="image-preview"></div>
+                </div>
+
+                <!-- Rating Categories -->
+                <div class="form-group">
+                    <label>Ratings (0 - 0.5 - 1 star per category) *</label>
+                    
+                    <div class="rating-categories">
+                        <div class="rating-category">
+                            <label>Oynanış (Gameplay & Mekanikler)</label>
+                            <div class="star-rating" data-category="gameplay">
+                                <input type="radio" name="gameplay" value="0" id="gameplay-0" checked>
+                                <label for="gameplay-0">0</label>
+                                <input type="radio" name="gameplay" value="0.5" id="gameplay-0.5">
+                                <label for="gameplay-0.5">0.5</label>
+                                <input type="radio" name="gameplay" value="1" id="gameplay-1">
+                                <label for="gameplay-1">1</label>
+                            </div>
+                        </div>
+
+                        <div class="rating-category">
+                            <label>Görsellik & Sanat Tarzı (Graphics & Art Direction)</label>
+                            <div class="star-rating" data-category="graphics">
+                                <input type="radio" name="graphics" value="0" id="graphics-0" checked>
+                                <label for="graphics-0">0</label>
+                                <input type="radio" name="graphics" value="0.5" id="graphics-0.5">
+                                <label for="graphics-0.5">0.5</label>
+                                <input type="radio" name="graphics" value="1" id="graphics-1">
+                                <label for="graphics-1">1</label>
+                            </div>
+                        </div>
+
+                        <div class="rating-category">
+                            <label>Ses & Müzik (Audio Design)</label>
+                            <div class="star-rating" data-category="audio">
+                                <input type="radio" name="audio" value="0" id="audio-0" checked>
+                                <label for="audio-0">0</label>
+                                <input type="radio" name="audio" value="0.5" id="audio-0.5">
+                                <label for="audio-0.5">0.5</label>
+                                <input type="radio" name="audio" value="1" id="audio-1">
+                                <label for="audio-1">1</label>
+                            </div>
+                        </div>
+
+                        <div class="rating-category">
+                            <label>Atmosfer & Duygu (Immersion & Feel)</label>
+                            <div class="star-rating" data-category="atmosphere">
+                                <input type="radio" name="atmosphere" value="0" id="atmosphere-0" checked>
+                                <label for="atmosphere-0">0</label>
+                                <input type="radio" name="atmosphere" value="0.5" id="atmosphere-0.5">
+                                <label for="atmosphere-0.5">0.5</label>
+                                <input type="radio" name="atmosphere" value="1" id="atmosphere-1">
+                                <label for="atmosphere-1">1</label>
+                            </div>
+                        </div>
+
+                        <div class="rating-category">
+                            <label>Tatmin & Değer (Overall Satisfaction / Value)</label>
+                            <div class="star-rating" data-category="satisfaction">
+                                <input type="radio" name="satisfaction" value="0" id="satisfaction-0" checked>
+                                <label for="satisfaction-0">0</label>
+                                <input type="radio" name="satisfaction" value="0.5" id="satisfaction-0.5">
+                                <label for="satisfaction-0.5">0.5</label>
+                                <input type="radio" name="satisfaction" value="1" id="satisfaction-1">
+                                <label for="satisfaction-1">1</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="total-rating">
+                        <strong>Total Rating: <span id="total-rating">0/5</span></strong>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-actions">
+                    <button type="button" class="btn secondary" id="cancel-btn">Cancel</button>
+                    <button type="submit" class="btn primary">Add Game</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div id="login-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Admin Login</h2>
+                <button class="modal-close" id="login-close">&times;</button>
+            </div>
+            
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="admin-password">Password</label>
+                    <input type="password" id="admin-password" name="password" required>
+                </div>
+                <button type="submit" class="btn primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    
+    <!-- JavaScript -->
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+    <script src="firebase-gamer.js"></script>
+</body>
+</html>
