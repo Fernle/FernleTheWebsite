@@ -3,6 +3,7 @@
 /* Gamer Main Content */
 .gamer-main {
     align-items: flex-start !important;
+    padding-top: 120px !important; /* Space for fixed header */
 }
 
 /* Page Header */
@@ -507,6 +508,10 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .gamer-main {
+        padding-top: 100px !important; /* Less space on mobile */
+    }
+    
     .page-title {
         font-size: 2rem;
     }
@@ -551,6 +556,10 @@
 }
 
 @media (max-width: 480px) {
+    .gamer-main {
+        padding-top: 80px !important; /* Even less space on small mobile */
+    }
+    
     .page-title {
         font-size: 1.5rem;
     }
