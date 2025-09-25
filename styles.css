@@ -117,15 +117,15 @@ body {
 }
 
 .gamer-btn:hover {
-    background: var(--primary-orange);
+    background: var(--dark-brown);
     color: white;
-    border-color: var(--primary-orange);
+    border-color: var(--dark-brown);
 }
 
 .developer-btn:hover {
-    background: var(--primary-orange);
+    background: var(--dark-brown);
     color: white;
-    border-color: var(--primary-orange);
+    border-color: var(--dark-brown);
 }
 
 .btn-icon {
