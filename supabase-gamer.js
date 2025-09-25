@@ -127,10 +127,12 @@ class SupabaseGamerPage {
             }
             
             this.games = data || [];
+            this.renderGames(); // Re-render the UI after loading games
         } catch (error) {
             console.error('Error loading games:', error);
             this.showNotification('Error loading games from database', 'error');
             this.games = [];
+            this.renderGames(); // Re-render even on error to show empty state
         }
     }
 
