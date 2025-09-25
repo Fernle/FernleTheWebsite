@@ -129,11 +129,13 @@ class SupabaseGamerPage {
         }
     }
 
-    checkAdminStatus() {
-        const user = window.supabase.auth.getUser();
+    async checkAdminStatus() {
+        const { data: { user } } = await window.supabase.auth.getUser();
         if (user && user.email === this.adminEmail) {
             this.isAdmin = true;
             this.showAdminSection();
+            // Re-render games to show delete buttons if admin
+            this.renderGames();
         }
     }
 
@@ -181,6 +183,8 @@ class SupabaseGamerPage {
                 this.showAdminSection();
                 this.hideLoginModal();
                 this.showNotification('Admin access granted!', 'success');
+                // Re-render games to show delete buttons
+                this.renderGames();
             }
         } catch (error) {
             console.error('Login error:', error);
@@ -195,6 +199,8 @@ class SupabaseGamerPage {
             this.isAdmin = false;
             this.hideAdminSection();
             this.showNotification('Logged out successfully!', 'success');
+            // Re-render games to hide delete buttons
+            this.renderGames();
         } catch (error) {
             console.error('Logout error:', error);
         }
