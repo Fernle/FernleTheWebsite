@@ -587,7 +587,7 @@ class SupabaseGamerPage {
 
 // Initialize the page when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new SupabaseGamerPage();
+    window.gamerPage = new SupabaseGamerPage();
 });
 
 // Add CSS animations for notifications
