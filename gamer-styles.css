@@ -107,7 +107,7 @@
 }
 
 .search-label {
-    color: rgba(139, 69, 19, 0.6);
+    color: rgba(139, 69, 19, 0.7);
     font-size: 18px;
     font-weight: normal;
     position: absolute;
@@ -118,7 +118,7 @@
 }
 
 .search-input:focus ~ .search-label, 
-.search-input:valid ~ .search-label {
+.search-input:not(:placeholder-shown) ~ .search-label {
     top: -20px;
     font-size: 14px;
     color: var(--primary-orange);
@@ -204,6 +204,7 @@
 .flip-card {
     background-color: transparent;
     width: 100%;
+    max-width: 300px;
     height: 320px;
     perspective: 1000px;
     font-family: var(--font-family);
