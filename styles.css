@@ -147,7 +147,6 @@ body {
 }
 
 .container {
-    max-width: 800px;
     width: 100%;
     text-align: center;
     animation: fadeInUp 1s ease-out;
