@@ -120,9 +120,12 @@
 /* Games Grid */
 .games-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: var(--spacing-lg);
     margin-bottom: var(--spacing-xl);
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Flip Card Styles */
@@ -667,8 +670,9 @@
     }
     
     .games-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: var(--spacing-md);
+        max-width: 800px;
     }
     
     .flip-card {
