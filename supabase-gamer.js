@@ -293,6 +293,7 @@ class SupabaseGamerPage {
         const gameName = formData.get('gameName').trim();
         const imageUrl = formData.get('gameImageUrl').trim();
         const imageFile = formData.get('gameImageFile');
+        const hoursPlayed = formData.get('hoursPlayed');
         
         if (!gameName) {
             this.showNotification('Please enter a game name!', 'error');
@@ -332,6 +333,7 @@ class SupabaseGamerPage {
             atmosphere_rating: ratings.atmosphere,
             satisfaction_rating: ratings.satisfaction,
             total_rating: totalRating,
+            hours_played: hoursPlayed ? parseFloat(hoursPlayed) : null,
             added_by: this.adminEmail
         };
         
@@ -491,9 +493,12 @@ class SupabaseGamerPage {
             </div>
         ` : '';
 
+        const hoursDisplay = game.hours_played ? `<div class="hours-played">+${game.hours_played} hours</div>` : '';
+
         return `
             <div class="flip-card">
                 ${deleteButton}
+                ${hoursDisplay}
                 <div class="flip-card-inner">
                     <div class="flip-card-front">
                         <div class="game-image-container">
