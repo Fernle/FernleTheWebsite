@@ -200,7 +200,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--primary-orange);
+    background-color: var(--dark-brown);
     z-index: -1;
     transform: scaleX(0);
     transform-origin: left;
@@ -239,6 +239,7 @@
     background: var(--background-white);
     margin: 0;
     padding: 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .sorting-item:hover .sorting-submenu {
@@ -247,13 +248,13 @@
     transform: translateY(0);
     pointer-events: auto;
     border-top: transparent;
-    border-color: var(--primary-orange);
+    border-color: var(--dark-brown);
 }
 
 .sorting-item:hover .sorting-link {
     color: var(--background-white);
     border-radius: 16px 16px 0 0;
-    border-color: var(--primary-orange);
+    border-color: var(--dark-brown);
 }
 
 .sorting-item:hover .sorting-link::after {
@@ -294,7 +295,7 @@
     transform: scaleX(0);
     width: 100%;
     height: 100%;
-    background-color: var(--primary-orange);
+    background-color: var(--dark-brown);
     z-index: -1;
     transform-origin: left;
     transition: transform 0.48s cubic-bezier(0.23, 1, 0.32, 1);
