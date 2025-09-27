@@ -52,14 +52,24 @@
                 </div>
             </div>
 
-            <!-- Sorting Controls -->
-            <div class="sorting-controls">
-                <label for="sort-select">Sort by:</label>
-                <select id="sort-select" class="sort-select">
-                    <option value="alphabetical">Alphabetical (A-Z)</option>
-                    <option value="rating-high">Highest Rating</option>
-                    <option value="rating-low">Lowest Rating</option>
-                </select>
+            <!-- Search and Sorting Controls -->
+            <div class="controls-container">
+                <!-- Search Input -->
+                <div class="search-group">
+                    <input type="text" id="search-input" class="search-input" placeholder=" ">
+                    <label for="search-input" class="search-label">Search games...</label>
+                    <div class="search-bar"></div>
+                </div>
+                
+                <!-- Sorting Controls -->
+                <div class="sorting-controls">
+                    <label for="sort-select">Sort by:</label>
+                    <select id="sort-select" class="sort-select">
+                        <option value="alphabetical">Alphabetical (A-Z)</option>
+                        <option value="rating-high">Highest Rating</option>
+                        <option value="rating-low">Lowest Rating</option>
+                    </select>
+                </div>
             </div>
 
             <!-- Games Grid -->

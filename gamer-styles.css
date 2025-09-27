@@ -75,12 +75,89 @@
     color: white;
 }
 
+/* Controls Container */
+.controls-container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Search Input */
+.search-group {
+    position: relative;
+}
+
+.search-input {
+    font-size: 16px;
+    padding: 10px 10px 10px 5px;
+    display: block;
+    width: 200px;
+    border: none;
+    border-bottom: 1px solid rgba(139, 69, 19, 0.3);
+    background: transparent;
+    color: var(--dark-brown);
+    font-family: var(--font-family);
+}
+
+.search-input:focus {
+    outline: none;
+}
+
+.search-label {
+    color: rgba(139, 69, 19, 0.6);
+    font-size: 18px;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 5px;
+    top: 10px;
+    transition: 0.2s ease all;
+}
+
+.search-input:focus ~ .search-label, 
+.search-input:valid ~ .search-label {
+    top: -20px;
+    font-size: 14px;
+    color: var(--primary-orange);
+}
+
+.search-bar {
+    position: relative;
+    display: block;
+    width: 200px;
+}
+
+.search-bar:before, .search-bar:after {
+    content: '';
+    height: 2px;
+    width: 0;
+    bottom: 1px;
+    position: absolute;
+    background: var(--primary-orange);
+    transition: 0.2s ease all;
+}
+
+.search-bar:before {
+    left: 50%;
+}
+
+.search-bar:after {
+    right: 50%;
+}
+
+.search-input:focus ~ .search-bar:before, 
+.search-input:focus ~ .search-bar:after {
+    width: 50%;
+}
+
 /* Sorting Controls */
 .sorting-controls {
     display: flex;
     align-items: center;
     gap: var(--spacing-xs);
-    margin-bottom: var(--spacing-md);
     background: rgba(255, 255, 255, 0.9);
     padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: 20px;
@@ -88,8 +165,6 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .sorting-controls label {
@@ -701,6 +776,19 @@
     .admin-controls {
         flex-direction: column;
         align-items: center;
+    }
+    
+    .controls-container {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+    
+    .search-input {
+        width: 180px;
+    }
+    
+    .search-bar {
+        width: 180px;
     }
     
     .sorting-controls {

@@ -2,7 +2,9 @@
 class SupabaseGamerPage {
     constructor() {
         this.games = [];
+        this.filteredGames = [];
         this.currentSort = 'alphabetical';
+        this.searchQuery = '';
         this.isAdmin = false;
         this.adminEmail = 'admin@fernle.com';
         this.adminPassword = 'fernle2024';
@@ -96,11 +98,18 @@ class SupabaseGamerPage {
             });
         });
 
+        // Search
+        const searchInput = document.getElementById('search-input');
+        searchInput.addEventListener('input', (e) => {
+            this.searchQuery = e.target.value.toLowerCase().trim();
+            this.filterAndRenderGames();
+        });
+
         // Sorting
         const sortSelect = document.getElementById('sort-select');
         sortSelect.addEventListener('change', (e) => {
             this.currentSort = e.target.value;
-            this.renderGames();
+            this.filterAndRenderGames();
         });
 
         // Modal close on background click
@@ -127,12 +136,12 @@ class SupabaseGamerPage {
             }
             
             this.games = data || [];
-            this.renderGames(); // Re-render the UI after loading games
+            this.filterAndRenderGames(); // Filter and re-render the UI after loading games
         } catch (error) {
             console.error('Error loading games:', error);
             this.showNotification('Error loading games from database', 'error');
             this.games = [];
-            this.renderGames(); // Re-render even on error to show empty state
+            this.filterAndRenderGames(); // Filter and re-render even on error to show empty state
         }
     }
 
@@ -142,7 +151,7 @@ class SupabaseGamerPage {
             this.isAdmin = true;
             this.showAdminSection();
             // Re-render games to show delete buttons if admin
-            this.renderGames();
+            this.filterAndRenderGames();
         }
     }
 
@@ -191,7 +200,7 @@ class SupabaseGamerPage {
                 this.hideLoginModal();
                 this.showNotification('Admin access granted!', 'success');
                 // Re-render games to show delete buttons
-                this.renderGames();
+                this.filterAndRenderGames();
             }
         } catch (error) {
             console.error('Login error:', error);
@@ -207,7 +216,7 @@ class SupabaseGamerPage {
             this.hideAdminSection();
             this.showNotification('Logged out successfully!', 'success');
             // Re-render games to hide delete buttons
-            this.renderGames();
+            this.filterAndRenderGames();
         } catch (error) {
             console.error('Logout error:', error);
         }
@@ -360,7 +369,7 @@ class SupabaseGamerPage {
             this.showNotification('Game added successfully!', 'success');
             
             // Re-render games
-            this.renderGames();
+            this.filterAndRenderGames();
             
         } catch (error) {
             console.error('Error adding game:', error);
@@ -415,6 +424,21 @@ class SupabaseGamerPage {
         }
     }
 
+    filterGames() {
+        if (!this.searchQuery) {
+            this.filteredGames = [...this.games];
+        } else {
+            this.filteredGames = this.games.filter(game => 
+                game.name.toLowerCase().includes(this.searchQuery)
+            );
+        }
+    }
+
+    filterAndRenderGames() {
+        this.filterGames();
+        this.renderGames();
+    }
+
     renderGames() {
         const gamesGrid = document.getElementById('games-grid');
         const loading = document.getElementById('loading');
@@ -423,8 +447,21 @@ class SupabaseGamerPage {
         // Hide loading
         loading.style.display = 'none';
         
-        if (this.games.length === 0) {
+        if (this.filteredGames.length === 0) {
             gamesGrid.innerHTML = '';
+            if (this.games.length === 0) {
+                emptyState.innerHTML = `
+                    <div class="empty-icon">🎮</div>
+                    <h3>No games found</h3>
+                    <p>No games have been added yet. Check back later!</p>
+                `;
+            } else {
+                emptyState.innerHTML = `
+                    <div class="empty-icon">🔍</div>
+                    <h3>No games found</h3>
+                    <p>No games match your search criteria. Try a different search term.</p>
+                `;
+            }
             emptyState.style.display = 'block';
             return;
         }
@@ -432,14 +469,14 @@ class SupabaseGamerPage {
         emptyState.style.display = 'none';
         
         // Sort games
-        const sortedGames = this.sortGames([...this.games]);
+        const sortedGames = this.sortGames([...this.filteredGames]);
         
         // Render games
         gamesGrid.innerHTML = sortedGames.map(game => this.createGameCard(game)).join('');
         
         // Add animations
         setTimeout(() => {
-            const cards = gamesGrid.querySelectorAll('.game-card');
+            const cards = gamesGrid.querySelectorAll('.flip-card');
             cards.forEach((card, index) => {
                 card.style.animationDelay = `${index * 0.1}s`;
             });
