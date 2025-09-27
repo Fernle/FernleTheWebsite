@@ -120,8 +120,8 @@
 .search-input:focus ~ .search-label, 
 .search-input:not(:placeholder-shown) ~ .search-label {
     top: -20px;
-    font-size: 14px;
-    color: var(--primary-orange);
+    font-size: 12px;
+    color: var(--dark-brown);
 }
 
 .search-bar {
@@ -158,12 +158,12 @@
     display: flex;
     align-items: center;
     gap: var(--spacing-xs);
-    background: rgba(255, 255, 255, 0.9);
-    padding: var(--spacing-xs) var(--spacing-sm);
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    backdrop-filter: none;
+    border: none;
+    box-shadow: none;
     width: fit-content;
 }
 
