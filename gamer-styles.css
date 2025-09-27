@@ -321,7 +321,7 @@
 .hours-played {
     position: absolute;
     top: var(--spacing-sm);
-    left: var(--spacing-sm);
+    right: var(--spacing-sm);
     background: rgba(255, 255, 255, 0.2);
     color: white;
     padding: var(--spacing-xs) var(--spacing-sm);
@@ -336,7 +336,7 @@
 /* Delete Button for Admin */
 .game-actions {
     position: absolute;
-    top: var(--spacing-sm);
+    top: 50px;
     right: var(--spacing-sm);
     z-index: 10;
 }
