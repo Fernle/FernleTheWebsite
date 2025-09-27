@@ -471,6 +471,17 @@ class SupabaseGamerPage {
         // Sort games
         const sortedGames = this.sortGames([...this.filteredGames]);
         
+        // Adjust grid layout based on search
+        if (this.searchQuery) {
+            // When searching, use auto-fill to keep cards close together
+            gamesGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(280px, max-content))';
+            gamesGrid.style.justifyContent = 'start';
+        } else {
+            // When not searching, use auto-fit to fill the width
+            gamesGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(280px, 1fr))';
+            gamesGrid.style.justifyContent = 'start';
+        }
+        
         // Render games
         gamesGrid.innerHTML = sortedGames.map(game => this.createGameCard(game)).join('');
         
