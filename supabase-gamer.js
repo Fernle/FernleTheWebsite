@@ -513,8 +513,10 @@ class SupabaseGamerPage {
                                 ${ratingsHtml}
                             </div>
                             <div class="rating-footer">
-                                <div class="total-rating-text">Total Rating</div>
-                                <div class="total-stars">${totalStarsHtml}</div>
+                                <div class="total-rating-container">
+                                    <span class="total-rating-text">Total Rating</span>
+                                    <div class="total-stars">${totalStarsHtml}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
