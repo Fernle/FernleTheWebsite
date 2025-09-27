@@ -253,13 +253,13 @@
 }
 
 .sorting-item:hover .sorting-link {
-    color: var(--background-white);
+    color: var(--background-white) !important;
     border-radius: 16px 16px 0 0;
     border-color: var(--dark-brown);
 }
 
 .sorting-item:hover .sorting-link svg {
-    fill: var(--background-white);
+    fill: var(--background-white) !important;
     transform: rotate(-180deg);
 }
 
@@ -308,7 +308,7 @@
 }
 
 .submenu-link:hover {
-    color: var(--background-white);
+    color: var(--background-white) !important;
 }
 
 /* Games Grid */
