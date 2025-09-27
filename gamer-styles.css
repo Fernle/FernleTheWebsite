@@ -171,7 +171,7 @@
 }
 
 .flip-card-back {
-    background: rgba(139, 69, 19, 0.95);
+    background: var(--dark-brown);
     color: white;
     transform: rotateY(180deg);
     padding: var(--spacing-md);
@@ -232,8 +232,8 @@
 
 .rating-categories {
     display: grid;
-    gap: var(--spacing-xs);
-    margin-bottom: var(--spacing-sm);
+    gap: 2px;
+    margin-bottom: var(--spacing-xs);
 }
 
 .rating-item {
@@ -257,8 +257,8 @@
 }
 
 .star {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     background: rgba(255, 255, 255, 0.3);
     clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
     transition: var(--transition-fast);
@@ -661,8 +661,8 @@
     }
     
     .star {
-        width: 14px;
-        height: 14px;
+        width: 16px;
+        height: 16px;
     }
     
     .total-stars .star {
@@ -732,8 +732,8 @@
     }
     
     .star {
-        width: 12px;
-        height: 12px;
+        width: 14px;
+        height: 14px;
     }
     
     .total-stars .star {
