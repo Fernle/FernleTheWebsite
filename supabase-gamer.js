@@ -492,20 +492,31 @@ class SupabaseGamerPage {
         ` : '';
 
         return `
-            <div class="game-card">
-                <img src="${game.image_url}" alt="${game.name}" class="game-image" 
-                     onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=='">
-                <div class="game-content">
-                    <div class="game-header">
-                        <h3 class="game-name">${game.name}</h3>
-                        ${deleteButton}
+            <div class="flip-card">
+                ${deleteButton}
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <div class="game-image-container">
+                            <img src="${game.image_url}" alt="${game.name}" class="game-image" 
+                                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=='">
+                            <div class="game-name-overlay">
+                                ${game.name}
+                            </div>
+                        </div>
                     </div>
-                    <div class="game-ratings">
-                        ${ratingsHtml}
-                    </div>
-                    <div class="game-total">
-                        <span class="total-rating-text">Total Rating</span>
-                        <div class="total-stars">${totalStarsHtml}</div>
+                    <div class="flip-card-back">
+                        <div class="rating-details">
+                            <div class="rating-header">
+                                <h3>${game.name}</h3>
+                            </div>
+                            <div class="rating-categories">
+                                ${ratingsHtml}
+                            </div>
+                            <div class="rating-footer">
+                                <div class="total-rating-text">Total Rating</div>
+                                <div class="total-stars">${totalStarsHtml}</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
