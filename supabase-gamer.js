@@ -498,7 +498,6 @@ class SupabaseGamerPage {
         return `
             <div class="flip-card">
                 ${deleteButton}
-                ${hoursDisplay}
                 <div class="flip-card-inner">
                     <div class="flip-card-front">
                         <div class="game-image-container">
@@ -510,6 +509,7 @@ class SupabaseGamerPage {
                         </div>
                     </div>
                     <div class="flip-card-back">
+                        ${hoursDisplay}
                         <div class="rating-details">
                             <div class="rating-header">
                                 <h3>${game.name}</h3>
