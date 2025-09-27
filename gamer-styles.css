@@ -279,7 +279,7 @@
     width: 100%;
     position: relative;
     text-align: center;
-    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1), color 0.48s cubic-bezier(0.23, 1, 0.32, 1);
     color: var(--text-dark);
     font-size: 0.9rem;
 }
