@@ -61,15 +61,30 @@
                     <div class="search-bar"></div>
                 </div>
                 
-                <!-- Sorting Controls -->
-                <div class="sorting-controls">
-                    <label for="sort-select">Sort by:</label>
-                    <select id="sort-select" class="sort-select">
-                        <option value="alphabetical">Alphabetical (A-Z)</option>
-                        <option value="rating-high">Highest Rating</option>
-                        <option value="rating-low">Lowest Rating</option>
-                    </select>
-                </div>
+        <!-- Sorting Controls -->
+        <div class="sorting-controls">
+            <ul class="sorting-menu">
+                <li class="sorting-item">
+                    <a href="#" class="sorting-link" id="sort-link">
+                        <span id="sort-text">Sort by: Alphabetical (A-Z)</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <ul class="sorting-submenu">
+                        <li class="submenu-item">
+                            <a href="#" class="submenu-link" data-value="alphabetical">Alphabetical (A-Z)</a>
+                        </li>
+                        <li class="submenu-item">
+                            <a href="#" class="submenu-link" data-value="rating-high">Highest Rating</a>
+                        </li>
+                        <li class="submenu-item">
+                            <a href="#" class="submenu-link" data-value="rating-low">Lowest Rating</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
             </div>
 
             <!-- Games Grid -->

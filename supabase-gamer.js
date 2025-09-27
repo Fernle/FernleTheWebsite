@@ -105,11 +105,21 @@ class SupabaseGamerPage {
             this.filterAndRenderGames();
         });
 
-        // Sorting
-        const sortSelect = document.getElementById('sort-select');
-        sortSelect.addEventListener('change', (e) => {
-            this.currentSort = e.target.value;
-            this.filterAndRenderGames();
+        // Sorting - New dropdown menu
+        const sortLinks = document.querySelectorAll('.submenu-link');
+        sortLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const value = e.target.getAttribute('data-value');
+                this.currentSort = value;
+                
+                // Update the displayed text
+                const sortText = document.getElementById('sort-text');
+                const text = e.target.textContent;
+                sortText.textContent = `Sort by: ${text}`;
+                
+                this.filterAndRenderGames();
+            });
         });
 
         // Modal close on background click
