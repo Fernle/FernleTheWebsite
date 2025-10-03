@@ -7,7 +7,6 @@ class SupabaseGamerPage {
         this.searchQuery = '';
         this.isAdmin = false;
         this.adminEmail = 'admin@fernle.com';
-        this.adminPassword = 'fernle2024';
         
         this.init();
     }
