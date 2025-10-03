@@ -220,6 +220,121 @@
         </div>
     </div>
 
+    <!-- Edit Game Modal -->
+    <div id="edit-game-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Game</h2>
+                <button class="modal-close" id="edit-modal-close">&times;</button>
+            </div>
+            
+            <form id="edit-game-form" class="add-game-form">
+                <input type="hidden" id="edit-game-id" name="gameId">
+                
+                <!-- Game Name -->
+                <div class="form-group">
+                    <label for="edit-game-name">Game Name *</label>
+                    <input type="text" id="edit-game-name" name="gameName" required>
+                </div>
+
+                <!-- Game Image -->
+                <div class="form-group">
+                    <label for="edit-game-image">Game Image *</label>
+                    <div class="image-input-container">
+                        <input type="url" id="edit-game-image-url" name="gameImageUrl" placeholder="Image URL">
+                        <span class="or-text">OR</span>
+                        <input type="file" id="edit-game-image-file" name="gameImageFile" accept="image/*">
+                    </div>
+                    <div class="image-preview" id="edit-image-preview"></div>
+                </div>
+
+                <!-- Rating Categories -->
+                <div class="form-group">
+                    <label>Ratings (0 - 0.5 - 1 star per category) *</label>
+                    
+                    <div class="rating-categories">
+                        <div class="rating-category">
+                            <label>Gameplay</label>
+                            <div class="star-rating" data-category="gameplay">
+                                <input type="radio" name="edit-gameplay" value="0" id="edit-gameplay-0">
+                                <label for="edit-gameplay-0">0</label>
+                                <input type="radio" name="edit-gameplay" value="0.5" id="edit-gameplay-0.5">
+                                <label for="edit-gameplay-0.5">0.5</label>
+                                <input type="radio" name="edit-gameplay" value="1" id="edit-gameplay-1">
+                                <label for="edit-gameplay-1">1</label>
+                            </div>
+                        </div>
+
+                        <div class="rating-category">
+                            <label>Graphics</label>
+                            <div class="star-rating" data-category="graphics">
+                                <input type="radio" name="edit-graphics" value="0" id="edit-graphics-0">
+                                <label for="edit-graphics-0">0</label>
+                                <input type="radio" name="edit-graphics" value="0.5" id="edit-graphics-0.5">
+                                <label for="edit-graphics-0.5">0.5</label>
+                                <input type="radio" name="edit-graphics" value="1" id="edit-graphics-1">
+                                <label for="edit-graphics-1">1</label>
+                            </div>
+                        </div>
+
+                        <div class="rating-category">
+                            <label>Audio</label>
+                            <div class="star-rating" data-category="audio">
+                                <input type="radio" name="edit-audio" value="0" id="edit-audio-0">
+                                <label for="edit-audio-0">0</label>
+                                <input type="radio" name="edit-audio" value="0.5" id="edit-audio-0.5">
+                                <label for="edit-audio-0.5">0.5</label>
+                                <input type="radio" name="edit-audio" value="1" id="edit-audio-1">
+                                <label for="edit-audio-1">1</label>
+                            </div>
+                        </div>
+
+                        <div class="rating-category">
+                            <label>Atmosphere</label>
+                            <div class="star-rating" data-category="atmosphere">
+                                <input type="radio" name="edit-atmosphere" value="0" id="edit-atmosphere-0">
+                                <label for="edit-atmosphere-0">0</label>
+                                <input type="radio" name="edit-atmosphere" value="0.5" id="edit-atmosphere-0.5">
+                                <label for="edit-atmosphere-0.5">0.5</label>
+                                <input type="radio" name="edit-atmosphere" value="1" id="edit-atmosphere-1">
+                                <label for="edit-atmosphere-1">1</label>
+                            </div>
+                        </div>
+
+                        <div class="rating-category">
+                            <label>Satisfaction</label>
+                            <div class="star-rating" data-category="satisfaction">
+                                <input type="radio" name="edit-satisfaction" value="0" id="edit-satisfaction-0">
+                                <label for="edit-satisfaction-0">0</label>
+                                <input type="radio" name="edit-satisfaction" value="0.5" id="edit-satisfaction-0.5">
+                                <label for="edit-satisfaction-0.5">0.5</label>
+                                <input type="radio" name="edit-satisfaction" value="1" id="edit-satisfaction-1">
+                                <label for="edit-satisfaction-1">1</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="total-rating">
+                        <strong>Total Rating: <span id="edit-total-rating">0/5</span></strong>
+                    </div>
+                </div>
+
+                <!-- Hours Played -->
+                <div class="form-group">
+                    <label for="edit-hours-played">Hours Played (Optional)</label>
+                    <input type="number" id="edit-hours-played" name="hoursPlayed" placeholder="e.g., 120" min="0" step="0.5">
+                    <small class="form-help">Leave empty if the game has an ending</small>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-actions">
+                    <button type="button" class="btn secondary" id="edit-cancel-btn">Cancel</button>
+                    <button type="submit" class="btn primary">Update Game</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Admin Login Modal -->
     <div id="login-modal" class="modal" style="display: none;">
         <div class="modal-content">

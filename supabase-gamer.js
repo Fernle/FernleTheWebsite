@@ -122,8 +122,47 @@ class SupabaseGamerPage {
             });
         });
 
+        // Edit game modal
+        const editGameModal = document.getElementById('edit-game-modal');
+        const editGameForm = document.getElementById('edit-game-form');
+        const editModalClose = document.getElementById('edit-modal-close');
+        const editCancelBtn = document.getElementById('edit-cancel-btn');
+
+        editModalClose.addEventListener('click', () => {
+            this.hideEditGameModal();
+        });
+
+        editCancelBtn.addEventListener('click', () => {
+            this.hideEditGameModal();
+        });
+
+        editGameForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handleEditGame(e);
+        });
+
+        // Edit image input handling
+        const editImageUrlInput = document.getElementById('edit-game-image-url');
+        const editImageFileInput = document.getElementById('edit-game-image-file');
+        
+        editImageUrlInput.addEventListener('input', (e) => {
+            this.handleEditImageUrl(e);
+        });
+
+        editImageFileInput.addEventListener('change', (e) => {
+            this.handleEditImageFile(e);
+        });
+
+        // Edit rating change handling
+        const editRatingInputs = document.querySelectorAll('#edit-game-form .star-rating input[type="radio"]');
+        editRatingInputs.forEach(input => {
+            input.addEventListener('change', () => {
+                this.updateEditTotalRating();
+            });
+        });
+
         // Modal close on background click
-        [addGameModal, loginModal].forEach(modal => {
+        [addGameModal, editGameModal, loginModal].forEach(modal => {
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
                     modal.style.display = 'none';
@@ -434,6 +473,198 @@ class SupabaseGamerPage {
         }
     }
 
+    async editGame(gameId) {
+        console.log('editGame called with ID:', gameId);
+        console.log('isAdmin status:', this.isAdmin);
+        
+        if (!this.isAdmin) {
+            console.log('Admin access denied');
+            this.showNotification('Admin access required', 'error');
+            return;
+        }
+
+        // Find the game in our local array
+        const game = this.games.find(g => g.id === gameId);
+        if (!game) {
+            console.log('Game not found:', gameId);
+            this.showNotification('Game not found', 'error');
+            return;
+        }
+
+        console.log('Editing game:', game);
+        
+        // Populate the edit form with current game data
+        document.getElementById('edit-game-id').value = game.id;
+        document.getElementById('edit-game-name').value = game.name;
+        document.getElementById('edit-game-image-url').value = game.image_url;
+        document.getElementById('edit-hours-played').value = game.hours_played || '';
+        
+        // Set image preview
+        const editPreview = document.getElementById('edit-image-preview');
+        if (game.image_url) {
+            editPreview.innerHTML = `<img src="${game.image_url}" alt="Game preview" onerror="this.style.display='none'">`;
+        }
+        
+        // Set ratings
+        const categories = ['gameplay', 'graphics', 'audio', 'atmosphere', 'satisfaction'];
+        categories.forEach(category => {
+            const rating = game[`${category}_rating`];
+            const radioInput = document.querySelector(`input[name="edit-${category}"][value="${rating}"]`);
+            if (radioInput) {
+                radioInput.checked = true;
+            }
+        });
+        
+        // Update total rating display
+        this.updateEditTotalRating();
+        
+        // Show the edit modal
+        this.showEditGameModal();
+    }
+
+    showEditGameModal() {
+        const modal = document.getElementById('edit-game-modal');
+        modal.style.display = 'flex';
+        document.getElementById('edit-game-name').focus();
+    }
+
+    hideEditGameModal() {
+        const modal = document.getElementById('edit-game-modal');
+        modal.style.display = 'none';
+        this.resetEditGameForm();
+    }
+
+    resetEditGameForm() {
+        document.getElementById('edit-game-form').reset();
+        document.getElementById('edit-image-preview').innerHTML = '';
+        document.getElementById('edit-total-rating').textContent = '0/5';
+        document.getElementById('edit-game-id').value = '';
+    }
+
+    handleEditImageUrl(e) {
+        const url = e.target.value.trim();
+        const preview = document.getElementById('edit-image-preview');
+        
+        if (url && this.isValidImageUrl(url)) {
+            preview.innerHTML = `<img src="${url}" alt="Game preview" onerror="this.style.display='none'">`;
+            document.getElementById('edit-game-image-file').value = '';
+        } else if (!url) {
+            preview.innerHTML = '';
+        }
+    }
+
+    handleEditImageFile(e) {
+        const file = e.target.files[0];
+        const preview = document.getElementById('edit-image-preview');
+        
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                preview.innerHTML = `<img src="${event.target.result}" alt="Game preview">`;
+                document.getElementById('edit-game-image-url').value = '';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = '';
+        }
+    }
+
+    updateEditTotalRating() {
+        const categories = ['edit-gameplay', 'edit-graphics', 'edit-audio', 'edit-atmosphere', 'edit-satisfaction'];
+        let total = 0;
+        
+        categories.forEach(category => {
+            const selected = document.querySelector(`input[name="${category}"]:checked`);
+            if (selected) {
+                total += parseFloat(selected.value);
+            }
+        });
+        
+        document.getElementById('edit-total-rating').textContent = `${total}/5`;
+    }
+
+    async handleEditGame(e) {
+        const formData = new FormData(e.target);
+        const gameId = formData.get('gameId');
+        const gameName = formData.get('gameName').trim();
+        const imageUrl = formData.get('gameImageUrl').trim();
+        const imageFile = formData.get('gameImageFile');
+        const hoursPlayed = formData.get('hoursPlayed');
+        
+        if (!gameName) {
+            this.showNotification('Please enter a game name!', 'error');
+            return;
+        }
+        
+        let gameImage = '';
+        if (imageUrl) {
+            gameImage = imageUrl;
+        } else if (imageFile && imageFile.size > 0) {
+            this.showNotification('File upload not supported. Please use image URL.', 'error');
+            return;
+        } else {
+            this.showNotification('Please provide a game image!', 'error');
+            return;
+        }
+        
+        // Get ratings
+        const ratings = {};
+        const categories = ['edit-gameplay', 'edit-graphics', 'edit-audio', 'edit-atmosphere', 'edit-satisfaction'];
+        let totalRating = 0;
+        
+        categories.forEach(category => {
+            const selected = document.querySelector(`input[name="${category}"]:checked`);
+            const rating = selected ? parseFloat(selected.value) : 0;
+            ratings[category.replace('edit-', '')] = rating;
+            totalRating += rating;
+        });
+        
+        // Create updated game object
+        const updatedGame = {
+            name: gameName,
+            image_url: gameImage,
+            gameplay_rating: ratings.gameplay,
+            graphics_rating: ratings.graphics,
+            audio_rating: ratings.audio,
+            atmosphere_rating: ratings.atmosphere,
+            satisfaction_rating: ratings.satisfaction,
+            total_rating: totalRating,
+            hours_played: hoursPlayed ? parseFloat(hoursPlayed) : null
+        };
+        
+        try {
+            // Update in Supabase
+            const { data, error } = await window.supabase
+                .from('games')
+                .update(updatedGame)
+                .eq('id', gameId)
+                .select();
+            
+            if (error) {
+                console.error('Error updating game:', error);
+                this.showNotification('Error updating game in database', 'error');
+                return;
+            }
+            
+            // Update local array
+            const gameIndex = this.games.findIndex(g => g.id === parseInt(gameId));
+            if (gameIndex !== -1 && data && data[0]) {
+                this.games[gameIndex] = data[0];
+            }
+            
+            // Hide modal and show success message
+            this.hideEditGameModal();
+            this.showNotification('Game updated successfully!', 'success');
+            
+            // Re-render games
+            this.filterAndRenderGames();
+            
+        } catch (error) {
+            console.error('Error updating game:', error);
+            this.showNotification('Error updating game in database', 'error');
+        }
+    }
+
     filterGames() {
         if (!this.searchQuery) {
             this.filteredGames = [...this.games];
@@ -543,8 +774,11 @@ class SupabaseGamerPage {
         
         const totalStarsHtml = this.createStars(game.total_rating, 5, true);
         
-        const deleteButton = this.isAdmin ? `
+        const adminButtons = this.isAdmin ? `
             <div class="game-actions">
+                <button class="edit-btn" onclick="gamerPage.editGame(${game.id})" title="Edit Game">
+                    ✏️
+                </button>
                 <button class="delete-btn" onclick="gamerPage.deleteGame(${game.id})" title="Delete Game">
                     🗑️
                 </button>
@@ -555,7 +789,7 @@ class SupabaseGamerPage {
 
         return `
             <div class="flip-card">
-                ${deleteButton}
+                ${adminButtons}
                 <div class="flip-card-inner">
                     <div class="flip-card-front">
                         <div class="game-image-container">
