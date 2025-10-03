@@ -200,7 +200,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--dark-brown);
+    background-color: #FF8C42;
     z-index: -1;
     transform: scaleX(0);
     transform-origin: left;
@@ -249,13 +249,13 @@
     transform: translateY(0);
     pointer-events: auto;
     border-top: transparent;
-    border-color: var(--dark-brown);
+    border-color: #FF8C42;
 }
 
 .sorting-item:hover .sorting-link {
     color: var(--background-white) !important;
     border-radius: 16px 16px 0 0;
-    border-color: var(--dark-brown);
+    border-color: #FF8C42;
 }
 
 .sorting-item:hover .sorting-link svg {
