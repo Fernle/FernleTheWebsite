@@ -21,6 +21,7 @@ class SupabaseGamerPage {
         await this.loadGamesFromSupabase();
         this.checkAdminStatus();
         this.renderGames();
+        this.startKeepAlive();
     }
 
     setupEventListeners() {
@@ -924,3 +925,37 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+    // Keep Supabase alive - prevent automatic pausing
+    startKeepAlive() {
+        console.log('🔄 Keep-alive script started');
+        
+        // Immediate ping
+        this.sendKeepAlivePing();
+        
+        // Set up interval for every 24 hours
+        setInterval(() => {
+            console.log('🔄 24 hours passed, sending keep-alive ping...');
+            this.sendKeepAlivePing();
+        }, 24 * 60 * 60 * 1000); // 24 hours in milliseconds
+        
+        console.log('✅ Keep-alive script configured - will ping every 24 hours');
+    }
+
+    async sendKeepAlivePing() {
+        try {
+            // Send a lightweight query to keep the project active
+            const { data, error } = await window.supabase
+                .from('games')
+                .select('count')
+                .limit(1);
+            
+            if (error) {
+                console.log('❌ Keep-alive ping failed:', error.message);
+            } else {
+                console.log('✅ Keep-alive ping successful - Supabase project active');
+            }
+        } catch (error) {
+            console.log('❌ Keep-alive ping error:', error.message);
+        }
+    }
