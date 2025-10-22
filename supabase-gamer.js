@@ -21,7 +21,6 @@ class SupabaseGamerPage {
         await this.loadGamesFromSupabase();
         this.checkAdminStatus();
         this.renderGames();
-        this.startKeepAlive();
     }
 
     setupEventListeners() {
@@ -185,11 +184,13 @@ class SupabaseGamerPage {
             }
             
             this.games = data || [];
+            this.updateGameCounter(); // Update the game counter
             this.filterAndRenderGames(); // Filter and re-render the UI after loading games
         } catch (error) {
             console.error('Error loading games:', error);
             this.showNotification('Error loading games from database', 'error');
             this.games = [];
+            this.updateGameCounter(); // Update the game counter even on error
             this.filterAndRenderGames(); // Filter and re-render even on error to show empty state
         }
     }
@@ -413,6 +414,9 @@ class SupabaseGamerPage {
                 this.games.unshift(data[0]);
             }
             
+            // Update game counter
+            this.updateGameCounter();
+            
             // Hide modal and show success message
             this.hideAddGameModal();
             this.showNotification('Game added successfully!', 'success');
@@ -465,6 +469,11 @@ class SupabaseGamerPage {
 
             console.log('Deletion successful, reloading games...');
             this.showNotification('Game deleted successfully!', 'success');
+            
+            // Remove from local array
+            this.games = this.games.filter(game => game.id !== gameId);
+            this.updateGameCounter();
+            
             this.loadGamesFromSupabase();
 
         } catch (error) {
@@ -652,6 +661,9 @@ class SupabaseGamerPage {
                 this.games[gameIndex] = data[0];
             }
             
+            // Update game counter (in case of any changes)
+            this.updateGameCounter();
+            
             // Hide modal and show success message
             this.hideEditGameModal();
             this.showNotification('Game updated successfully!', 'success');
@@ -672,6 +684,21 @@ class SupabaseGamerPage {
             this.filteredGames = this.games.filter(game => 
                 game.name.toLowerCase().includes(this.searchQuery)
             );
+        }
+    }
+
+    updateGameCounter() {
+        const gameCountElement = document.getElementById('game-count');
+        const totalGames = this.games.length;
+        
+        if (gameCountElement) {
+            if (totalGames === 0) {
+                gameCountElement.textContent = 'Total: 0 games played';
+            } else if (totalGames === 1) {
+                gameCountElement.textContent = 'Total: 1 game played';
+            } else {
+                gameCountElement.textContent = `Total: ${totalGames} games played`;
+            }
         }
     }
 
@@ -926,36 +953,3 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-    // Keep Supabase alive - prevent automatic pausing
-    startKeepAlive() {
-        console.log('🔄 Keep-alive script started');
-        
-        // Immediate ping
-        this.sendKeepAlivePing();
-        
-        // Set up interval for every 24 hours
-        setInterval(() => {
-            console.log('🔄 24 hours passed, sending keep-alive ping...');
-            this.sendKeepAlivePing();
-        }, 24 * 60 * 60 * 1000); // 24 hours in milliseconds
-        
-        console.log('✅ Keep-alive script configured - will ping every 24 hours');
-    }
-
-    async sendKeepAlivePing() {
-        try {
-            // Send a lightweight query to keep the project active
-            const { data, error } = await window.supabase
-                .from('games')
-                .select('count')
-                .limit(1);
-            
-            if (error) {
-                console.log('❌ Keep-alive ping failed:', error.message);
-            } else {
-                console.log('✅ Keep-alive ping successful - Supabase project active');
-            }
-        } catch (error) {
-            console.log('❌ Keep-alive ping error:', error.message);
-        }
-    }
