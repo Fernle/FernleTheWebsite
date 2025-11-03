@@ -94,9 +94,9 @@ body {
     right: 0;
     z-index: 1000;
     padding: var(--spacing-md) var(--spacing-lg);
-    background: rgba(255, 140, 66, 0.1);
+    background: rgba(230, 62, 62, 0.1);
     backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 107, 53, 0.2);
+    border-bottom: 1px solid rgba(230, 62, 62, 0.2);
     transition: var(--transition-normal);
 }
 
