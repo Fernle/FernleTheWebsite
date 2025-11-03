@@ -5,6 +5,7 @@ class AdminColorManager {
         this.isAdmin = false;
         this.currentPage = this.detectCurrentPage();
         this.defaultColors = this.getDefaultColorsForPage(this.currentPage);
+        this.dynamicStyles = {}; // Track dynamic style elements
         
         this.init();
     }
@@ -298,6 +299,21 @@ class AdminColorManager {
             this.applyColorsToInputs(parsed);
             this.updateAllPreviews();
         }
+    }
+    
+    setDynamicStyle(id, css) {
+        // Remove old style if it exists
+        const oldStyle = document.getElementById(id);
+        if (oldStyle) {
+            oldStyle.remove();
+        }
+        
+        // Create and append new style
+        const style = document.createElement('style');
+        style.id = id;
+        style.textContent = css;
+        document.head.appendChild(style);
+        this.dynamicStyles[id] = style;
     }
     
     applyColorsToInputs(colors) {
@@ -716,10 +732,7 @@ class AdminColorManager {
                 });
             }
             if (colors.adminButtonHoverBg) {
-                const style = document.createElement('style');
-                style.id = 'admin-button-hover-style';
-                style.textContent = `.admin-btn:not(.secondary):hover { background: ${colors.adminButtonHoverBg} !important; }`;
-                document.head.appendChild(style);
+                this.setDynamicStyle('admin-button-hover-style', `.admin-btn:not(.secondary):hover { background: ${colors.adminButtonHoverBg} !important; }`);
             }
             
             // Game counter
@@ -750,40 +763,25 @@ class AdminColorManager {
                 }
             }
             if (colors.searchLabelFocusColor) {
-                const style = document.createElement('style');
-                style.id = 'search-label-focus-style';
-                style.textContent = `.search-input:focus ~ .search-label, .search-input:not(:placeholder-shown) ~ .search-label { color: ${colors.searchLabelFocusColor} !important; }`;
-                document.head.appendChild(style);
+                this.setDynamicStyle('search-label-focus-style', `.search-input:focus ~ .search-label, .search-input:not(:placeholder-shown) ~ .search-label { color: ${colors.searchLabelFocusColor} !important; }`);
             }
             if (colors.searchBarFocusColor) {
-                const style = document.createElement('style');
-                style.id = 'search-bar-focus-style';
-                style.textContent = `.search-bar:before, .search-bar:after { background: ${colors.searchBarFocusColor} !important; }`;
-                document.head.appendChild(style);
+                this.setDynamicStyle('search-bar-focus-style', `.search-bar:before, .search-bar:after { background: ${colors.searchBarFocusColor} !important; }`);
             }
             
             // Sorting dropdown
             if (colors.sortingDropdownBg) {
-                const style = document.createElement('style');
-                style.id = 'sorting-dropdown-bg-style';
-                style.textContent = `.sorting-submenu { background: ${colors.sortingDropdownBg} !important; }`;
-                document.head.appendChild(style);
+                this.setDynamicStyle('sorting-dropdown-bg-style', `.sorting-submenu { background: ${colors.sortingDropdownBg} !important; }`);
             }
             if (colors.sortingDropdownText) {
                 const sortingLinks = document.querySelectorAll('.sorting-link, .submenu-link');
                 sortingLinks.forEach(link => link.style.color = colors.sortingDropdownText);
             }
             if (colors.sortingDropdownHoverBg) {
-                const style = document.createElement('style');
-                style.id = 'sorting-hover-bg-style';
-                style.textContent = `.sorting-item:hover .sorting-link::after, .submenu-link:hover:before { background: ${colors.sortingDropdownHoverBg} !important; }`;
-                document.head.appendChild(style);
+                this.setDynamicStyle('sorting-hover-bg-style', `.sorting-item:hover .sorting-link::after, .submenu-link:hover:before { background: ${colors.sortingDropdownHoverBg} !important; }`);
             }
             if (colors.sortingDropdownHoverText) {
-                const style = document.createElement('style');
-                style.id = 'sorting-hover-text-style';
-                style.textContent = `.sorting-item:hover .sorting-link, .submenu-link:hover { color: ${colors.sortingDropdownHoverText} !important; }`;
-                document.head.appendChild(style);
+                this.setDynamicStyle('sorting-hover-text-style', `.sorting-item:hover .sorting-link, .submenu-link:hover { color: ${colors.sortingDropdownHoverText} !important; }`);
             }
             
             // Cards
@@ -796,10 +794,7 @@ class AdminColorManager {
                 flipCards.forEach(card => card.style.color = colors.cardBackText);
             }
             if (colors.starColor) {
-                const style = document.createElement('style');
-                style.id = 'star-color-style';
-                style.textContent = `.star.filled, .star.half { background: ${colors.starColor} !important; }`;
-                document.head.appendChild(style);
+                this.setDynamicStyle('star-color-style', `.star.filled, .star.half { background: ${colors.starColor} !important; }`);
             }
             
             // Action buttons
@@ -812,10 +807,7 @@ class AdminColorManager {
                 }
             }
             if (colors.editButtonHoverBg) {
-                const style = document.createElement('style');
-                style.id = 'edit-button-hover-style';
-                style.textContent = `.edit-btn:hover { background: ${colors.editButtonHoverBg} !important; }`;
-                document.head.appendChild(style);
+                this.setDynamicStyle('edit-button-hover-style', `.edit-btn:hover { background: ${colors.editButtonHoverBg} !important; }`);
             }
             if (colors.deleteButtonBg) {
                 const deleteBtns = document.querySelectorAll('.delete-btn');
@@ -826,10 +818,7 @@ class AdminColorManager {
                 }
             }
             if (colors.deleteButtonHoverBg) {
-                const style = document.createElement('style');
-                style.id = 'delete-button-hover-style';
-                style.textContent = `.delete-btn:hover { background: ${colors.deleteButtonHoverBg} !important; }`;
-                document.head.appendChild(style);
+                this.setDynamicStyle('delete-button-hover-style', `.delete-btn:hover { background: ${colors.deleteButtonHoverBg} !important; }`);
             }
         }
     }

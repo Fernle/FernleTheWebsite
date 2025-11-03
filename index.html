@@ -13,6 +13,25 @@
     
     <!-- CSS -->
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Critical: Load colors instantly before DOM paints -->
+    <script>
+        (function() {
+            const savedColors = localStorage.getItem('siteColors');
+            if (savedColors) {
+                try {
+                    const colors = JSON.parse(savedColors);
+                    const style = document.createElement('style');
+                    if (colors.gradient) {
+                        style.textContent = `body { background: linear-gradient(-45deg, ${colors.gradient.join(', ')}) !important; background-size: 400% 400% !important; }`;
+                    }
+                    document.head.appendChild(style);
+                } catch(e) {
+                    console.log('Could not apply colors:', e);
+                }
+            }
+        })();
+    </script>
 </head>
 <body>
     <!-- Header -->
