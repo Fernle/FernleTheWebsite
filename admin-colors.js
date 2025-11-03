@@ -354,6 +354,7 @@ class AdminColorManager {
         
         document.body.style.background = `linear-gradient(-45deg, ${color1}, ${color2}, ${color3}, ${color4})`;
         document.body.style.backgroundSize = '400% 400%';
+        document.body.style.backgroundAttachment = 'scroll';
         document.body.style.animation = 'gradient 15s ease infinite';
     }
     
@@ -805,6 +806,7 @@ class AdminColorManager {
         if (colors.gradient) {
             document.body.style.background = `linear-gradient(-45deg, ${colors.gradient.join(', ')})`;
             document.body.style.backgroundSize = '400% 400%';
+            document.body.style.backgroundAttachment = 'scroll';
             document.body.style.animation = 'gradient 15s ease infinite';
         }
         
