@@ -26,15 +26,19 @@ class AdminColorManager {
         this.setupEventListeners();
     }
     
-    checkAdminStatus() {
-        // Check if admin is logged in
-        const adminEmail = localStorage.getItem('adminEmail');
-        const adminPassword = localStorage.getItem('adminPassword');
-        
-        if (adminEmail && adminPassword) {
-            this.isAdmin = true;
-            this.showSettingsButton();
-        } else {
+    async checkAdminStatus() {
+        // Check if admin is logged in via Supabase Auth
+        try {
+            const { data: { user } } = await window.supabase.auth.getUser();
+            if (user) {
+                this.isAdmin = true;
+                this.showSettingsButton();
+            } else {
+                this.isAdmin = false;
+                this.hideSettingsButton();
+            }
+        } catch (error) {
+            console.log('Could not check admin status:', error);
             this.isAdmin = false;
             this.hideSettingsButton();
         }
@@ -295,6 +299,21 @@ class AdminColorManager {
     }
     
     async saveSettings() {
+        // Double-check admin status via Supabase Auth
+        try {
+            const { data: { user } } = await window.supabase.auth.getUser();
+            if (!user) {
+                alert('Admin access required');
+                this.isAdmin = false;
+                this.hideSettingsButton();
+                return;
+            }
+        } catch (error) {
+            console.error('Could not verify admin status:', error);
+            alert('Admin access required');
+            return;
+        }
+        
         if (!this.isAdmin) {
             alert('Admin access required');
             return;
