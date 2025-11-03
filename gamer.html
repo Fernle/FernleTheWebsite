@@ -24,7 +24,7 @@
                     const colors = JSON.parse(savedColors);
                     const style = document.createElement('style');
                     if (colors.gradient) {
-                        style.textContent = `body { background: linear-gradient(-45deg, ${colors.gradient.join(', ')}) !important; background-size: 400% 400% !important; }`;
+                        style.textContent = `body { background: linear-gradient(-45deg, ${colors.gradient.join(', ')}); background-size: 400% 400%; animation: gradient 15s ease infinite; }`;
                     }
                     document.head.appendChild(style);
                 } catch(e) {

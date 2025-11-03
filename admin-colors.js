@@ -220,6 +220,82 @@ class AdminColorManager {
             this.updateHeaderPreview();
         } else if (picker.id === 'text-color') {
             this.updateTextPreview();
+        } else if (this.currentPage === 'gamer') {
+            // Gamer-specific color previews
+            if (picker.id === 'page-title-color') {
+                const pageTitle = document.querySelector('.page-title');
+                if (pageTitle) pageTitle.style.color = picker.value;
+            } else if (picker.id === 'page-subtitle-color') {
+                const pageSubtitle = document.querySelector('.page-subtitle');
+                if (pageSubtitle) pageSubtitle.style.color = picker.value;
+            } else if (picker.id === 'admin-button-bg') {
+                const adminBtns = document.querySelectorAll('.admin-btn:not(.secondary)');
+                adminBtns.forEach(btn => btn.style.background = picker.value);
+            } else if (picker.id === 'admin-button-hover-bg') {
+                this.setDynamicStyle('admin-button-hover-style', `.admin-btn:not(.secondary):hover { background: ${picker.value} !important; }`);
+            } else if (picker.id === 'game-counter-border') {
+                const gameCounter = document.querySelector('.game-counter');
+                if (gameCounter) gameCounter.style.borderColor = picker.value;
+            } else if (picker.id === 'game-counter-text') {
+                const gameCounter = document.querySelector('.game-counter');
+                if (gameCounter) gameCounter.style.color = picker.value;
+            } else if (picker.id === 'search-input-text') {
+                const searchInput = document.querySelector('.search-input');
+                if (searchInput) searchInput.style.color = picker.value;
+            } else if (picker.id === 'search-label-focus-color') {
+                this.setDynamicStyle('search-label-focus-style', `.search-input:focus ~ .search-label, .search-input:not(:placeholder-shown) ~ .search-label { color: ${picker.value} !important; }`);
+            } else if (picker.id === 'search-bar-focus-color') {
+                this.setDynamicStyle('search-bar-focus-style', `.search-bar:before, .search-bar:after { background: ${picker.value} !important; }`);
+            } else if (picker.id === 'sorting-dropdown-bg') {
+                this.setDynamicStyle('sorting-dropdown-bg-style', `.sorting-submenu { background: ${picker.value} !important; }`);
+            } else if (picker.id === 'sorting-dropdown-text') {
+                const sortingLinks = document.querySelectorAll('.sorting-link, .submenu-link');
+                sortingLinks.forEach(link => link.style.color = picker.value);
+            } else if (picker.id === 'sorting-dropdown-hover-bg') {
+                this.setDynamicStyle('sorting-hover-bg-style', `.sorting-item:hover .sorting-link::after, .submenu-link:hover:before { background: ${picker.value} !important; }`);
+            } else if (picker.id === 'sorting-dropdown-hover-text') {
+                this.setDynamicStyle('sorting-hover-text-style', `.sorting-item:hover .sorting-link, .submenu-link:hover { color: ${picker.value} !important; }`);
+            } else if (picker.id === 'card-back-bg') {
+                const flipCards = document.querySelectorAll('.flip-card-back');
+                flipCards.forEach(card => card.style.background = picker.value);
+            } else if (picker.id === 'card-back-text') {
+                const flipCards = document.querySelectorAll('.flip-card-back');
+                flipCards.forEach(card => card.style.color = picker.value);
+            } else if (picker.id === 'star-color') {
+                this.setDynamicStyle('star-color-style', `.star.filled, .star.half { background: ${picker.value} !important; }`);
+            } else if (picker.id === 'edit-button-hover-bg') {
+                this.setDynamicStyle('edit-button-hover-style', `.edit-btn:hover { background: ${picker.value} !important; }`);
+            } else if (picker.id === 'delete-button-hover-bg') {
+                this.setDynamicStyle('delete-button-hover-style', `.delete-btn:hover { background: ${picker.value} !important; }`);
+            } else if (picker.id === 'game-counter-bg-color') {
+                const gameCounter = document.querySelector('.game-counter');
+                const opacityInput = document.getElementById('game-counter-bg-opacity');
+                if (gameCounter && opacityInput) {
+                    gameCounter.style.background = this.hexToRgba(picker.value, opacityInput.value);
+                }
+            } else if (picker.id === 'search-label-color-color') {
+                const searchLabel = document.querySelector('.search-label');
+                const opacityInput = document.getElementById('search-label-color-opacity');
+                if (searchLabel && opacityInput) {
+                    searchLabel.style.color = this.hexToRgba(picker.value, opacityInput.value);
+                }
+            } else if (picker.id === 'edit-button-bg-color') {
+                const editBtns = document.querySelectorAll('.edit-btn');
+                const opacityInput = document.getElementById('edit-button-bg-opacity');
+                if (opacityInput) {
+                    editBtns.forEach(btn => {
+                        btn.style.background = this.hexToRgba(picker.value, opacityInput.value);
+                    });
+                }
+            } else if (picker.id === 'delete-button-bg-color') {
+                const deleteBtns = document.querySelectorAll('.delete-btn');
+                const opacityInput = document.getElementById('delete-button-bg-opacity');
+                if (opacityInput) {
+                    deleteBtns.forEach(btn => {
+                        btn.style.background = this.hexToRgba(picker.value, opacityInput.value);
+                    });
+                }
+            }
         }
     }
     
@@ -236,6 +312,37 @@ class AdminColorManager {
             this.updateHeaderPreview();
         } else if (slider.id === 'header-border-opacity') {
             this.updateHeaderPreview();
+        } else if (this.currentPage === 'gamer') {
+            // Gamer-specific opacity previews
+            if (slider.id === 'game-counter-bg-opacity') {
+                const gameCounter = document.querySelector('.game-counter');
+                const colorInput = document.getElementById('game-counter-bg-color');
+                if (gameCounter && colorInput) {
+                    gameCounter.style.background = this.hexToRgba(colorInput.value, slider.value);
+                }
+            } else if (slider.id === 'search-label-color-opacity') {
+                const searchLabel = document.querySelector('.search-label');
+                const colorInput = document.getElementById('search-label-color-color');
+                if (searchLabel && colorInput) {
+                    searchLabel.style.color = this.hexToRgba(colorInput.value, slider.value);
+                }
+            } else if (slider.id === 'edit-button-bg-opacity') {
+                const editBtns = document.querySelectorAll('.edit-btn');
+                const colorInput = document.getElementById('edit-button-bg-color');
+                if (colorInput) {
+                    editBtns.forEach(btn => {
+                        btn.style.background = this.hexToRgba(colorInput.value, slider.value);
+                    });
+                }
+            } else if (slider.id === 'delete-button-bg-opacity') {
+                const deleteBtns = document.querySelectorAll('.delete-btn');
+                const colorInput = document.getElementById('delete-button-bg-color');
+                if (colorInput) {
+                    deleteBtns.forEach(btn => {
+                        btn.style.background = this.hexToRgba(colorInput.value, slider.value);
+                    });
+                }
+            }
         }
     }
     
@@ -247,6 +354,7 @@ class AdminColorManager {
         
         document.body.style.background = `linear-gradient(-45deg, ${color1}, ${color2}, ${color3}, ${color4})`;
         document.body.style.backgroundSize = '400% 400%';
+        document.body.style.animation = 'gradient 15s ease infinite';
     }
     
     updateHeaderPreview() {
@@ -696,6 +804,7 @@ class AdminColorManager {
         if (colors.gradient) {
             document.body.style.background = `linear-gradient(-45deg, ${colors.gradient.join(', ')})`;
             document.body.style.backgroundSize = '400% 400%';
+            document.body.style.animation = 'gradient 15s ease infinite';
         }
         
         // Apply header
