@@ -372,7 +372,8 @@ class AdminColorManager {
     
     updateTextPreview() {
         const textColor = document.getElementById('text-color').value;
-        document.body.style.color = textColor;
+        this.setDynamicStyle('global-text-color-style', 
+            `body, .site-title, .intro-name, .intro-text { color: ${textColor}; }`);
     }
     
     hexToRgba(hex, opacity) {
@@ -816,9 +817,10 @@ class AdminColorManager {
             }
         }
         
-        // Apply text color
+        // Apply text color (but exclude page-title and page-subtitle which have their own colors on Gamer page)
         if (colors.textColor) {
-            document.body.style.color = colors.textColor;
+            this.setDynamicStyle('global-text-color-style', 
+                `body, .site-title, .intro-name, .intro-text { color: ${colors.textColor}; }`);
         }
         
         // Apply Gamer-specific colors if on gamer page
