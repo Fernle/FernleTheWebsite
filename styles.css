@@ -472,6 +472,22 @@ body {
     padding-bottom: var(--spacing-xs);
 }
 
+.settings-subsection {
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+}
+
+.settings-subsection h4 {
+    margin-bottom: var(--spacing-md);
+    color: var(--dark-brown);
+    font-size: 1rem;
+    font-weight: var(--font-weight-semibold);
+    border-bottom: 1px solid var(--primary-orange);
+    padding-bottom: var(--spacing-xs);
+}
+
 .color-input-group {
     margin-bottom: var(--spacing-md);
 }
