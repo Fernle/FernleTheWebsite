@@ -21,9 +21,26 @@ class AdminColorManager {
             return;
         }
         
-        this.checkAdminStatus();
+        // First, load colors from localStorage for instant display
+        this.loadColorsFromLocalStorage();
+        
+        // Then load from Supabase to sync with latest changes
         await this.loadColorsFromSupabase();
+        
+        this.checkAdminStatus();
         this.setupEventListeners();
+    }
+    
+    loadColorsFromLocalStorage() {
+        const colors = localStorage.getItem('siteColors');
+        if (colors) {
+            try {
+                const parsed = JSON.parse(colors);
+                this.applyColors(parsed);
+            } catch (err) {
+                console.error('Failed to parse colors from localStorage:', err);
+            }
+        }
     }
     
     async checkAdminStatus() {
@@ -257,7 +274,7 @@ class AdminColorManager {
         try {
             const { data, error } = await window.supabase
                 .from('site_settings')
-                .select('colors')
+                .select('colors, updated_at')
                 .eq('id', 1)
                 .single();
             
@@ -268,8 +285,15 @@ class AdminColorManager {
             }
             
             if (data && data.colors) {
-                localStorage.setItem('siteColors', JSON.stringify(data.colors));
-                this.applyColors(data.colors);
+                // Only update if Supabase has newer data
+                const localColors = localStorage.getItem('siteColors');
+                const localData = localStorage.getItem('siteColorsLastUpdated');
+                
+                if (!localData || new Date(data.updated_at) > new Date(localData)) {
+                    localStorage.setItem('siteColors', JSON.stringify(data.colors));
+                    localStorage.setItem('siteColorsLastUpdated', data.updated_at);
+                    this.applyColors(data.colors);
+                }
             }
         } catch (err) {
             console.log('Could not load colors from Supabase:', err);
@@ -320,7 +344,9 @@ class AdminColorManager {
         }
         
         const colors = this.collectColorsFromInputs();
+        const now = new Date().toISOString();
         localStorage.setItem('siteColors', JSON.stringify(colors));
+        localStorage.setItem('siteColorsLastUpdated', now);
         
         // Save to Supabase
         const saved = await this.saveColorsToSupabase(colors);
