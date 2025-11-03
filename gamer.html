@@ -32,6 +32,10 @@
                 <span class="btn-icon">💻</span>
                 <span class="btn-text">the Developer</span>
             </a>
+            <button id="settings-btn" class="nav-btn settings-btn" style="display: none;" onclick="window.colorManager && window.colorManager.toggleSettings()">
+                <span class="btn-icon">⚙️</span>
+                <span class="btn-text">Settings</span>
+            </button>
         </div>
     </nav>
 
@@ -358,6 +362,82 @@
         </div>
     </div>
 
+    <!-- Settings Modal (Copy from index.html) -->
+    <div id="settings-modal" class="settings-modal">
+        <div class="settings-modal-content">
+            <div class="settings-modal-header">
+                <h2>⚙️ Color Settings</h2>
+                <button class="settings-close" onclick="window.colorManager && window.colorManager.toggleSettings()">&times;</button>
+            </div>
+            <div class="settings-modal-body">
+                <div class="settings-section">
+                    <h3>Gradient Background</h3>
+                    <div class="color-input-group">
+                        <label for="gradient-color-1">Color 1</label>
+                        <div class="color-input-wrapper">
+                            <input type="color" id="gradient-color-1" class="color-picker" value="#FF6B35">
+                            <input type="text" id="gradient-color-1-text" class="color-text" value="#FF6B35" readonly>
+                        </div>
+                    </div>
+                    <div class="color-input-group">
+                        <label for="gradient-color-2">Color 2</label>
+                        <div class="color-input-wrapper">
+                            <input type="color" id="gradient-color-2" class="color-picker" value="#E63E3E">
+                            <input type="text" id="gradient-color-2-text" class="color-text" value="#E63E3E" readonly>
+                        </div>
+                    </div>
+                    <div class="color-input-group">
+                        <label for="gradient-color-3">Color 3</label>
+                        <div class="color-input-wrapper">
+                            <input type="color" id="gradient-color-3" class="color-picker" value="#C93333">
+                            <input type="text" id="gradient-color-3-text" class="color-text" value="#C93333" readonly>
+                        </div>
+                    </div>
+                    <div class="color-input-group">
+                        <label for="gradient-color-4">Color 4</label>
+                        <div class="color-input-wrapper">
+                            <input type="color" id="gradient-color-4" class="color-picker" value="#D4581A">
+                            <input type="text" id="gradient-color-4-text" class="color-text" value="#D4581A" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3>Header Colors</h3>
+                    <div class="color-input-group">
+                        <label for="header-bg">Background (Opacity)</label>
+                        <div class="color-input-wrapper">
+                            <input type="color" id="header-bg" class="color-picker" value="#E63E3E">
+                            <input type="range" id="header-bg-opacity" class="opacity-slider" min="0" max="100" value="10">
+                            <input type="text" id="header-bg-opacity-text" class="color-text small" value="10%" readonly>
+                        </div>
+                    </div>
+                    <div class="color-input-group">
+                        <label for="header-border">Border (Opacity)</label>
+                        <div class="color-input-wrapper">
+                            <input type="color" id="header-border" class="color-picker" value="#E63E3E">
+                            <input type="range" id="header-border-opacity" class="opacity-slider" min="0" max="100" value="20">
+                            <input type="text" id="header-border-opacity-text" class="color-text small" value="20%" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3>Text Colors</h3>
+                    <div class="color-input-group">
+                        <label for="text-color">Text Color</label>
+                        <div class="color-input-wrapper">
+                            <input type="color" id="text-color" class="color-picker" value="#5D4037">
+                            <input type="text" id="text-color-text" class="color-text" value="#5D4037" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-actions">
+                    <button onclick="window.colorManager && window.colorManager.resetToDefault()" class="settings-btn-secondary">Reset to Default</button>
+                    <button onclick="window.colorManager && window.colorManager.saveSettings()" class="settings-btn-primary">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Supabase SDK -->
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     
@@ -365,5 +445,6 @@
     <script src="supabase-config.js"></script>
     <script src="script.js"></script>
     <script src="supabase-gamer.js"></script>
+    <script src="admin-colors.js"></script>
 </body>
 </html>
