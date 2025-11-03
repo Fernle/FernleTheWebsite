@@ -13,7 +13,6 @@
     --light-brown: #D2B48C;
     --warm-beige: #F5E6D3;
     --dark-brown: #5D4037;
-    --theme-text-color: var(--dark-brown); /* Dynamic text color from theme selector */
     
     /* Typography */
     --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -43,8 +42,8 @@ body {
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-normal);
     line-height: 1.6;
-    color: var(--theme-text-color);
-    background: linear-gradient(-45deg, #FF8C42, #FF6B35, #F7931E, #FF8C42);
+    color: var(--dark-brown);
+    background: linear-gradient(-45deg, #FF6B35, #E63E3E, #C93333, #D4581A);
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
     background-attachment: scroll;
@@ -64,114 +63,6 @@ body {
     }
 }
 
-/* Color Theme Selector */
-.color-theme-toggle {
-    position: fixed;
-    bottom: var(--spacing-lg);
-    right: var(--spacing-lg);
-    z-index: 1002;
-}
-
-.color-theme-btn {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9);
-    border: 2px solid var(--dark-brown);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    transition: var(--transition-normal);
-    backdrop-filter: blur(5px);
-}
-
-.color-theme-btn:hover {
-    transform: scale(1.1) rotate(90deg);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
-.color-theme-panel {
-    position: fixed;
-    bottom: 80px;
-    right: var(--spacing-lg);
-    width: 300px;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 20px;
-    padding: var(--spacing-lg);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
-    border: 2px solid var(--dark-brown);
-    display: none;
-    z-index: 1003;
-    animation: slideUp 0.3s ease-out;
-}
-
-.color-theme-panel.active {
-    display: block;
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.color-theme-title {
-    font-size: 1.2rem;
-    font-weight: var(--font-weight-semibold);
-    color: var(--dark-brown);
-    margin-bottom: var(--spacing-md);
-    text-align: center;
-}
-
-.color-presets {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-sm);
-}
-
-.color-preset {
-    aspect-ratio: 1;
-    border-radius: 12px;
-    cursor: pointer;
-    border: 3px solid transparent;
-    transition: var(--transition-normal);
-    position: relative;
-    overflow: hidden;
-}
-
-.color-preset:hover {
-    transform: scale(1.05);
-    border-color: var(--dark-brown);
-}
-
-.color-preset.active {
-    border-color: var(--dark-brown);
-    box-shadow: 0 0 0 3px rgba(141, 69, 19, 0.3);
-}
-
-.color-preset-name {
-    position: absolute;
-    bottom: 5px;
-    left: 5px;
-    right: 5px;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: var(--font-weight-medium);
-    color: var(--dark-brown);
-    text-align: center;
-}
-
 /* Header */
 .header {
     position: fixed;
@@ -183,7 +74,7 @@ body {
 .site-title {
     font-size: 2rem;
     font-weight: var(--font-weight-semibold);
-    color: var(--theme-text-color);
+    color: var(--dark-brown);
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     margin: 0;
     text-decoration: none;
@@ -310,7 +201,7 @@ body {
 .intro-name {
     font-size: 1.8rem;
     font-weight: var(--font-weight-semibold);
-    color: var(--theme-text-color);
+    color: var(--dark-brown);
     line-height: 1.4;
     margin: 0 0 var(--spacing-md) 0;
     text-align: center;
@@ -319,7 +210,7 @@ body {
 .intro-text {
     font-size: 1.25rem;
     font-weight: var(--font-weight-normal);
-    color: var(--theme-text-color);
+    color: var(--dark-brown);
     line-height: 1.8;
     max-width: 600px;
     margin: 0 auto;
@@ -412,18 +303,6 @@ body {
     .intro-text {
         font-size: 1.1rem;
         line-height: 1.7;
-    }
-    
-    .color-theme-toggle {
-        bottom: var(--spacing-md);
-        right: var(--spacing-md);
-    }
-    
-    .color-theme-panel {
-        bottom: 70px;
-        right: var(--spacing-md);
-        width: calc(100vw - 2rem);
-        max-width: 300px;
     }
 }
 
