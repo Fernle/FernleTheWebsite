@@ -57,6 +57,24 @@
         </div>
     </main>
 
+    <!-- Admin Login Modal -->
+    <div id="login-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Admin Login</h2>
+                <button class="modal-close" id="login-close">&times;</button>
+            </div>
+            
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="admin-password">Password</label>
+                    <input type="password" id="admin-password" name="password" required>
+                </div>
+                <button type="submit" class="btn primary">Login</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Settings Modal -->
     <div id="settings-modal" class="settings-modal">
         <div class="settings-modal-content">
@@ -130,6 +148,7 @@
 
                 <div class="settings-actions">
                     <button onclick="window.colorManager && window.colorManager.resetToDefault()" class="settings-btn-secondary">Reset to Default</button>
+                    <button onclick="window.colorManager && window.colorManager.handleLogout()" class="settings-btn-secondary">Logout</button>
                     <button onclick="window.colorManager && window.colorManager.saveSettings()" class="settings-btn-primary">Save Changes</button>
                 </div>
             </div>

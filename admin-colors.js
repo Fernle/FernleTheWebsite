@@ -67,6 +67,31 @@ class AdminColorManager {
             this.toggleSettings(false);
         });
         
+        // Setup login modal (Ctrl + Shift + A)
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                e.preventDefault();
+                this.showLoginModal();
+            }
+        });
+        
+        // Setup login form
+        const loginForm = document.getElementById('login-form');
+        const loginClose = document.getElementById('login-close');
+        
+        if (loginForm) {
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.handleLogin(e);
+            });
+        }
+        
+        if (loginClose) {
+            loginClose.addEventListener('click', () => {
+                this.hideLoginModal();
+            });
+        }
+        
         // Setup color picker and slider listeners
         const colorPickers = document.querySelectorAll('.color-picker');
         colorPickers.forEach(picker => {
@@ -331,6 +356,78 @@ class AdminColorManager {
         }
     }
     
+    showLoginModal() {
+        const loginModal = document.getElementById('login-modal');
+        if (loginModal) {
+            loginModal.style.display = 'flex';
+            document.getElementById('admin-password').focus();
+        }
+    }
+    
+    hideLoginModal() {
+        const loginModal = document.getElementById('login-modal');
+        if (loginModal) {
+            loginModal.style.display = 'none';
+            const passwordInput = document.getElementById('admin-password');
+            if (passwordInput) passwordInput.value = '';
+        }
+    }
+    
+    async handleLogin(e) {
+        const email = 'admin@fernle.com';
+        const password = e.target.password.value;
+        
+        try {
+            const { data, error } = await window.supabase.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+            
+            if (error) {
+                console.error('Login error:', error);
+                alert('Invalid credentials!');
+                document.getElementById('admin-password').value = '';
+                return;
+            }
+            
+            if (data.user) {
+                localStorage.setItem('adminEmail', email);
+                localStorage.setItem('adminPassword', password);
+                this.isAdmin = true;
+                this.hideLoginModal();
+                this.showSettingsButton();
+                
+                // Dispatch event for other components
+                window.dispatchEvent(new CustomEvent('adminLogin'));
+                
+                alert('Admin login successful!');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            alert('Invalid credentials!');
+            document.getElementById('admin-password').value = '';
+        }
+    }
+    
+    async handleLogout() {
+        try {
+            await window.supabase.auth.signOut();
+        } catch (error) {
+            console.error('Logout error:', error);
+        }
+        
+        localStorage.removeItem('adminEmail');
+        localStorage.removeItem('adminPassword');
+        this.isAdmin = false;
+        this.hideSettingsButton();
+        this.toggleSettings(false);
+        
+        // Dispatch event for other components
+        window.dispatchEvent(new CustomEvent('adminLogout'));
+        
+        alert('Logged out successfully!');
+    }
+    
     resetToDefault() {
         if (confirm('Are you sure you want to reset all colors to default?')) {
             this.applyColorsToInputs(this.defaultColors);
@@ -345,10 +442,11 @@ document.addEventListener('DOMContentLoaded', () => {
     window.colorManager = new AdminColorManager();
 });
 
-// Make toggleSettings globally accessible
+// Make functions globally accessible
 window.adminColorManager = {
-    toggleSettings: (show) => window.colorManager.toggleSettings(show),
-    saveSettings: () => window.colorManager.saveSettings(),
-    resetToDefault: () => window.colorManager.resetToDefault()
+    toggleSettings: (show) => window.colorManager && window.colorManager.toggleSettings(show),
+    saveSettings: () => window.colorManager && window.colorManager.saveSettings(),
+    resetToDefault: () => window.colorManager && window.colorManager.resetToDefault(),
+    handleLogout: () => window.colorManager && window.colorManager.handleLogout()
 };
 
