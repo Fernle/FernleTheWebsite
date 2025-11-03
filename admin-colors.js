@@ -251,7 +251,7 @@ class AdminColorManager {
     
     async loadColorsFromSupabase() {
         try {
-            const { data, error } = await supabase
+            const { data, error } = await window.supabase
                 .from('site_settings')
                 .select('colors')
                 .eq('id', 1)
@@ -259,7 +259,7 @@ class AdminColorManager {
             
             if (error) {
                 // Table doesn't exist yet or no data
-                console.log('No site settings found, using defaults');
+                console.log('No site settings found, using defaults. Error:', error);
                 return;
             }
             
@@ -274,7 +274,7 @@ class AdminColorManager {
     
     async saveColorsToSupabase(colors) {
         try {
-            const { error } = await supabase
+            const { error } = await window.supabase
                 .from('site_settings')
                 .upsert({
                     id: 1,
@@ -310,7 +310,7 @@ class AdminColorManager {
             alert('Color settings saved successfully!');
             this.toggleSettings(false);
         } else {
-            alert('Failed to save settings. Please try again.');
+            alert('Failed to save to Supabase. Check console for details. Your settings were saved locally.');
         }
     }
     
