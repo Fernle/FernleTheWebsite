@@ -248,7 +248,6 @@ class SupabaseGamerPage {
                 this.isAdmin = true;
                 this.showAdminSection();
                 this.hideLoginModal();
-                this.showNotification('Admin access granted!', 'success');
                 // Re-render games to show delete buttons
                 this.filterAndRenderGames();
             }

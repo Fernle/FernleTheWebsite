@@ -1122,8 +1122,6 @@ class AdminColorManager {
                 
                 // Dispatch event for other components
                 window.dispatchEvent(new CustomEvent('adminLogin'));
-                
-                alert('Admin login successful!');
             }
         } catch (error) {
             console.error('Login error:', error);
