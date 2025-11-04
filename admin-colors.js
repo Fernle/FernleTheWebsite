@@ -213,6 +213,97 @@ class AdminColorManager {
                 this.handleOpacityChange(e);
             });
         });
+        
+        // Setup color text input listeners (for manual hex code entry)
+        const colorTextInputs = document.querySelectorAll('.color-text:not(.small)');
+        colorTextInputs.forEach(textInput => {
+            textInput.addEventListener('input', (e) => {
+                this.handleTextColorChange(e);
+            });
+            textInput.addEventListener('blur', (e) => {
+                this.handleTextColorBlur(e);
+            });
+        });
+    }
+    
+    isValidHexColor(hex) {
+        // Check if hex color is valid (#RRGGBB or #RGB format)
+        const hexPattern = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+        return hexPattern.test(hex);
+    }
+    
+    normalizeHexColor(hex) {
+        // Remove # if present, normalize to uppercase
+        hex = hex.trim().replace('#', '').toUpperCase();
+        
+        // Convert 3-digit to 6-digit format if needed
+        if (hex.length === 3) {
+            hex = hex.split('').map(char => char + char).join('');
+        }
+        
+        // Add # prefix
+        return '#' + hex;
+    }
+    
+    handleTextColorChange(e) {
+        const textInput = e.target;
+        const value = textInput.value.trim();
+        
+        // If empty or incomplete, don't validate yet (user might still be typing)
+        if (value === '' || value.length < 3) {
+            return;
+        }
+        
+        // If it looks like a valid hex color, normalize and update
+        if (this.isValidHexColor(value)) {
+            const normalized = this.normalizeHexColor(value);
+            textInput.value = normalized;
+            
+            // Find corresponding color picker
+            const pickerId = textInput.id.replace('-text', '');
+            const picker = document.getElementById(pickerId);
+            
+            if (picker) {
+                picker.value = normalized;
+                // Trigger the color change handler
+                this.handleColorChange({ target: picker });
+            }
+        }
+    }
+    
+    handleTextColorBlur(e) {
+        const textInput = e.target;
+        const value = textInput.value.trim();
+        
+        // If empty, restore to color picker value
+        if (value === '') {
+            const pickerId = textInput.id.replace('-text', '');
+            const picker = document.getElementById(pickerId);
+            if (picker) {
+                textInput.value = picker.value;
+            }
+            return;
+        }
+        
+        // Validate and normalize hex color
+        if (this.isValidHexColor(value)) {
+            const normalized = this.normalizeHexColor(value);
+            textInput.value = normalized;
+            
+            const pickerId = textInput.id.replace('-text', '');
+            const picker = document.getElementById(pickerId);
+            if (picker) {
+                picker.value = normalized;
+                this.handleColorChange({ target: picker });
+            }
+        } else {
+            // Invalid hex color, restore to picker value
+            const pickerId = textInput.id.replace('-text', '');
+            const picker = document.getElementById(pickerId);
+            if (picker) {
+                textInput.value = picker.value;
+            }
+        }
     }
     
     handleColorChange(e) {
