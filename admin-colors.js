@@ -1151,8 +1151,16 @@ class AdminColorManager {
     
     resetToDefault() {
         if (confirm('Are you sure you want to reset all colors to default?')) {
+            // Apply default colors to inputs
             this.applyColorsToInputs(this.defaultColors);
+            
+            // Apply default colors to the page immediately
+            this.applyColors(this.defaultColors);
+            
+            // Update previews
             this.updateAllPreviews();
+            
+            // Save to storage and Supabase
             this.saveSettings();
         }
     }
