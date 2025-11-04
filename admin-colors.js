@@ -24,11 +24,24 @@ class AdminColorManager {
         const baseDefaults = {
             gradient: ['#FF6B35', '#E63E3E', '#C93333', '#D4581A'],
             headerBg: { color: '#E63E3E', opacity: 10 },
-            headerBorder: { color: '#E63E3E', opacity: 20 },
-            textColor: '#5D4037'
+            headerBorder: { color: '#E63E3E', opacity: 20 }
         };
         
-        if (page === 'gamer') {
+        if (page === 'index') {
+            // Index page specific colors
+            return {
+                ...baseDefaults,
+                // Main page text colors
+                siteTitleColor: '#5D4037',
+                introNameColor: '#5D4037',
+                introTextColor: '#5D4037',
+                // Navigation button colors
+                navButtonBg: '#FFFFFF',
+                navButtonText: '#5D4037',
+                navButtonHoverBg: '#5D4037',
+                navButtonHoverText: '#FFFFFF'
+            };
+        } else if (page === 'gamer') {
             // Gamer page specific colors
             return {
                 ...baseDefaults,
@@ -48,9 +61,9 @@ class AdminColorManager {
                 gameCounterText: '#5D4037',
                 gameCounterHoverBg: 'rgba(255, 165, 0, 0.15)',
                 // Search input colors
-                searchInputBorder: 'rgba(139, 69, 19, 0.3)',
                 searchInputText: '#5D4037',
-                searchLabelColor: 'rgba(139, 69, 19, 0.7)',
+                searchInputBorder: { color: '#8B4513', opacity: 30 },
+                searchLabelColor: { color: '#8B4513', opacity: 70 },
                 searchLabelFocusColor: '#5D4037',
                 searchBarFocusColor: '#FF6B35',
                 // Sorting dropdown colors
@@ -218,8 +231,28 @@ class AdminColorManager {
             this.updateHeaderPreview();
         } else if (picker.id === 'header-border') {
             this.updateHeaderPreview();
-        } else if (picker.id === 'text-color') {
-            this.updateTextPreview();
+        } else if (this.currentPage === 'index') {
+            // Index page specific color previews
+            if (picker.id === 'site-title-color') {
+                const siteTitle = document.querySelector('.site-title');
+                if (siteTitle) siteTitle.style.color = picker.value;
+            } else if (picker.id === 'intro-name-color') {
+                const introName = document.querySelector('.intro-name');
+                if (introName) introName.style.color = picker.value;
+            } else if (picker.id === 'intro-text-color') {
+                const introText = document.querySelector('.intro-text');
+                if (introText) introText.style.color = picker.value;
+            } else if (picker.id === 'nav-button-bg') {
+                const navBtns = document.querySelectorAll('.nav-btn');
+                navBtns.forEach(btn => btn.style.background = picker.value);
+            } else if (picker.id === 'nav-button-text') {
+                const navBtns = document.querySelectorAll('.nav-btn');
+                navBtns.forEach(btn => btn.style.color = picker.value);
+            } else if (picker.id === 'nav-button-hover-bg') {
+                this.setDynamicStyle('nav-button-hover-bg-style', `.nav-btn:hover { background: ${picker.value} !important; border-color: ${picker.value} !important; }`);
+            } else if (picker.id === 'nav-button-hover-text') {
+                this.setDynamicStyle('nav-button-hover-text-style', `.nav-btn:hover { color: ${picker.value} !important; }`);
+            }
         } else if (this.currentPage === 'gamer') {
             // Gamer-specific color previews
             if (picker.id === 'page-title-color') {
@@ -242,6 +275,12 @@ class AdminColorManager {
             } else if (picker.id === 'search-input-text') {
                 const searchInput = document.querySelector('.search-input');
                 if (searchInput) searchInput.style.color = picker.value;
+            } else if (picker.id === 'search-input-border-color') {
+                const searchInput = document.querySelector('.search-input');
+                const opacityInput = document.getElementById('search-input-border-opacity');
+                if (searchInput && opacityInput) {
+                    searchInput.style.borderBottomColor = this.hexToRgba(picker.value, opacityInput.value);
+                }
             } else if (picker.id === 'search-label-focus-color') {
                 this.setDynamicStyle('search-label-focus-style', `.search-input:focus ~ .search-label, .search-input:not(:placeholder-shown) ~ .search-label { color: ${picker.value} !important; }`);
             } else if (picker.id === 'search-bar-focus-color') {
@@ -320,6 +359,12 @@ class AdminColorManager {
                 if (gameCounter && colorInput) {
                     gameCounter.style.background = this.hexToRgba(colorInput.value, slider.value);
                 }
+            } else if (slider.id === 'search-input-border-opacity') {
+                const searchInput = document.querySelector('.search-input');
+                const colorInput = document.getElementById('search-input-border-color');
+                if (searchInput && colorInput) {
+                    searchInput.style.borderBottomColor = this.hexToRgba(colorInput.value, slider.value);
+                }
             } else if (slider.id === 'search-label-color-opacity') {
                 const searchLabel = document.querySelector('.search-label');
                 const colorInput = document.getElementById('search-label-color-color');
@@ -371,10 +416,10 @@ class AdminColorManager {
         }
     }
     
-    updateTextPreview() {
-        const textColor = document.getElementById('text-color').value;
-        this.setDynamicStyle('global-text-color-style', 
-            `body, .site-title, .intro-name, .intro-text { color: ${textColor}; }`);
+    updateAllPreviews() {
+        this.updateGradientPreview();
+        this.updateHeaderPreview();
+        // Page-specific previews are handled in handleColorChange
     }
     
     hexToRgba(hex, opacity) {
@@ -454,11 +499,50 @@ class AdminColorManager {
             if (opacityText) opacityText.value = colors.headerBorder.opacity + '%';
         }
         
-        if (colors.textColor) {
-            const picker = document.getElementById('text-color');
-            const textInput = document.getElementById('text-color-text');
-            if (picker) picker.value = colors.textColor;
-            if (textInput) textInput.value = colors.textColor;
+        // Apply Index page specific colors if on index page
+        if (this.currentPage === 'index') {
+            if (colors.siteTitleColor) {
+                const picker = document.getElementById('site-title-color');
+                const textInput = document.getElementById('site-title-color-text');
+                if (picker) picker.value = colors.siteTitleColor;
+                if (textInput) textInput.value = colors.siteTitleColor;
+            }
+            if (colors.introNameColor) {
+                const picker = document.getElementById('intro-name-color');
+                const textInput = document.getElementById('intro-name-color-text');
+                if (picker) picker.value = colors.introNameColor;
+                if (textInput) textInput.value = colors.introNameColor;
+            }
+            if (colors.introTextColor) {
+                const picker = document.getElementById('intro-text-color');
+                const textInput = document.getElementById('intro-text-color-text');
+                if (picker) picker.value = colors.introTextColor;
+                if (textInput) textInput.value = colors.introTextColor;
+            }
+            if (colors.navButtonBg) {
+                const picker = document.getElementById('nav-button-bg');
+                const textInput = document.getElementById('nav-button-bg-text');
+                if (picker) picker.value = colors.navButtonBg;
+                if (textInput) textInput.value = colors.navButtonBg;
+            }
+            if (colors.navButtonText) {
+                const picker = document.getElementById('nav-button-text');
+                const textInput = document.getElementById('nav-button-text-text');
+                if (picker) picker.value = colors.navButtonText;
+                if (textInput) textInput.value = colors.navButtonText;
+            }
+            if (colors.navButtonHoverBg) {
+                const picker = document.getElementById('nav-button-hover-bg');
+                const textInput = document.getElementById('nav-button-hover-bg-text');
+                if (picker) picker.value = colors.navButtonHoverBg;
+                if (textInput) textInput.value = colors.navButtonHoverBg;
+            }
+            if (colors.navButtonHoverText) {
+                const picker = document.getElementById('nav-button-hover-text');
+                const textInput = document.getElementById('nav-button-hover-text-text');
+                if (picker) picker.value = colors.navButtonHoverText;
+                if (textInput) textInput.value = colors.navButtonHoverText;
+            }
         }
         
         // Apply Gamer-specific colors if on gamer page
@@ -519,6 +603,14 @@ class AdminColorManager {
                 const textInput = document.getElementById('search-input-text-text');
                 if (picker) picker.value = colors.searchInputText;
                 if (textInput) textInput.value = colors.searchInputText;
+            }
+            if (colors.searchInputBorder && typeof colors.searchInputBorder === 'object') {
+                const picker = document.getElementById('search-input-border-color');
+                const opacitySlider = document.getElementById('search-input-border-opacity');
+                const opacityText = document.getElementById('search-input-border-opacity-text');
+                if (picker) picker.value = colors.searchInputBorder.color;
+                if (opacitySlider) opacitySlider.value = colors.searchInputBorder.opacity;
+                if (opacityText) opacityText.value = colors.searchInputBorder.opacity + '%';
             }
             if (colors.searchLabelColor && typeof colors.searchLabelColor === 'object') {
                 const picker = document.getElementById('search-label-color-color');
@@ -729,9 +821,19 @@ class AdminColorManager {
             headerBorder: {
                 color: document.getElementById('header-border').value,
                 opacity: parseInt(document.getElementById('header-border-opacity').value)
-            },
-            textColor: document.getElementById('text-color').value
+            }
         };
+        
+        // Add Index page specific colors if on index page
+        if (this.currentPage === 'index') {
+            baseColors.siteTitleColor = document.getElementById('site-title-color')?.value || '#5D4037';
+            baseColors.introNameColor = document.getElementById('intro-name-color')?.value || '#5D4037';
+            baseColors.introTextColor = document.getElementById('intro-text-color')?.value || '#5D4037';
+            baseColors.navButtonBg = document.getElementById('nav-button-bg')?.value || '#FFFFFF';
+            baseColors.navButtonText = document.getElementById('nav-button-text')?.value || '#5D4037';
+            baseColors.navButtonHoverBg = document.getElementById('nav-button-hover-bg')?.value || '#5D4037';
+            baseColors.navButtonHoverText = document.getElementById('nav-button-hover-text')?.value || '#FFFFFF';
+        }
         
         // Add Gamer-specific colors if on gamer page
         if (this.currentPage === 'gamer') {
@@ -754,6 +856,14 @@ class AdminColorManager {
             
             // Search input colors
             baseColors.searchInputText = document.getElementById('search-input-text')?.value || '#5D4037';
+            const searchInputBorderColorEl = document.getElementById('search-input-border-color');
+            const searchInputBorderOpacityEl = document.getElementById('search-input-border-opacity');
+            if (searchInputBorderColorEl && searchInputBorderOpacityEl) {
+                baseColors.searchInputBorder = {
+                    color: searchInputBorderColorEl.value,
+                    opacity: parseInt(searchInputBorderOpacityEl.value)
+                };
+            }
             const searchLabelColorEl = document.getElementById('search-label-color-color');
             const searchLabelOpacityEl = document.getElementById('search-label-color-opacity');
             if (searchLabelColorEl && searchLabelOpacityEl) {
@@ -819,10 +929,37 @@ class AdminColorManager {
             }
         }
         
-        // Apply text color (but exclude page-title and page-subtitle which have their own colors on Gamer page)
-        if (colors.textColor) {
-            this.setDynamicStyle('global-text-color-style', 
-                `body, .site-title, .intro-name, .intro-text { color: ${colors.textColor}; }`);
+        // Apply Index page specific colors
+        if (this.currentPage === 'index') {
+            // Main page text colors
+            if (colors.siteTitleColor) {
+                const siteTitle = document.querySelector('.site-title');
+                if (siteTitle) siteTitle.style.color = colors.siteTitleColor;
+            }
+            if (colors.introNameColor) {
+                const introName = document.querySelector('.intro-name');
+                if (introName) introName.style.color = colors.introNameColor;
+            }
+            if (colors.introTextColor) {
+                const introText = document.querySelector('.intro-text');
+                if (introText) introText.style.color = colors.introTextColor;
+            }
+            
+            // Navigation button colors
+            if (colors.navButtonBg) {
+                const navBtns = document.querySelectorAll('.nav-btn');
+                navBtns.forEach(btn => btn.style.background = colors.navButtonBg);
+            }
+            if (colors.navButtonText) {
+                const navBtns = document.querySelectorAll('.nav-btn');
+                navBtns.forEach(btn => btn.style.color = colors.navButtonText);
+            }
+            if (colors.navButtonHoverBg) {
+                this.setDynamicStyle('nav-button-hover-bg-style', `.nav-btn:hover { background: ${colors.navButtonHoverBg} !important; border-color: ${colors.navButtonHoverBg} !important; }`);
+            }
+            if (colors.navButtonHoverText) {
+                this.setDynamicStyle('nav-button-hover-text-style', `.nav-btn:hover { color: ${colors.navButtonHoverText} !important; }`);
+            }
         }
         
         // Apply Gamer-specific colors if on gamer page
@@ -868,6 +1005,12 @@ class AdminColorManager {
             if (colors.searchInputText) {
                 const searchInput = document.querySelector('.search-input');
                 if (searchInput) searchInput.style.color = colors.searchInputText;
+            }
+            if (colors.searchInputBorder && typeof colors.searchInputBorder === 'object') {
+                const searchInput = document.querySelector('.search-input');
+                if (searchInput) {
+                    searchInput.style.borderBottomColor = this.hexToRgba(colors.searchInputBorder.color, colors.searchInputBorder.opacity);
+                }
             }
             if (colors.searchLabelColor) {
                 const searchLabel = document.querySelector('.search-label');
