@@ -120,26 +120,46 @@ body {
     color: var(--dark-brown);
     font-weight: var(--font-weight-medium);
     font-size: 0.9rem;
-    transition: var(--transition-normal);
+    transition: all 0.5s ease;
     backdrop-filter: blur(5px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
 }
 
 .nav-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    color: white;
+    border-color: transparent;
 }
 
-.gamer-btn:hover {
-    background: var(--dark-brown);
-    color: white;
-    border-color: var(--dark-brown);
+/* Gamer Button - Gradient Animation */
+.gamer-btn {
+    background-size: 200% auto;
+    background-position: left center;
 }
 
-.developer-btn:hover {
-    background: var(--dark-brown);
-    color: white;
-    border-color: var(--dark-brown);
+.gamer-btn:hover,
+.gamer-btn.active {
+    background-image: linear-gradient(to right, #FF6B35 0%, #E63E3E 50%, #FF6B35 100%) !important;
+    background-position: right center !important;
+    color: white !important;
+    border-color: transparent !important;
+}
+
+/* Developer Button - Gradient Animation */
+.developer-btn {
+    background-size: 200% auto;
+    background-position: left center;
+}
+
+.developer-btn:hover,
+.developer-btn.active {
+    background-image: linear-gradient(to right, #5D4037 0%, #8B4513 50%, #5D4037 100%) !important;
+    background-position: right center !important;
+    color: white !important;
+    border-color: transparent !important;
 }
 
 .btn-icon {
