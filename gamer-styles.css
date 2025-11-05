@@ -125,7 +125,7 @@
     pointer-events: none;
     transition: opacity 0.3s ease, transform 0.3s ease;
     transform: translateX(-50%) translateY(5px);
-    z-index: 1000;
+    z-index: 9999;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
@@ -140,7 +140,7 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
-    z-index: 1001;
+    z-index: 10000;
 }
 
 .game-counter:hover::before,
