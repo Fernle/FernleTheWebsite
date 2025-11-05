@@ -45,6 +45,9 @@ class SupabaseGamerPage {
         loginClose.addEventListener('click', () => {
             this.hideLoginModal();
         });
+        
+        // Setup tooltip positioning for game counter
+        this.setupTooltipPositioning();
 
         // Admin controls
         const addGameBtn = document.getElementById('add-game-btn');
@@ -258,6 +261,48 @@ class SupabaseGamerPage {
         }
     }
 
+    setupTooltipPositioning() {
+        const gameCounter = document.querySelector('.game-counter');
+        if (!gameCounter) return;
+        
+        gameCounter.addEventListener('mouseenter', () => {
+            const tooltip = gameCounter.querySelector('::before') || gameCounter;
+            const rect = gameCounter.getBoundingClientRect();
+            const tooltipElement = document.createElement('div');
+            tooltipElement.className = 'game-counter-tooltip';
+            tooltipElement.textContent = gameCounter.getAttribute('data-tooltip');
+            tooltipElement.style.position = 'fixed';
+            tooltipElement.style.left = rect.left + (rect.width / 2) + 'px';
+            tooltipElement.style.top = rect.bottom + 10 + 'px';
+            tooltipElement.style.transform = 'translateX(-50%)';
+            tooltipElement.style.zIndex = '99999';
+            document.body.appendChild(tooltipElement);
+            gameCounter._tooltipElement = tooltipElement;
+            
+            // Position arrow
+            const arrow = document.createElement('div');
+            arrow.className = 'game-counter-tooltip-arrow';
+            arrow.style.position = 'fixed';
+            arrow.style.left = rect.left + (rect.width / 2) + 'px';
+            arrow.style.top = rect.bottom + 2 + 'px';
+            arrow.style.transform = 'translateX(-50%)';
+            arrow.style.zIndex = '100000';
+            document.body.appendChild(arrow);
+            gameCounter._tooltipArrow = arrow;
+        });
+        
+        gameCounter.addEventListener('mouseleave', () => {
+            if (gameCounter._tooltipElement) {
+                gameCounter._tooltipElement.remove();
+                gameCounter._tooltipElement = null;
+            }
+            if (gameCounter._tooltipArrow) {
+                gameCounter._tooltipArrow.remove();
+                gameCounter._tooltipArrow = null;
+            }
+        });
+    }
+    
     async handleLogout() {
         try {
             await window.supabase.auth.signOut();
