@@ -108,7 +108,7 @@
 .game-counter::before {
     content: attr(data-tooltip);
     position: absolute;
-    bottom: calc(100% + 10px);
+    top: calc(100% + 10px);
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.9);
@@ -124,7 +124,7 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease, transform 0.3s ease;
-    transform: translateX(-50%) translateY(-5px);
+    transform: translateX(-50%) translateY(5px);
     z-index: 1000;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
@@ -132,11 +132,11 @@
 .game-counter::after {
     content: '';
     position: absolute;
-    bottom: calc(100% + 2px);
+    top: calc(100% + 2px);
     left: 50%;
     transform: translateX(-50%);
     border: 6px solid transparent;
-    border-top-color: rgba(0, 0, 0, 0.9);
+    border-bottom-color: rgba(0, 0, 0, 0.9);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
