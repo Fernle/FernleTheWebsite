@@ -21,18 +21,19 @@ class AdminColorManager {
     }
     
     getDefaultColorsForPage(page) {
-        const baseDefaults = {
+        // Global defaults (shared across all pages)
+        const globalDefaults = {
             gradient: ['#FF6B35', '#E63E3E', '#C93333', '#D4581A'],
             headerBg: { color: '#E63E3E', opacity: 10 },
-            headerBorder: { color: '#E63E3E', opacity: 20 }
+            headerBorder: { color: '#E63E3E', opacity: 20 },
+            siteTitleColor: '#5D4037'
         };
         
         if (page === 'index') {
             // Index page specific colors
             return {
-                ...baseDefaults,
+                ...globalDefaults,
                 // Main page text colors
-                siteTitleColor: '#5D4037',
                 introNameColor: '#5D4037',
                 introTextColor: '#5D4037',
                 // Navigation button colors
@@ -44,7 +45,7 @@ class AdminColorManager {
         } else if (page === 'gamer') {
             // Gamer page specific colors
             return {
-                ...baseDefaults,
+                ...globalDefaults,
                 // Page title colors
                 pageTitleColor: '#5D4037',
                 pageSubtitleColor: '#5D4037',
@@ -96,7 +97,7 @@ class AdminColorManager {
             };
         }
         
-        return baseDefaults;
+        return globalDefaults;
     }
     
     async init() {
@@ -122,22 +123,60 @@ class AdminColorManager {
         if (allColors) {
             try {
                 const parsed = JSON.parse(allColors);
-                // Check if it's the new format (page-based) or old format (flat)
-                if (parsed[this.currentPage]) {
-                    // New format: page-based
-                    this.applyColors(parsed[this.currentPage]);
-                } else if (parsed.gradient) {
-                    // Old format: flat structure, migrate to new format
-                    const migrated = {
-                        [this.currentPage]: parsed
-                    };
-                    localStorage.setItem('siteColors', JSON.stringify(migrated));
-                    this.applyColors(parsed);
-                }
+                // Merge global and page-specific colors
+                const mergedColors = this.mergeGlobalAndPageColors(parsed);
+                this.applyColors(mergedColors);
             } catch (err) {
                 console.error('Failed to parse colors from localStorage:', err);
             }
         }
+    }
+    
+    mergeGlobalAndPageColors(allColors) {
+        // Merge global colors with current page's colors
+        let globalColors = {};
+        let pageColors = {};
+        
+        // Check if it's the new format (with global key) or old format
+        if (allColors.global) {
+            // New format: has global key
+            globalColors = allColors.global;
+            pageColors = allColors[this.currentPage] || {};
+        } else if (allColors.index || allColors.gamer || allColors.developer) {
+            // Old format: page-based but no global key
+            // Extract global colors from first available page
+            const firstPage = allColors.index || allColors.gamer || allColors.developer;
+            if (firstPage) {
+                globalColors = {
+                    gradient: firstPage.gradient,
+                    headerBg: firstPage.headerBg,
+                    headerBorder: firstPage.headerBorder,
+                    siteTitleColor: firstPage.siteTitleColor
+                };
+                // Remove global colors from page colors
+                pageColors = allColors[this.currentPage] || {};
+                if (pageColors.gradient) delete pageColors.gradient;
+                if (pageColors.headerBg) delete pageColors.headerBg;
+                if (pageColors.headerBorder) delete pageColors.headerBorder;
+                if (pageColors.siteTitleColor) delete pageColors.siteTitleColor;
+            }
+        } else if (allColors.gradient) {
+            // Oldest format: flat structure
+            globalColors = {
+                gradient: allColors.gradient,
+                headerBg: allColors.headerBg,
+                headerBorder: allColors.headerBorder,
+                siteTitleColor: allColors.siteTitleColor
+            };
+            pageColors = { ...allColors };
+            delete pageColors.gradient;
+            delete pageColors.headerBg;
+            delete pageColors.headerBorder;
+            delete pageColors.siteTitleColor;
+        }
+        
+        // Merge global and page colors (page colors override global for shared keys)
+        return { ...globalColors, ...pageColors };
     }
     
     async checkAdminStatus() {
@@ -333,12 +372,13 @@ class AdminColorManager {
             this.updateHeaderPreview();
         } else if (picker.id === 'header-border') {
             this.updateHeaderPreview();
+        } else if (picker.id === 'site-title-color') {
+            // Global: site title color applies to all pages
+            const siteTitle = document.querySelector('.site-title');
+            if (siteTitle) siteTitle.style.color = picker.value;
         } else if (this.currentPage === 'index') {
             // Index page specific color previews
-            if (picker.id === 'site-title-color') {
-                const siteTitle = document.querySelector('.site-title');
-                if (siteTitle) siteTitle.style.color = picker.value;
-            } else if (picker.id === 'intro-name-color') {
+            if (picker.id === 'intro-name-color') {
                 const introName = document.querySelector('.intro-name');
                 if (introName) introName.style.color = picker.value;
             } else if (picker.id === 'intro-text-color') {
@@ -551,35 +591,35 @@ class AdminColorManager {
     loadCurrentColors() {
         // First, try to read colors from the DOM (what's actually applied on the page)
         // This ensures we show the current colors, not just what's in localStorage
-        let pageColors = this.readColorsFromDOM();
+        let colorsFromDOM = this.readColorsFromDOM();
         
-        // If we couldn't read from DOM, fall back to localStorage
-        if (!pageColors || Object.keys(pageColors).length === 0) {
-            const allColorsStr = localStorage.getItem('siteColors');
-            if (allColorsStr) {
-                try {
-                    const allColors = JSON.parse(allColorsStr);
-                    // Check if it's new format (page-based) or old format (flat)
-                    if (allColors.index || allColors.gamer || allColors.developer) {
-                        // New format: use current page's colors
-                        pageColors = allColors[this.currentPage];
-                    } else if (allColors.gradient) {
-                        // Old format: use as-is
-                        pageColors = allColors;
-                    }
-                } catch (err) {
-                    console.error('Failed to parse colors from localStorage:', err);
-                }
+        // Load from localStorage
+        const allColorsStr = localStorage.getItem('siteColors');
+        let mergedColors = {};
+        
+        if (allColorsStr) {
+            try {
+                const allColors = JSON.parse(allColorsStr);
+                // Merge global and page-specific colors
+                mergedColors = this.mergeGlobalAndPageColors(allColors);
+            } catch (err) {
+                console.error('Failed to parse colors from localStorage:', err);
             }
         }
         
+        // Merge DOM colors with localStorage colors (DOM colors take precedence for visible elements)
+        if (colorsFromDOM && Object.keys(colorsFromDOM).length > 0) {
+            // Prioritize DOM colors for elements we can read
+            mergedColors = { ...mergedColors, ...colorsFromDOM };
+        }
+        
         // If still no colors, use defaults
-        if (!pageColors || Object.keys(pageColors).length === 0) {
-            pageColors = this.defaultColors;
+        if (!mergedColors || Object.keys(mergedColors).length === 0) {
+            mergedColors = this.defaultColors;
         }
         
         // Apply colors to inputs
-        this.applyColorsToInputs(pageColors);
+        this.applyColorsToInputs(mergedColors);
         this.updateAllPreviews();
     }
     
@@ -750,14 +790,16 @@ class AdminColorManager {
             if (opacityText) opacityText.value = colors.headerBorder.opacity + '%';
         }
         
+        // Apply global site title color (available on all pages)
+        if (colors.siteTitleColor) {
+            const picker = document.getElementById('site-title-color');
+            const textInput = document.getElementById('site-title-color-text');
+            if (picker) picker.value = colors.siteTitleColor;
+            if (textInput) textInput.value = colors.siteTitleColor;
+        }
+        
         // Apply Index page specific colors if on index page
         if (this.currentPage === 'index') {
-            if (colors.siteTitleColor) {
-                const picker = document.getElementById('site-title-color');
-                const textInput = document.getElementById('site-title-color-text');
-                if (picker) picker.value = colors.siteTitleColor;
-                if (textInput) textInput.value = colors.siteTitleColor;
-            }
             if (colors.introNameColor) {
                 const picker = document.getElementById('intro-name-color');
                 const textInput = document.getElementById('intro-name-color-text');
@@ -1026,13 +1068,9 @@ class AdminColorManager {
                     localStorage.setItem('siteColors', JSON.stringify(mergedColors));
                     localStorage.setItem('siteColorsLastUpdated', data.updated_at);
                     
-                    // Apply only current page's colors
-                    if (mergedColors[this.currentPage]) {
-                        this.applyColors(mergedColors[this.currentPage]);
-                    } else if (mergedColors.gradient) {
-                        // Fallback to old format if new format doesn't have current page
-                        this.applyColors(mergedColors);
-                    }
+                    // Merge global and page-specific colors and apply
+                    const mergedColorsToApply = this.mergeGlobalAndPageColors(mergedColors);
+                    this.applyColors(mergedColorsToApply);
                 }
             }
         } catch (err) {
@@ -1040,7 +1078,7 @@ class AdminColorManager {
         }
     }
     
-    async saveColorsToSupabase(pageColors) {
+    async saveColorsToSupabase(globalColors, pageColors) {
         try {
             // First, get existing colors from Supabase to preserve other pages
             const { data: existingData } = await window.supabase
@@ -1053,12 +1091,15 @@ class AdminColorManager {
             
             // If existing data exists, use it as base
             if (existingData && existingData.colors) {
-                // Check if it's new format (page-based) or old format (flat)
-                if (existingData.colors.index || existingData.colors.gamer || existingData.colors.developer) {
-                    // New format: page-based
+                // Check if it's new format (with global key) or old format
+                if (existingData.colors.global) {
+                    // New format: has global key
+                    allPageColors = existingData.colors;
+                } else if (existingData.colors.index || existingData.colors.gamer || existingData.colors.developer) {
+                    // Old format: page-based but no global key
                     allPageColors = existingData.colors;
                 } else if (existingData.colors.gradient) {
-                    // Old format: migrate to new format
+                    // Oldest format: migrate to new format
                     allPageColors = {
                         index: existingData.colors,
                         gamer: existingData.colors,
@@ -1073,7 +1114,7 @@ class AdminColorManager {
                 try {
                     const localColors = JSON.parse(localColorsStr);
                     // If local is new format, merge with Supabase data
-                    if (localColors.index || localColors.gamer || localColors.developer) {
+                    if (localColors.global || localColors.index || localColors.gamer || localColors.developer) {
                         allPageColors = {
                             ...allPageColors,
                             ...localColors // Local storage takes precedence for non-current pages
@@ -1083,6 +1124,9 @@ class AdminColorManager {
                     // Ignore parsing errors
                 }
             }
+            
+            // Update global colors
+            allPageColors.global = globalColors;
             
             // Update current page's colors
             allPageColors[this.currentPage] = pageColors;
@@ -1129,21 +1173,25 @@ class AdminColorManager {
             return;
         }
         
-        const pageColors = this.collectColorsFromInputs();
+        const { global: globalColors, page: pageColors } = this.collectColorsFromInputs();
         const now = new Date().toISOString();
         
-        // Update localStorage with page-specific colors
+        // Update localStorage with global and page-specific colors
         const allColorsStr = localStorage.getItem('siteColors');
         let allPageColors = {};
         
         if (allColorsStr) {
             try {
                 const parsed = JSON.parse(allColorsStr);
-                // Check if it's new format (page-based) or old format (flat)
-                if (parsed.index || parsed.gamer || parsed.developer) {
+                // Check if it's new format (with global key) or old format
+                if (parsed.global) {
+                    // New format: has global key
+                    allPageColors = parsed;
+                } else if (parsed.index || parsed.gamer || parsed.developer) {
+                    // Old format: page-based but no global key
                     allPageColors = parsed;
                 } else if (parsed.gradient) {
-                    // Old format: migrate to new format
+                    // Oldest format: flat structure
                     allPageColors = {
                         index: parsed,
                         gamer: parsed,
@@ -1155,6 +1203,9 @@ class AdminColorManager {
             }
         }
         
+        // Update global colors
+        allPageColors.global = globalColors;
+        
         // Update current page's colors
         allPageColors[this.currentPage] = pageColors;
         
@@ -1162,7 +1213,7 @@ class AdminColorManager {
         localStorage.setItem('siteColorsLastUpdated', now);
         
         // Save to Supabase
-        const saved = await this.saveColorsToSupabase(pageColors);
+        const saved = await this.saveColorsToSupabase(globalColors, pageColors);
         
         if (saved) {
             alert('Color settings saved successfully!');
@@ -1173,7 +1224,8 @@ class AdminColorManager {
     }
     
     collectColorsFromInputs() {
-        const baseColors = {
+        // Global colors (shared across all pages)
+        const globalColors = {
             gradient: [
                 document.getElementById('gradient-color-1').value,
                 document.getElementById('gradient-color-2').value,
@@ -1187,45 +1239,48 @@ class AdminColorManager {
             headerBorder: {
                 color: document.getElementById('header-border').value,
                 opacity: parseInt(document.getElementById('header-border-opacity').value)
-            }
+            },
+            siteTitleColor: document.getElementById('site-title-color')?.value || '#5D4037'
         };
+        
+        // Page-specific colors
+        const pageColors = {};
         
         // Add Index page specific colors if on index page
         if (this.currentPage === 'index') {
-            baseColors.siteTitleColor = document.getElementById('site-title-color')?.value || '#5D4037';
-            baseColors.introNameColor = document.getElementById('intro-name-color')?.value || '#5D4037';
-            baseColors.introTextColor = document.getElementById('intro-text-color')?.value || '#5D4037';
-            baseColors.navButtonBg = document.getElementById('nav-button-bg')?.value || '#FFFFFF';
-            baseColors.navButtonText = document.getElementById('nav-button-text')?.value || '#5D4037';
-            baseColors.navButtonHoverBg = document.getElementById('nav-button-hover-bg')?.value || '#5D4037';
-            baseColors.navButtonHoverText = document.getElementById('nav-button-hover-text')?.value || '#FFFFFF';
+            pageColors.introNameColor = document.getElementById('intro-name-color')?.value || '#5D4037';
+            pageColors.introTextColor = document.getElementById('intro-text-color')?.value || '#5D4037';
+            pageColors.navButtonBg = document.getElementById('nav-button-bg')?.value || '#FFFFFF';
+            pageColors.navButtonText = document.getElementById('nav-button-text')?.value || '#5D4037';
+            pageColors.navButtonHoverBg = document.getElementById('nav-button-hover-bg')?.value || '#5D4037';
+            pageColors.navButtonHoverText = document.getElementById('nav-button-hover-text')?.value || '#FFFFFF';
         }
         
         // Add Gamer-specific colors if on gamer page
         if (this.currentPage === 'gamer') {
-            baseColors.pageTitleColor = document.getElementById('page-title-color')?.value || '#5D4037';
-            baseColors.pageSubtitleColor = document.getElementById('page-subtitle-color')?.value || '#5D4037';
-            baseColors.adminButtonBg = document.getElementById('admin-button-bg')?.value || '#FF6B35';
-            baseColors.adminButtonHoverBg = document.getElementById('admin-button-hover-bg')?.value || '#5D4037';
+            pageColors.pageTitleColor = document.getElementById('page-title-color')?.value || '#5D4037';
+            pageColors.pageSubtitleColor = document.getElementById('page-subtitle-color')?.value || '#5D4037';
+            pageColors.adminButtonBg = document.getElementById('admin-button-bg')?.value || '#FF6B35';
+            pageColors.adminButtonHoverBg = document.getElementById('admin-button-hover-bg')?.value || '#5D4037';
             
             // Game counter colors
             const gameCounterBgEl = document.getElementById('game-counter-bg-color');
             const gameCounterBgOpacityEl = document.getElementById('game-counter-bg-opacity');
             if (gameCounterBgEl && gameCounterBgOpacityEl) {
-                baseColors.gameCounterBg = {
+                pageColors.gameCounterBg = {
                     color: gameCounterBgEl.value,
                     opacity: parseInt(gameCounterBgOpacityEl.value)
                 };
             }
-            baseColors.gameCounterBorder = document.getElementById('game-counter-border')?.value || '#5D4037';
-            baseColors.gameCounterText = document.getElementById('game-counter-text')?.value || '#5D4037';
+            pageColors.gameCounterBorder = document.getElementById('game-counter-border')?.value || '#5D4037';
+            pageColors.gameCounterText = document.getElementById('game-counter-text')?.value || '#5D4037';
             
             // Search input colors
-            baseColors.searchInputText = document.getElementById('search-input-text')?.value || '#5D4037';
+            pageColors.searchInputText = document.getElementById('search-input-text')?.value || '#5D4037';
             const searchInputBorderColorEl = document.getElementById('search-input-border-color');
             const searchInputBorderOpacityEl = document.getElementById('search-input-border-opacity');
             if (searchInputBorderColorEl && searchInputBorderOpacityEl) {
-                baseColors.searchInputBorder = {
+                pageColors.searchInputBorder = {
                     color: searchInputBorderColorEl.value,
                     opacity: parseInt(searchInputBorderOpacityEl.value)
                 };
@@ -1233,48 +1288,49 @@ class AdminColorManager {
             const searchLabelColorEl = document.getElementById('search-label-color-color');
             const searchLabelOpacityEl = document.getElementById('search-label-color-opacity');
             if (searchLabelColorEl && searchLabelOpacityEl) {
-                baseColors.searchLabelColor = {
+                pageColors.searchLabelColor = {
                     color: searchLabelColorEl.value,
                     opacity: parseInt(searchLabelOpacityEl.value)
                 };
             }
-            baseColors.searchLabelFocusColor = document.getElementById('search-label-focus-color')?.value || '#5D4037';
-            baseColors.searchBarFocusColor = document.getElementById('search-bar-focus-color')?.value || '#FF6B35';
+            pageColors.searchLabelFocusColor = document.getElementById('search-label-focus-color')?.value || '#5D4037';
+            pageColors.searchBarFocusColor = document.getElementById('search-bar-focus-color')?.value || '#FF6B35';
             
             // Sorting dropdown colors
-            baseColors.sortingDropdownBg = document.getElementById('sorting-dropdown-bg')?.value || '#FFFFFF';
-            baseColors.sortingDropdownText = document.getElementById('sorting-dropdown-text')?.value || '#333333';
-            baseColors.sortingDropdownHoverBg = document.getElementById('sorting-dropdown-hover-bg')?.value || '#FF8C42';
-            baseColors.sortingDropdownHoverText = document.getElementById('sorting-dropdown-hover-text')?.value || '#FFFFFF';
+            pageColors.sortingDropdownBg = document.getElementById('sorting-dropdown-bg')?.value || '#FFFFFF';
+            pageColors.sortingDropdownText = document.getElementById('sorting-dropdown-text')?.value || '#333333';
+            pageColors.sortingDropdownHoverBg = document.getElementById('sorting-dropdown-hover-bg')?.value || '#FF8C42';
+            pageColors.sortingDropdownHoverText = document.getElementById('sorting-dropdown-hover-text')?.value || '#FFFFFF';
             
             // Card colors
-            baseColors.cardBackBg = document.getElementById('card-back-bg')?.value || '#5D4037';
-            baseColors.cardBackText = document.getElementById('card-back-text')?.value || '#FFFFFF';
-            baseColors.starColor = document.getElementById('star-color')?.value || '#FFD700';
+            pageColors.cardBackBg = document.getElementById('card-back-bg')?.value || '#5D4037';
+            pageColors.cardBackText = document.getElementById('card-back-text')?.value || '#FFFFFF';
+            pageColors.starColor = document.getElementById('star-color')?.value || '#FFD700';
             
             // Action button colors
             const editButtonBgEl = document.getElementById('edit-button-bg-color');
             const editButtonBgOpacityEl = document.getElementById('edit-button-bg-opacity');
             if (editButtonBgEl && editButtonBgOpacityEl) {
-                baseColors.editButtonBg = {
+                pageColors.editButtonBg = {
                     color: editButtonBgEl.value,
                     opacity: parseInt(editButtonBgOpacityEl.value)
                 };
             }
-            baseColors.editButtonHoverBg = document.getElementById('edit-button-hover-bg')?.value || '#1976D2';
+            pageColors.editButtonHoverBg = document.getElementById('edit-button-hover-bg')?.value || '#1976D2';
             
             const deleteButtonBgEl = document.getElementById('delete-button-bg-color');
             const deleteButtonBgOpacityEl = document.getElementById('delete-button-bg-opacity');
             if (deleteButtonBgEl && deleteButtonBgOpacityEl) {
-                baseColors.deleteButtonBg = {
+                pageColors.deleteButtonBg = {
                     color: deleteButtonBgEl.value,
                     opacity: parseInt(deleteButtonBgOpacityEl.value)
                 };
             }
-            baseColors.deleteButtonHoverBg = document.getElementById('delete-button-hover-bg')?.value || '#D32F2F';
+            pageColors.deleteButtonHoverBg = document.getElementById('delete-button-hover-bg')?.value || '#D32F2F';
         }
         
-        return baseColors;
+        // Return both global and page colors
+        return { global: globalColors, page: pageColors };
     }
     
     applyColors(colors) {
@@ -1295,13 +1351,14 @@ class AdminColorManager {
             }
         }
         
+        // Apply global site title color (applies to all pages)
+        if (colors.siteTitleColor) {
+            const siteTitle = document.querySelector('.site-title');
+            if (siteTitle) siteTitle.style.color = colors.siteTitleColor;
+        }
+        
         // Apply Index page specific colors
         if (this.currentPage === 'index') {
-            // Main page text colors
-            if (colors.siteTitleColor) {
-                const siteTitle = document.querySelector('.site-title');
-                if (siteTitle) siteTitle.style.color = colors.siteTitleColor;
-            }
             if (colors.introNameColor) {
                 const introName = document.querySelector('.intro-name');
                 if (introName) introName.style.color = colors.introNameColor;
