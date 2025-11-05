@@ -549,11 +549,37 @@ class AdminColorManager {
     }
     
     loadCurrentColors() {
-        // Load colors from Supabase or use defaults
-        const colors = localStorage.getItem('siteColors');
-        if (colors) {
-            const parsed = JSON.parse(colors);
-            this.applyColorsToInputs(parsed);
+        // Load colors from localStorage or use defaults
+        const allColorsStr = localStorage.getItem('siteColors');
+        if (allColorsStr) {
+            try {
+                const allColors = JSON.parse(allColorsStr);
+                // Check if it's new format (page-based) or old format (flat)
+                let pageColors = allColors;
+                if (allColors.index || allColors.gamer || allColors.developer) {
+                    // New format: use current page's colors
+                    pageColors = allColors[this.currentPage];
+                    // If current page doesn't have colors, use defaults
+                    if (!pageColors) {
+                        pageColors = this.defaultColors;
+                    }
+                } else if (!allColors.gradient) {
+                    // Invalid format, use defaults
+                    pageColors = this.defaultColors;
+                }
+                
+                // Apply colors to inputs
+                this.applyColorsToInputs(pageColors);
+                this.updateAllPreviews();
+            } catch (err) {
+                console.error('Failed to parse colors from localStorage:', err);
+                // Use defaults on error
+                this.applyColorsToInputs(this.defaultColors);
+                this.updateAllPreviews();
+            }
+        } else {
+            // No saved colors, use defaults
+            this.applyColorsToInputs(this.defaultColors);
             this.updateAllPreviews();
         }
     }
