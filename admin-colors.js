@@ -549,39 +549,162 @@ class AdminColorManager {
     }
     
     loadCurrentColors() {
-        // Load colors from localStorage or use defaults
-        const allColorsStr = localStorage.getItem('siteColors');
-        if (allColorsStr) {
-            try {
-                const allColors = JSON.parse(allColorsStr);
-                // Check if it's new format (page-based) or old format (flat)
-                let pageColors = allColors;
-                if (allColors.index || allColors.gamer || allColors.developer) {
-                    // New format: use current page's colors
-                    pageColors = allColors[this.currentPage];
-                    // If current page doesn't have colors, use defaults
-                    if (!pageColors) {
-                        pageColors = this.defaultColors;
+        // First, try to read colors from the DOM (what's actually applied on the page)
+        // This ensures we show the current colors, not just what's in localStorage
+        let pageColors = this.readColorsFromDOM();
+        
+        // If we couldn't read from DOM, fall back to localStorage
+        if (!pageColors || Object.keys(pageColors).length === 0) {
+            const allColorsStr = localStorage.getItem('siteColors');
+            if (allColorsStr) {
+                try {
+                    const allColors = JSON.parse(allColorsStr);
+                    // Check if it's new format (page-based) or old format (flat)
+                    if (allColors.index || allColors.gamer || allColors.developer) {
+                        // New format: use current page's colors
+                        pageColors = allColors[this.currentPage];
+                    } else if (allColors.gradient) {
+                        // Old format: use as-is
+                        pageColors = allColors;
                     }
-                } else if (!allColors.gradient) {
-                    // Invalid format, use defaults
-                    pageColors = this.defaultColors;
+                } catch (err) {
+                    console.error('Failed to parse colors from localStorage:', err);
                 }
-                
-                // Apply colors to inputs
-                this.applyColorsToInputs(pageColors);
-                this.updateAllPreviews();
-            } catch (err) {
-                console.error('Failed to parse colors from localStorage:', err);
-                // Use defaults on error
-                this.applyColorsToInputs(this.defaultColors);
-                this.updateAllPreviews();
             }
-        } else {
-            // No saved colors, use defaults
-            this.applyColorsToInputs(this.defaultColors);
-            this.updateAllPreviews();
         }
+        
+        // If still no colors, use defaults
+        if (!pageColors || Object.keys(pageColors).length === 0) {
+            pageColors = this.defaultColors;
+        }
+        
+        // Apply colors to inputs
+        this.applyColorsToInputs(pageColors);
+        this.updateAllPreviews();
+    }
+    
+    readColorsFromDOM() {
+        // Read currently applied colors from DOM elements
+        const colors = {};
+        
+        // Read gradient from body background (check inline style first, then computed style)
+        const bodyBgStyle = document.body.style.background || document.body.style.backgroundImage;
+        const bodyBgComputed = window.getComputedStyle(document.body).backgroundImage;
+        const bodyBg = bodyBgStyle || bodyBgComputed;
+        
+        if (bodyBg && bodyBg.includes('gradient')) {
+            // Extract colors from gradient
+            const colorMatches = bodyBg.match(/#[A-Fa-f0-9]{6}|#[A-Fa-f0-9]{3}/g);
+            if (colorMatches && colorMatches.length >= 4) {
+                colors.gradient = colorMatches.slice(0, 4);
+            } else if (colorMatches && colorMatches.length > 0) {
+                // If less than 4 colors, use what we have and pad with defaults
+                colors.gradient = colorMatches;
+                while (colors.gradient.length < 4) {
+                    colors.gradient.push('#FF6B35');
+                }
+            }
+        }
+        
+        // Also check localStorage for gradient if DOM reading failed
+        if (!colors.gradient || colors.gradient.length === 0) {
+            const allColorsStr = localStorage.getItem('siteColors');
+            if (allColorsStr) {
+                try {
+                    const allColors = JSON.parse(allColorsStr);
+                    let storedColors = allColors;
+                    if (allColors.index || allColors.gamer || allColors.developer) {
+                        storedColors = allColors[this.currentPage] || allColors.index || allColors.gamer || allColors.developer;
+                    }
+                    if (storedColors && storedColors.gradient) {
+                        colors.gradient = storedColors.gradient;
+                    }
+                } catch (e) {
+                    // Ignore
+                }
+            }
+        }
+        
+        // Read header colors
+        const header = document.querySelector('header');
+        if (header) {
+            const headerBg = window.getComputedStyle(header).backgroundColor;
+            const headerBorder = window.getComputedStyle(header).borderBottomColor;
+            // Parse rgba to hex and opacity (simplified)
+            // For now, we'll rely on localStorage for header colors
+        }
+        
+        // Read Index page specific colors
+        if (this.currentPage === 'index') {
+            const siteTitle = document.querySelector('.site-title');
+            if (siteTitle) {
+                const color = window.getComputedStyle(siteTitle).color;
+                colors.siteTitleColor = this.rgbToHex(color);
+            }
+            
+            const introName = document.querySelector('.intro-name');
+            if (introName) {
+                const color = window.getComputedStyle(introName).color;
+                colors.introNameColor = this.rgbToHex(color);
+            }
+            
+            const introText = document.querySelector('.intro-text');
+            if (introText) {
+                const color = window.getComputedStyle(introText).color;
+                colors.introTextColor = this.rgbToHex(color);
+            }
+            
+            // Read navigation button colors
+            const navBtn = document.querySelector('.nav-btn');
+            if (navBtn) {
+                const bg = window.getComputedStyle(navBtn).backgroundColor;
+                const text = window.getComputedStyle(navBtn).color;
+                colors.navButtonBg = this.rgbToHex(bg);
+                colors.navButtonText = this.rgbToHex(text);
+            }
+        }
+        
+        // Read Gamer page specific colors
+        if (this.currentPage === 'gamer') {
+            const pageTitle = document.querySelector('.page-title');
+            if (pageTitle) {
+                const color = window.getComputedStyle(pageTitle).color;
+                colors.pageTitleColor = this.rgbToHex(color);
+            }
+            
+            const pageSubtitle = document.querySelector('.page-subtitle');
+            if (pageSubtitle) {
+                const color = window.getComputedStyle(pageSubtitle).color;
+                colors.pageSubtitleColor = this.rgbToHex(color);
+            }
+            
+            // Add more gamer page color readings as needed
+        }
+        
+        return colors;
+    }
+    
+    rgbToHex(rgb) {
+        // Convert rgb/rgba string to hex
+        if (!rgb || rgb === 'transparent' || rgb === 'rgba(0, 0, 0, 0)') {
+            return '#000000';
+        }
+        
+        // Handle rgb() format
+        const match = rgb.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+        if (match) {
+            const r = parseInt(match[1]).toString(16).padStart(2, '0');
+            const g = parseInt(match[2]).toString(16).padStart(2, '0');
+            const b = parseInt(match[3]).toString(16).padStart(2, '0');
+            return `#${r}${g}${b}`.toUpperCase();
+        }
+        
+        // If already hex, return as is
+        if (rgb.startsWith('#')) {
+            return rgb.toUpperCase();
+        }
+        
+        return '#000000';
     }
     
     setDynamicStyle(id, css) {
