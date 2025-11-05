@@ -127,6 +127,20 @@ body {
     animation: gradientShift 3s ease infinite;
 }
 
+/* Settings button should not have gradient */
+.settings-btn {
+    background: rgba(255, 255, 255, 0.8) !important;
+    background-image: none !important;
+    color: var(--dark-brown);
+    animation: none !important;
+}
+
+.settings-btn:hover {
+    background: rgba(255, 255, 255, 0.9) !important;
+    background-image: none !important;
+    color: var(--dark-brown);
+}
+
 .nav-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
@@ -148,28 +162,42 @@ body {
 
 /* Gamer Button - Gradient Animation */
 .gamer-btn {
-    background-image: linear-gradient(to right, #F06966 0%, #FAD6A6 50%, #F06966 100%);
+    background-image: linear-gradient(to right, #F40076 0%, #342711 50%, #F40076 100%);
     color: white;
 }
 
-.gamer-btn:hover,
-.gamer-btn.active {
+.gamer-btn:hover {
+    animation-play-state: paused;
     background-position: right center;
     color: white;
     border-color: transparent;
+}
+
+.gamer-btn.active {
+    background-image: linear-gradient(to right, #F40076 0%, #342711 50%, #F40076 100%);
+    color: white;
+    border-color: transparent;
+    animation-play-state: running;
 }
 
 /* Developer Button - Gradient Animation */
 .developer-btn {
-    background-image: linear-gradient(to right, #F06966 0%, #FAD6A6 50%, #F06966 100%);
+    background-image: linear-gradient(to right, #F40076 0%, #342711 50%, #F40076 100%);
     color: white;
 }
 
-.developer-btn:hover,
-.developer-btn.active {
+.developer-btn:hover {
+    animation-play-state: paused;
     background-position: right center;
     color: white;
     border-color: transparent;
+}
+
+.developer-btn.active {
+    background-image: linear-gradient(to right, #F40076 0%, #342711 50%, #F40076 100%);
+    color: white;
+    border-color: transparent;
+    animation-play-state: running;
 }
 
 .btn-icon {
@@ -765,3 +793,6 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+}
+
