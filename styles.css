@@ -162,8 +162,11 @@ body {
 
 /* Gamer Button - Gradient Animation */
 .gamer-btn {
-    background-image: linear-gradient(to right, #F40076 0%, #342711 50%, #F40076 100%);
+    background-image: linear-gradient(to right, #F06966 0%, #FAD6A6 50%, #F06966 100%);
+    background-size: 200% auto;
+    background-position: left center;
     color: white;
+    animation: gradientShift 3s ease infinite;
 }
 
 .gamer-btn:hover {
@@ -174,7 +177,7 @@ body {
 }
 
 .gamer-btn.active {
-    background-image: linear-gradient(to right, #F40076 0%, #342711 50%, #F40076 100%);
+    background-image: linear-gradient(to right, #F06966 0%, #FAD6A6 50%, #F06966 100%);
     color: white;
     border-color: transparent;
     animation-play-state: running;
@@ -182,8 +185,11 @@ body {
 
 /* Developer Button - Gradient Animation */
 .developer-btn {
-    background-image: linear-gradient(to right, #F40076 0%, #342711 50%, #F40076 100%);
+    background-image: linear-gradient(to right, #F06966 0%, #FAD6A6 50%, #F06966 100%);
+    background-size: 200% auto;
+    background-position: left center;
     color: white;
+    animation: gradientShift 3s ease infinite;
 }
 
 .developer-btn:hover {
@@ -194,7 +200,7 @@ body {
 }
 
 .developer-btn.active {
-    background-image: linear-gradient(to right, #F40076 0%, #342711 50%, #F40076 100%);
+    background-image: linear-gradient(to right, #F06966 0%, #FAD6A6 50%, #F06966 100%);
     color: white;
     border-color: transparent;
     animation-play-state: running;
