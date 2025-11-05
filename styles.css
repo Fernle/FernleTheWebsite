@@ -113,53 +113,63 @@ body {
     align-items: center;
     gap: var(--spacing-xs);
     padding: var(--spacing-sm) var(--spacing-md);
-    background: rgba(255, 255, 255, 0.8);
     border: 2px solid transparent;
     border-radius: 50px;
     text-decoration: none;
-    color: var(--dark-brown);
     font-weight: var(--font-weight-medium);
     font-size: 0.9rem;
-    transition: all 0.5s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     backdrop-filter: blur(5px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     position: relative;
     overflow: hidden;
+    background-size: 200% auto;
+    animation: gradientShift 3s ease infinite;
 }
 
 .nav-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    color: white;
-    border-color: transparent;
+    animation-play-state: paused;
+}
+
+/* Gradient Animation Keyframes */
+@keyframes gradientShift {
+    0% {
+        background-position: left center;
+    }
+    50% {
+        background-position: right center;
+    }
+    100% {
+        background-position: left center;
+    }
 }
 
 /* Gamer Button - Gradient Animation */
 .gamer-btn {
-    background-size: 200% auto;
-    background-position: left center;
+    background-image: linear-gradient(to right, #F06966 0%, #FAD6A6 50%, #F06966 100%);
+    color: white;
 }
 
 .gamer-btn:hover,
 .gamer-btn.active {
-    background-image: linear-gradient(to right, #FF6B35 0%, #E63E3E 50%, #FF6B35 100%) !important;
-    background-position: right center !important;
-    color: white !important;
-    border-color: transparent !important;
+    background-position: right center;
+    color: white;
+    border-color: transparent;
 }
 
 /* Developer Button - Gradient Animation */
 .developer-btn {
-    background-size: 200% auto;
-    background-position: left center;
+    background-image: linear-gradient(to right, #F06966 0%, #FAD6A6 50%, #F06966 100%);
+    color: white;
 }
 
 .developer-btn:hover,
 .developer-btn.active {
-    background-image: linear-gradient(to right, #5D4037 0%, #8B4513 50%, #5D4037 100%) !important;
-    background-position: right center !important;
-    color: white !important;
-    border-color: transparent !important;
+    background-position: right center;
+    color: white;
+    border-color: transparent;
 }
 
 .btn-icon {
