@@ -118,11 +118,22 @@ class AdminColorManager {
     }
     
     loadColorsFromLocalStorage() {
-        const colors = localStorage.getItem('siteColors');
-        if (colors) {
+        const allColors = localStorage.getItem('siteColors');
+        if (allColors) {
             try {
-                const parsed = JSON.parse(colors);
-                this.applyColors(parsed);
+                const parsed = JSON.parse(allColors);
+                // Check if it's the new format (page-based) or old format (flat)
+                if (parsed[this.currentPage]) {
+                    // New format: page-based
+                    this.applyColors(parsed[this.currentPage]);
+                } else if (parsed.gradient) {
+                    // Old format: flat structure, migrate to new format
+                    const migrated = {
+                        [this.currentPage]: parsed
+                    };
+                    localStorage.setItem('siteColors', JSON.stringify(migrated));
+                    this.applyColors(parsed);
+                }
             } catch (err) {
                 console.error('Failed to parse colors from localStorage:', err);
             }
@@ -823,14 +834,56 @@ class AdminColorManager {
             }
             
             if (data && data.colors) {
+                // Check if it's the new format (page-based) or old format (flat)
+                let allPageColors = data.colors;
+                
+                // If old format, migrate it
+                if (data.colors.gradient && !data.colors.index && !data.colors.gamer) {
+                    // Old format: flat structure, migrate to new format
+                    allPageColors = {
+                        index: data.colors,
+                        gamer: data.colors,
+                        developer: data.colors
+                    };
+                }
+                
                 // Only update if Supabase has newer data
-                const localColors = localStorage.getItem('siteColors');
                 const localData = localStorage.getItem('siteColorsLastUpdated');
                 
                 if (!localData || new Date(data.updated_at) > new Date(localData)) {
-                    localStorage.setItem('siteColors', JSON.stringify(data.colors));
+                    // Merge with local storage to preserve other pages' colors
+                    const localColorsStr = localStorage.getItem('siteColors');
+                    let mergedColors = allPageColors;
+                    
+                    if (localColorsStr) {
+                        try {
+                            const localColors = JSON.parse(localColorsStr);
+                            // If local is new format, merge pages
+                            if (localColors.index || localColors.gamer || localColors.developer) {
+                                mergedColors = {
+                                    ...localColors,
+                                    ...allPageColors // Supabase data takes precedence
+                                };
+                            } else {
+                                // Local is old format, use Supabase data
+                                mergedColors = allPageColors;
+                            }
+                        } catch (e) {
+                            // If parsing fails, use Supabase data
+                            mergedColors = allPageColors;
+                        }
+                    }
+                    
+                    localStorage.setItem('siteColors', JSON.stringify(mergedColors));
                     localStorage.setItem('siteColorsLastUpdated', data.updated_at);
-                    this.applyColors(data.colors);
+                    
+                    // Apply only current page's colors
+                    if (mergedColors[this.currentPage]) {
+                        this.applyColors(mergedColors[this.currentPage]);
+                    } else if (mergedColors.gradient) {
+                        // Fallback to old format if new format doesn't have current page
+                        this.applyColors(mergedColors);
+                    }
                 }
             }
         } catch (err) {
@@ -838,13 +891,59 @@ class AdminColorManager {
         }
     }
     
-    async saveColorsToSupabase(colors) {
+    async saveColorsToSupabase(pageColors) {
         try {
+            // First, get existing colors from Supabase to preserve other pages
+            const { data: existingData } = await window.supabase
+                .from('site_settings')
+                .select('colors')
+                .eq('id', 1)
+                .single();
+            
+            let allPageColors = {};
+            
+            // If existing data exists, use it as base
+            if (existingData && existingData.colors) {
+                // Check if it's new format (page-based) or old format (flat)
+                if (existingData.colors.index || existingData.colors.gamer || existingData.colors.developer) {
+                    // New format: page-based
+                    allPageColors = existingData.colors;
+                } else if (existingData.colors.gradient) {
+                    // Old format: migrate to new format
+                    allPageColors = {
+                        index: existingData.colors,
+                        gamer: existingData.colors,
+                        developer: existingData.colors
+                    };
+                }
+            }
+            
+            // Also check local storage for other pages' colors
+            const localColorsStr = localStorage.getItem('siteColors');
+            if (localColorsStr) {
+                try {
+                    const localColors = JSON.parse(localColorsStr);
+                    // If local is new format, merge with Supabase data
+                    if (localColors.index || localColors.gamer || localColors.developer) {
+                        allPageColors = {
+                            ...allPageColors,
+                            ...localColors // Local storage takes precedence for non-current pages
+                        };
+                    }
+                } catch (e) {
+                    // Ignore parsing errors
+                }
+            }
+            
+            // Update current page's colors
+            allPageColors[this.currentPage] = pageColors;
+            
+            // Save to Supabase
             const { error } = await window.supabase
                 .from('site_settings')
                 .upsert({
                     id: 1,
-                    colors: colors,
+                    colors: allPageColors,
                     updated_at: new Date().toISOString()
                 });
             
@@ -881,13 +980,40 @@ class AdminColorManager {
             return;
         }
         
-        const colors = this.collectColorsFromInputs();
+        const pageColors = this.collectColorsFromInputs();
         const now = new Date().toISOString();
-        localStorage.setItem('siteColors', JSON.stringify(colors));
+        
+        // Update localStorage with page-specific colors
+        const allColorsStr = localStorage.getItem('siteColors');
+        let allPageColors = {};
+        
+        if (allColorsStr) {
+            try {
+                const parsed = JSON.parse(allColorsStr);
+                // Check if it's new format (page-based) or old format (flat)
+                if (parsed.index || parsed.gamer || parsed.developer) {
+                    allPageColors = parsed;
+                } else if (parsed.gradient) {
+                    // Old format: migrate to new format
+                    allPageColors = {
+                        index: parsed,
+                        gamer: parsed,
+                        developer: parsed
+                    };
+                }
+            } catch (e) {
+                // If parsing fails, start fresh
+            }
+        }
+        
+        // Update current page's colors
+        allPageColors[this.currentPage] = pageColors;
+        
+        localStorage.setItem('siteColors', JSON.stringify(allPageColors));
         localStorage.setItem('siteColorsLastUpdated', now);
         
         // Save to Supabase
-        const saved = await this.saveColorsToSupabase(colors);
+        const saved = await this.saveColorsToSupabase(pageColors);
         
         if (saved) {
             alert('Color settings saved successfully!');

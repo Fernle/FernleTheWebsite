@@ -20,7 +20,14 @@
             const savedColors = localStorage.getItem('siteColors');
             if (savedColors) {
                 try {
-                    const colors = JSON.parse(savedColors);
+                    const allColors = JSON.parse(savedColors);
+                    // Check if it's new format (page-based) or old format (flat)
+                    let colors = allColors;
+                    if (allColors.index || allColors.gamer || allColors.developer) {
+                        // New format: use index page colors
+                        colors = allColors.index || allColors;
+                    }
+                    
                     const style = document.createElement('style');
                     if (colors.gradient) {
                         style.textContent = `body { background: linear-gradient(-45deg, ${colors.gradient.join(', ')}); background-size: 400% 400%; background-attachment: scroll; animation: gradient 15s ease infinite; }`;
