@@ -385,13 +385,13 @@ class AdminColorManager {
                 const introText = document.querySelector('.intro-text');
                 if (introText) introText.style.color = picker.value;
             } else if (picker.id === 'nav-button-bg') {
-                const navBtns = document.querySelectorAll('.nav-btn');
+                const navBtns = document.querySelectorAll('.nav-btn:not(.gamer-btn):not(.developer-btn)');
                 navBtns.forEach(btn => btn.style.background = picker.value);
             } else if (picker.id === 'nav-button-text') {
                 const navBtns = document.querySelectorAll('.nav-btn');
                 navBtns.forEach(btn => btn.style.color = picker.value);
             } else if (picker.id === 'nav-button-hover-bg') {
-                this.setDynamicStyle('nav-button-hover-bg-style', `.nav-btn:hover { background: ${picker.value} !important; border-color: ${picker.value} !important; }`);
+                this.setDynamicStyle('nav-button-hover-bg-style', `.nav-btn:not(.gamer-btn):not(.developer-btn):hover { background: ${picker.value} !important; border-color: ${picker.value} !important; }`);
             } else if (picker.id === 'nav-button-hover-text') {
                 this.setDynamicStyle('nav-button-hover-text-style', `.nav-btn:hover { color: ${picker.value} !important; }`);
             }
@@ -1370,7 +1370,7 @@ class AdminColorManager {
             
             // Navigation button colors
             if (colors.navButtonBg) {
-                const navBtns = document.querySelectorAll('.nav-btn');
+                const navBtns = document.querySelectorAll('.nav-btn:not(.gamer-btn):not(.developer-btn)');
                 navBtns.forEach(btn => btn.style.background = colors.navButtonBg);
             }
             if (colors.navButtonText) {
@@ -1378,7 +1378,7 @@ class AdminColorManager {
                 navBtns.forEach(btn => btn.style.color = colors.navButtonText);
             }
             if (colors.navButtonHoverBg) {
-                this.setDynamicStyle('nav-button-hover-bg-style', `.nav-btn:hover { background: ${colors.navButtonHoverBg} !important; border-color: ${colors.navButtonHoverBg} !important; }`);
+                this.setDynamicStyle('nav-button-hover-bg-style', `.nav-btn:not(.gamer-btn):not(.developer-btn):hover { background: ${colors.navButtonHoverBg} !important; border-color: ${colors.navButtonHoverBg} !important; }`);
             }
             if (colors.navButtonHoverText) {
                 this.setDynamicStyle('nav-button-hover-text-style', `.nav-btn:hover { color: ${colors.navButtonHoverText} !important; }`);
