@@ -167,6 +167,7 @@ body {
     background-position: left center;
     color: white;
     animation: gradientShift 3s ease infinite;
+    border: 2px solid transparent !important;
 }
 
 .gamer-btn:hover {
@@ -183,7 +184,7 @@ body {
     background-position: left center !important;
     background-color: transparent !important;
     color: white;
-    border-color: transparent;
+    border: 2px solid transparent !important;
     animation: gradientShift 3s ease infinite;
     animation-play-state: running;
 }
