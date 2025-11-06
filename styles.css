@@ -178,9 +178,13 @@ body {
 
 .gamer-btn.active {
     /* Gamer page active button: pink → purple gradient */
-    background-image: linear-gradient(to right, #FF0076 0%, #590FB7 50%, #FF0076 100%);
+    background-image: linear-gradient(to right, #FF0076 0%, #590FB7 50%, #FF0076 100%) !important;
+    background-size: 200% auto !important;
+    background-position: left center !important;
+    background-color: transparent !important;
     color: white;
     border-color: transparent;
+    animation: gradientShift 3s ease infinite;
     animation-play-state: running;
 }
 
