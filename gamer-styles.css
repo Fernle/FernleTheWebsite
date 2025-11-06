@@ -425,8 +425,11 @@
 }
 
 .flip-card-front {
-    background: linear-gradient(120deg, rgba(255, 255, 255, 0.95) 60%, rgba(255, 231, 222, 0.95) 88%,
-       rgba(255, 211, 195, 0.95) 40%, rgba(255, 140, 66, 0.1) 48%);
+    /* Animated gradient background similar to nav buttons */
+    background-image: linear-gradient(to right, #F06966 0%, #FAD6A6 50%, #F06966 100%);
+    background-size: 200% auto;
+    background-position: left center;
+    animation: gradientShift 6s ease infinite;
     color: var(--dark-brown);
     overflow: hidden;
 }
