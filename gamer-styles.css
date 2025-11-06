@@ -435,7 +435,11 @@
 }
 
 .flip-card-back {
-    background: var(--dark-brown);
+    /* Animated gradient background (back side) */
+    background-image: linear-gradient(to right, #F06966 0%, #FAD6A6 50%, #F06966 100%);
+    background-size: 200% auto;
+    background-position: left center;
+    animation: gradientShift 6s ease infinite;
     color: white;
     transform: rotateY(180deg);
     padding: var(--spacing-md);
