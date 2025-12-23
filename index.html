@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Portfolio Homepage</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#5b13ec",
+              "background-light": "#f6f6f8",
+              "background-dark": "#0f0a18",
+              "surface-dark": "#181226",
+              "border-dark": "#2e2839",
+              "text-secondary": "#a69db9",
+              "neon-purple": "#8b5cf6",
+              "neon-pink": "#ec4899",
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans", "Noto Sans", "sans-serif"],
+            },
+            backgroundImage: {
+               'grid-pattern': "url(\"data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40' stroke='rgba(91, 19, 236, 0.05)' stroke-width='2'/%3E%3C/g%3E%3C/svg%3E\")",
+               'dot-pattern': "url(\"data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='1' height='1' x='1' y='1' fill='rgba(139, 92, 246, 0.15)'/%3E%3C/svg%3E\")",
+            }
+          },
+        },
+      }
+    </script>
+<style type="text/tailwindcss">
+    @layer utilities {
+        .text-glow {
+            text-shadow: 0 0 10px rgba(91, 19, 236, 0.5);
+        }
+        .box-glow {
+            box-shadow: 0 0 20px rgba(91, 19, 236, 0.15);
+        }
+        .neon-gradient-text {
+            @apply bg-clip-text text-transparent bg-gradient-to-r from-neon-purple to-neon-pink;
+        }
+    }
+</style>
+</head>
+<body class="font-display">
+<div class="relative flex min-h-screen w-full flex-col bg-background-light dark:bg-background-dark dark:bg-dot-pattern group/design-root overflow-x-hidden">
+<header class="sticky top-0 z-50 w-full border-b border-solid border-gray-200 dark:border-white/5 bg-background-light/95 dark:bg-background-dark/80 backdrop-blur-md">
+<div class="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4 sm:px-6 lg:px-8">
+<div class="flex items-center gap-4 text-gray-900 dark:text-white">
+<div class="flex size-8 items-center justify-center rounded-lg bg-primary/20 text-primary dark:shadow-[0_0_15px_rgba(91,19,236,0.5)]">
+<span class="material-symbols-outlined">terminal</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">Portfolio</h2>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium leading-normal text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-white transition-colors" href="#">The Gamer</a>
+<a class="text-sm font-medium leading-normal text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-white transition-colors" href="#">The Developer</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="md:hidden flex items-center justify-center text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</header>
+<div class="flex flex-1 flex-col">
+<section class="relative w-full overflow-hidden py-12 md:py-24 lg:py-32">
+<div class="absolute top-0 right-0 -z-10 h-[600px] w-[600px] bg-primary/40 opacity-40 blur-[130px] rounded-full translate-x-1/3 -translate-y-1/4 pointer-events-none mix-blend-screen"></div>
+<div class="absolute bottom-0 left-0 -z-10 h-[500px] w-[500px] bg-neon-pink/30 opacity-40 blur-[120px] rounded-full -translate-x-1/3 translate-y-1/4 pointer-events-none mix-blend-screen"></div>
+<div class="absolute top-1/2 left-1/2 -z-10 h-[400px] w-[400px] bg-cyan-500/20 opacity-30 blur-[100px] rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none mix-blend-screen"></div>
+<div class="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
+<div class="grid gap-12 lg:grid-cols-2 lg:gap-8 items-center">
+<div class="flex flex-col justify-center space-y-8">
+<div class="space-y-4">
+<div class="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary dark:text-primary-foreground dark:shadow-[0_0_10px_rgba(91,19,236,0.3)]">
+<span>Welcome to my universe</span>
+</div>
+<h1 class="text-4xl font-black tracking-tight text-gray-900 dark:text-white sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
+                                    Building Worlds &amp; <span class="neon-gradient-text">Conquering Them</span>
+</h1>
+<p class="max-w-[600px] text-lg text-gray-600 dark:text-text-secondary md:text-xl leading-relaxed">
+                                    Hi, I'm a digital creator who crafts robust software architectures by day and tops competitive leaderboards by night. 
+                                </p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="group relative flex h-14 w-full sm:w-auto items-center justify-center gap-3 overflow-hidden rounded-lg bg-primary px-8 text-base font-bold text-white transition-all hover:bg-primary/90 dark:shadow-[0_0_20px_rgba(91,19,236,0.4)] dark:hover:shadow-[0_0_30px_rgba(91,19,236,0.6)]" href="#">
+<span class="material-symbols-outlined text-[20px]">sports_esports</span>
+<span>Explore The Gamer</span>
+<div class="absolute inset-0 -z-10 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
+</a>
+<a class="group flex h-14 w-full sm:w-auto items-center justify-center gap-3 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-surface-dark px-8 text-base font-bold text-gray-900 dark:text-white transition-all hover:bg-gray-50 dark:hover:bg-[#252130] dark:hover:shadow-[0_0_15px_rgba(91,19,236,0.1)]" href="#">
+<span class="material-symbols-outlined text-[20px]">code</span>
+<span>Explore The Developer</span>
+</a>
+</div>
+</div>
+<div class="relative mx-auto aspect-square w-full max-w-[500px] lg:max-w-none">
+<div class="absolute inset-0 bg-gradient-to-tr from-primary to-neon-pink rounded-2xl transform rotate-3 opacity-60 blur-xl"></div>
+<div class="relative h-full w-full overflow-hidden rounded-2xl bg-surface-dark shadow-2xl border border-white/10" data-alt="Abstract 3d landscape showing duality of code and gaming terrain" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCeESnx6Bc8et6JM4HsfJfEVzXPSrDLvDHYGPFp37CFYpvlUTDdJ_Tewsxykq_IraMHhL3G8MCBe6d1SK2Co32IdghurOM2-bnEyUrQQr4bB-hRU_D4c8pt6LzzDUsc4yliqOdjMai4MoyYGuxEQKDxJKNyPoTK-w0Lh6_RjoDBSvNiAPczjUGh4MI08oW5o8Wrw9Wz3ydwVqxkugWe6wUtXrSAdQe7ntkFaNnqPbXceazvo0A_Q6KfAQOamczRVZORMBq8lI6-_jw'); background-size: cover; background-position: center;">
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark/95 to-transparent"></div>
+<div class="absolute bottom-6 left-6 right-6">
+<div class="flex gap-4">
+<div class="rounded-lg bg-black/60 backdrop-blur-xl p-4 border border-white/10 flex-1 dark:shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-sm dark:drop-shadow-[0_0_5px_rgba(91,19,236,0.8)]">terminal</span>
+<span class="text-xs font-bold text-white uppercase tracking-wider">Dev Stats</span>
+</div>
+<div class="text-2xl font-bold text-white">50+</div>
+<div class="text-xs text-gray-400">Projects Completed</div>
+</div>
+<div class="rounded-lg bg-black/60 backdrop-blur-xl p-4 border border-white/10 flex-1 dark:shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-sm dark:drop-shadow-[0_0_5px_rgba(91,19,236,0.8)]">sports_esports</span>
+<span class="text-xs font-bold text-white uppercase tracking-wider">Total Games Played</span>
+</div>
+<div class="text-2xl font-bold text-white">1,420</div>
+<div class="text-xs text-gray-400">Lifetime Stats</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="w-full py-12 md:py-24 bg-white/50 dark:bg-white/[0.02] border-y border-gray-200 dark:border-white/5 backdrop-blur-sm relative">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none"></div>
+<div class="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8 relative">
+<div class="flex flex-col gap-10">
+<div class="flex flex-col gap-4 max-w-[720px]">
+<h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+                                My Expertise
+                            </h2>
+<p class="text-lg text-gray-600 dark:text-text-secondary">
+                                Merging the discipline of engineering with the passion and strategic thinking of a gamer.
+                            </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="group flex flex-col gap-4 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-surface-dark p-6 transition-all hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg dark:hover:shadow-[0_0_20px_rgba(91,19,236,0.15)]">
+<div class="flex size-12 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined" style="font-size: 28px;">code</span>
+</div>
+<div class="space-y-2">
+<h3 class="text-xl font-bold text-gray-900 dark:text-white">Software Development</h3>
+<p class="text-sm leading-relaxed text-gray-600 dark:text-text-secondary">
+                                        Specializing in full-stack engineering, scalable system architecture, and writing clean, maintainable code that stands the test of time.
+                                    </p>
+</div>
+</div>
+<div class="group flex flex-col gap-4 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-surface-dark p-6 transition-all hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg dark:hover:shadow-[0_0_20px_rgba(91,19,236,0.15)]">
+<div class="flex size-12 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined" style="font-size: 28px;">sports_esports</span>
+</div>
+<div class="space-y-2">
+<h3 class="text-xl font-bold text-gray-900 dark:text-white">Competitive Gaming</h3>
+<p class="text-sm leading-relaxed text-gray-600 dark:text-text-secondary">
+                                        High-ranking competitive player with a focus on team strategy, real-time analysis, and community building within esports.
+                                    </p>
+</div>
+</div>
+<div class="group flex flex-col gap-4 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-surface-dark p-6 transition-all hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg dark:hover:shadow-[0_0_20px_rgba(91,19,236,0.15)]">
+<div class="flex size-12 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined" style="font-size: 28px;">brush</span>
+</div>
+<div class="space-y-2">
+<h3 class="text-xl font-bold text-gray-900 dark:text-white">Creative Design</h3>
+<p class="text-sm leading-relaxed text-gray-600 dark:text-text-secondary">
+                                        Blending aesthetics with functionality to create intuitive user interfaces that enhance the user experience across all platforms.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="w-full py-12 md:py-24 relative overflow-hidden">
+<div class="absolute top-0 left-0 -z-10 h-[400px] w-[400px] bg-primary/20 opacity-40 blur-[100px] rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none mix-blend-screen"></div>
+<div class="absolute bottom-0 right-0 -z-10 h-[400px] w-[400px] bg-neon-purple/20 opacity-40 blur-[100px] rounded-full translate-x-1/2 translate-y-1/2 pointer-events-none mix-blend-screen"></div>
+<div class="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
+<div class="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+<div class="flex flex-col gap-6">
+<div class="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary w-fit">
+<span>Get in Touch</span>
+</div>
+<h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+                    Ready to Collaborate or Compete?
+                </h2>
+<p class="text-lg text-gray-600 dark:text-text-secondary leading-relaxed">
+                    I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions. Also available for scrims on weekends!
+                </p>
+<div class="space-y-4 mt-2">
+<a class="flex items-center gap-4 p-4 rounded-xl border border-gray-200 dark:border-white/10 bg-white/50 dark:bg-surface-dark/50 hover:bg-white dark:hover:bg-surface-dark transition-all hover:shadow-sm group dark:hover:border-primary/30" href="mailto:contact@portfolio.com">
+<div class="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">mail</span>
+</div>
+<div>
+<p class="text-sm font-medium text-gray-500 dark:text-text-secondary">Email me at</p>
+<p class="text-base font-bold text-gray-900 dark:text-white">contact@portfolio.com</p>
+</div>
+</a>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<a class="group flex flex-col gap-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white/80 dark:bg-surface-dark/80 backdrop-blur-sm p-6 transition-all hover:border-primary/50 hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(91,19,236,0.1)]" href="#">
+<div class="flex justify-between items-start">
+<div class="flex size-10 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">terminal</span>
+</div>
+<span class="material-symbols-outlined text-gray-300 group-hover:text-primary transition-colors">arrow_outward</span>
+</div>
+<div>
+<h3 class="font-bold text-gray-900 dark:text-white">GitHub</h3>
+<p class="text-sm text-gray-500 dark:text-text-secondary mt-1">Check my repos</p>
+</div>
+</a>
+<a class="group flex flex-col gap-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white/80 dark:bg-surface-dark/80 backdrop-blur-sm p-6 transition-all hover:border-primary/50 hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(91,19,236,0.1)]" href="#">
+<div class="flex justify-between items-start">
+<div class="flex size-10 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">work</span>
+</div>
+<span class="material-symbols-outlined text-gray-300 group-hover:text-blue-600 transition-colors">arrow_outward</span>
+</div>
+<div>
+<h3 class="font-bold text-gray-900 dark:text-white">LinkedIn</h3>
+<p class="text-sm text-gray-500 dark:text-text-secondary mt-1">Let's connect</p>
+</div>
+</a>
+<a class="group flex flex-col gap-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white/80 dark:bg-surface-dark/80 backdrop-blur-sm p-6 transition-all hover:border-primary/50 hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(91,19,236,0.1)]" href="#">
+<div class="flex justify-between items-start">
+<div class="flex size-10 items-center justify-center rounded-lg bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">sports_esports</span>
+</div>
+<span class="material-symbols-outlined text-gray-300 group-hover:text-indigo-600 transition-colors">arrow_outward</span>
+</div>
+<div>
+<h3 class="font-bold text-gray-900 dark:text-white">Discord</h3>
+<p class="text-sm text-gray-500 dark:text-text-secondary mt-1">Join the server</p>
+</div>
+</a>
+<a class="group flex flex-col gap-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white/80 dark:bg-surface-dark/80 backdrop-blur-sm p-6 transition-all hover:border-primary/50 hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(91,19,236,0.1)]" href="#">
+<div class="flex justify-between items-start">
+<div class="flex size-10 items-center justify-center rounded-lg bg-sky-50 dark:bg-sky-900/20 text-sky-500 dark:text-sky-400 group-hover:bg-sky-500 group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">alternate_email</span>
+</div>
+<span class="material-symbols-outlined text-gray-300 group-hover:text-sky-500 transition-colors">arrow_outward</span>
+</div>
+<div>
+<h3 class="font-bold text-gray-900 dark:text-white">Twitter</h3>
+<p class="text-sm text-gray-500 dark:text-text-secondary mt-1">Follow updates</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+</section>
+</div>
+<footer class="w-full border-t border-gray-200 dark:border-white/5 bg-background-light dark:bg-background-dark py-12">
+<div class="mx-auto flex max-w-[1280px] flex-col items-center justify-center gap-8 px-4 sm:px-6 lg:px-8">
+<div class="flex items-center gap-2 text-gray-900 dark:text-white mb-2">
+<div class="flex size-6 items-center justify-center rounded bg-primary/20 text-primary">
+<span class="material-symbols-outlined text-sm">terminal</span>
+</div>
+<span class="text-lg font-bold">Portfolio</span>
+</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="text-gray-500 hover:text-primary dark:text-text-secondary dark:hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full" href="#">
+<span class="material-symbols-outlined text-[24px]">terminal</span>
+<span class="sr-only">GitHub</span>
+</a>
+<a class="text-gray-500 hover:text-primary dark:text-text-secondary dark:hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full" href="#">
+<span class="material-symbols-outlined text-[24px]">work</span>
+<span class="sr-only">LinkedIn</span>
+</a>
+<a class="text-gray-500 hover:text-primary dark:text-text-secondary dark:hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full" href="#">
+<span class="material-symbols-outlined text-[24px]">sports_esports</span>
+<span class="sr-only">Steam</span>
+</a>
+<a class="text-gray-500 hover:text-primary dark:text-text-secondary dark:hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full" href="#">
+<span class="material-symbols-outlined text-[24px]">alternate_email</span>
+<span class="sr-only">Twitter</span>
+</a>
+</div>
+<p class="text-sm text-gray-500 dark:text-text-secondary text-center">
+                    © 2024 Portfolio. All rights reserved. Designed with <span class="text-primary dark:drop-shadow-[0_0_5px_rgba(91,19,236,0.8)]">♥</span> for Gamers &amp; Developers.
+                </p>
+</div>
+</footer>
+</div>
+
+</body></html>
