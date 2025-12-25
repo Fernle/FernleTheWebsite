@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Admin Panel - Game Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&display=swap" rel="stylesheet"/>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #161022; color: white; scroll-behavior: smooth; }
+        .glass { background: rgba(30, 26, 43, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05); }
+        input[type=range] { accent-color: #5b13ec; height: 6px; appearance: none; background: rgba(0,0,0,0.4); border-radius: 999px; }
+        input[type=range]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; background: #5b13ec; border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px rgba(91, 19, 236, 0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-12 px-6 bg-gradient-to-br from-[#161022] to-[#0a0812]">
+
+    <div id="login-section" class="w-full max-w-md glass rounded-3xl p-10 shadow-2xl mt-20">
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-4 text-purple-500">
+                <span class="material-symbols-outlined text-4xl">lock</span>
+            </div>
+            <h1 class="text-3xl font-black uppercase">Admin Login</h1>
+        </div>
+        <form id="login-form" class="space-y-4">
+            <input type="email" id="login-email" placeholder="Email" required class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-purple-500 focus:outline-none">
+            <input type="password" id="login-password" placeholder="Password" required class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-purple-500 focus:outline-none">
+            <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-4 rounded-xl font-bold transition-all shadow-lg">Login</button>
+        </form>
+    </div>
+
+    <div id="admin-section" class="w-full max-w-3xl hidden space-y-8">
+        
+        <div class="glass rounded-[32px] p-8 md:p-12 shadow-2xl">
+            <div class="flex items-center justify-between mb-10">
+                <h1 id="form-title" class="text-3xl font-black">Add New Game</h1>
+                <button onclick="handleLogout()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all">
+                    <span class="material-symbols-outlined text-lg">logout</span> Logout
+                </button>
+            </div>
+
+            <form id="game-form" class="space-y-6">
+                <input type="hidden" id="editing-id" value="">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <input type="text" id="title" required placeholder="Game Title" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-purple-500 focus:outline-none">
+                    <input type="url" id="image_URL" required placeholder="Poster URL (Vertical)" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-purple-500 focus:outline-none">
+                </div>
+                
+                <input type="text" id="play_time" placeholder="Play Time (e.g. +900 hours) - Optional" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-purple-500 focus:outline-none">
+
+                <div id="sliders-container" class="space-y-6 bg-black/20 p-6 rounded-2xl border border-white/5">
+                    </div>
+
+                <div class="flex items-center justify-between p-6 bg-purple-600/10 rounded-2xl border border-purple-500/20">
+                    <span class="font-bold uppercase text-sm text-purple-300 tracking-widest">Live Total Score</span>
+                    <span id="total-preview" class="text-5xl font-black">2.5</span>
+                </div>
+
+                <button type="submit" id="save-btn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-black py-5 rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3">
+                    <span class="material-symbols-outlined">save</span> SAVE TO LIBRARY
+                </button>
+                <button type="button" id="cancel-edit" onclick="resetForm()" class="w-full hidden text-gray-400 hover:text-white text-sm font-bold">Cancel Editing</button>
+            </form>
+        </div>
+
+        <div class="glass rounded-[32px] p-8 shadow-2xl">
+            <h2 class="text-xl font-black mb-6 flex items-center gap-2">
+                <span class="material-symbols-outlined text-purple-500">inventory_2</span> 
+                Current Games
+            </h2>
+            <div id="admin-game-list" class="grid grid-cols-1 gap-3">
+                </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SB_URL = 'https://rhnjzjwbnukwgfpdkpqk.supabase.co';
+        const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJobmp6andibnVrd2dmcGRrcHFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0OTI0MTMsImV4cCI6MjA4MjA2ODQxM30.PxkMYz8db04M4yzQWkw_ZmMEIU0d3RAbNoVAFsfm778';
+        const _supabase = supabase.createClient(SB_URL, SB_KEY);
+
+        const stats = ['gameplay', 'narrative', 'presentation', 'technical', 'impact'];
+
+        // Sliderları oluştur
+        const container = document.getElementById('sliders-container');
+        stats.forEach(s => {
+            container.innerHTML += `
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center text-sm font-bold">
+                        <label class="capitalize">${s}</label>
+                        <span id="v-${s}" class="text-purple-400 bg-purple-500/10 px-2 py-1 rounded-md text-xs">2.5</span>
+                    </div>
+                    <input type="range" id="rating_${s}" min="0" max="1" step="0.5" value="2.5" oninput="updateScores()" class="w-full">
+                </div>
+            `;
+        });
+
+        function updateScores() {
+            let sum = 0;
+            stats.forEach(s => {
+                const val = parseFloat(document.getElementById('rating_' + s).value);
+                document.getElementById('v-' + s).innerText = val;
+                sum += val;
+            });
+            document.getElementById('total-preview').innerText = sum.toFixed(1);
+        }
+
+        // OTURUM KONTROLÜ
+        _supabase.auth.onAuthStateChange((event, session) => {
+            document.getElementById('login-section').classList.toggle('hidden', !!session);
+            document.getElementById('admin-section').classList.toggle('hidden', !session);
+            if (session) loadAdminGames();
+        });
+
+        // GİRİŞ
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const { error } = await _supabase.auth.signInWithPassword({
+                email: document.getElementById('login-email').value,
+                password: document.getElementById('login-password').value
+            });
+            if (error) alert(error.message);
+        });
+
+        async function handleLogout() { await _supabase.auth.signOut(); }
+
+        // LİSTELEME
+        async function loadAdminGames() {
+            const { data } = await _supabase.from('games').select('*').order('created_at', { ascending: false });
+            const list = document.getElementById('admin-game-list');
+            list.innerHTML = data.map(g => `
+                <div class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-purple-500/30 transition-all">
+                    <div class="flex items-center gap-4">
+                        <img src="${g.image_URL}" class="w-10 h-14 object-cover rounded-lg">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-sm">${g.title}</span>
+                            ${g.is_featured ? '<span class="text-[10px] text-yellow-500 font-bold uppercase tracking-wider">★ Top 5</span>' : ''}
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="toggleFeatured('${g.id}', ${g.is_featured})" 
+                                class="p-2 ${g.is_featured ? 'text-yellow-500 bg-yellow-500/10' : 'text-gray-500 hover:bg-white/5'} rounded-xl transition-all"
+                                title="Top 5 Game">
+                            <span class="material-symbols-outlined" style="${g.is_featured ? "font-variation-settings: 'FILL' 1;" : ''}">crown</span>
+                        </button>
+                        <button onclick="editGame('${g.id}')" class="p-2 hover:bg-purple-500/20 text-purple-400 rounded-xl transition-all">
+                            <span class="material-symbols-outlined">edit</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        // DÜZENLEME MODU
+        async function editGame(id) {
+            const { data } = await _supabase.from('games').select('*').eq('id', id).single();
+            document.getElementById('editing-id').value = data.id;
+            document.getElementById('title').value = data.title;
+            document.getElementById('image_URL').value = data.image_URL;
+            document.getElementById('play_time').value = data.play_time || '';
+            stats.forEach(s => document.getElementById('rating_' + s).value = data['rating_' + s]);
+            
+            updateScores();
+            document.getElementById('form-title').innerText = "Edit Game";
+            document.getElementById('save-btn').innerText = "UPDATE GAME";
+            document.getElementById('cancel-edit').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetForm() {
+            document.getElementById('game-form').reset();
+            document.getElementById('editing-id').value = '';
+            document.getElementById('form-title').innerText = "Add New Game";
+            document.getElementById('save-btn').innerText = "SAVE TO LIBRARY";
+            document.getElementById('cancel-edit').classList.add('hidden');
+            updateScores();
+        }
+
+        // KAYDET VEYA GÜNCELLE
+        document.getElementById('game-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('editing-id').value;
+            const gameData = {
+                title: document.getElementById('title').value,
+                image_URL: document.getElementById('image_URL').value,
+                play_time: document.getElementById('play_time').value,
+                total_score: parseFloat(document.getElementById('total-preview').innerText)
+            };
+            stats.forEach(s => gameData['rating_' + s] = parseFloat(document.getElementById('rating_' + s).value));
+
+            const { error } = id 
+                ? await _supabase.from('games').update(gameData).eq('id', id)
+                : await _supabase.from('games').insert([gameData]);
+
+            if (error) alert(error.message);
+            else {
+                alert(id ? "Updated!" : "Saved!");
+                resetForm();
+                loadAdminGames();
+            }
+        });
+
+        async function toggleFeatured(id, currentStatus) {
+            if (!currentStatus) {
+                const { count } = await _supabase.from('games').select('*', { count: 'exact', head: true }).eq('is_featured', true);
+                if (count >= 5) {
+                    alert("Zaten 5 oyun seçili! Yeni eklemek için önce birini listeden çıkarmalısın.");
+                    return;
+                }
+            }
+            const { error } = await _supabase.from('games').update({ is_featured: !currentStatus }).eq('id', id);
+            if (error) alert(error.message);
+            else loadAdminGames();
+        }
+    </script>
+</body>
+</html>

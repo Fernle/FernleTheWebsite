@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>The Gamer Page</title>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>The Gamer Page</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -22,431 +23,301 @@
                     fontFamily: {
                         "display": ["Plus Jakarta Sans", "sans-serif"]
                     },
-                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
-                    backgroundImage: {
-                        'gradient-card': 'linear-gradient(180deg, rgba(22, 16, 34, 0.8) 0%, rgba(91, 19, 236, 0.1) 100%)',
-                    }
                 },
             },
         }
     </script>
-<style>.perspective-1000 {
-            perspective: 1000px;
+    <style>
+        .perspective-1000 { perspective: 1000px; }
+        .preserve-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        @media (min-width: 1920px) {
+            .grid-cols-3xl { grid-template-columns: repeat(6, minmax(0, 1fr)); }
         }
-        .preserve-3d {
-            transform-style: preserve-3d;
+        .modal-content::-webkit-scrollbar { width: 6px; }
+        .modal-content::-webkit-scrollbar-track { background: transparent; }
+        .modal-content::-webkit-scrollbar-thumb { background: #5b13ec; border-radius: 10px; }
+        .gold-card {
+        position: relative;
+        border: 2px solid #ffd700;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.3), inset 0 0 15px rgba(255, 215, 0, 0.1);
+        background: linear-gradient(145deg, #1e1a2b, #161022);
         }
-        .backface-hidden {
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
+        .gold-glow {
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
+            pointer-events: none;
+            animation: pulse-gold 4s infinite alternate;
         }
-        .rotate-y-180 {
-            transform: rotateY(180deg);
-        }
-        .group:hover .group-hover\:rotate-y-180 {
-            transform: rotateY(180deg);
-        }::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #161022; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #2e2839; 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #5b13ec; 
+        @keyframes pulse-gold {
+            0% { opacity: 0.3; transform: scale(0.9); }
+            100% { opacity: 0.6; transform: scale(1.1); }
         }
     </style>
 </head>
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display min-h-screen flex flex-col overflow-x-hidden selection:bg-primary/30 selection:text-white">
-<div aria-hidden="true" class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-<div class="absolute -top-[20%] -left-[10%] w-[70%] h-[70%] rounded-full bg-primary/15 blur-[120px] mix-blend-screen"></div>
-<div class="absolute top-[20%] -right-[10%] w-[50%] h-[60%] rounded-full bg-purple-500/10 blur-[100px] mix-blend-screen"></div>
-<div class="absolute -bottom-[20%] left-[10%] w-[60%] h-[60%] rounded-full bg-indigo-600/10 blur-[120px] mix-blend-screen"></div>
-</div>
-<header class="w-full border-b border-[#2e2839] bg-background-dark/95 backdrop-blur-sm sticky top-0 z-50">
-<div class="max-w-[1200px] mx-auto px-4 sm:px-8 py-4 flex items-center justify-between">
-<div class="flex items-center gap-4 text-white">
-<div class="size-8 text-primary">
-<span class="material-symbols-outlined !text-[32px]">sports_esports</span>
-</div>
-<h2 class="text-white text-xl font-bold leading-tight tracking-tight">The Gamer Page</h2>
-</div>
-<nav class="hidden md:flex items-center gap-8">
-<a class="text-gray-400 hover:text-white text-sm font-medium transition-colors" href="#">Home</a>
-<a class="text-gray-400 hover:text-white text-sm font-medium transition-colors" href="#">Projects</a>
-<a class="text-white text-sm font-bold border-b-2 border-primary pb-0.5" href="#">Gaming</a>
-</nav>
-<button class="md:hidden text-white">
-<span class="material-symbols-outlined">menu</span>
-</button>
-</div>
-</header>
-<main class="relative z-10 flex-grow w-full max-w-[1200px] mx-auto px-4 sm:px-8 py-10">
-<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
-<div class="max-w-2xl">
-<h1 class="text-white text-4xl md:text-5xl font-black tracking-tight mb-4">Played &amp; Rated</h1>
-<p class="text-[#a69db9] text-lg leading-relaxed">
-                    A curated collection of digital worlds I've explored. Hover over any card to reveal a detailed breakdown of 5 key categories and my personal rating.
-                </p>
-</div>
-<div class="flex gap-6 border-l border-[#2e2839] pl-6 hidden lg:flex">
-<div>
-<p class="text-3xl font-bold text-white">42</p>
-<p class="text-xs text-gray-400 uppercase tracking-wider">Games</p>
-</div>
-</div>
-</div>
-<div class="sticky top-[73px] z-40 bg-background-dark/80 backdrop-blur-md py-4 mb-8 -mx-4 px-4 sm:mx-0 sm:px-0 border-y border-[#2e2839] sm:border-none sm:bg-transparent sm:backdrop-blur-none">
-<div class="flex flex-wrap items-center gap-3">
-<span class="text-gray-400 text-sm font-medium mr-2 uppercase tracking-wider">Sort Library:</span>
-<button class="group flex items-center gap-2 px-4 py-2 bg-[#2e2839] hover:bg-primary/20 hover:text-primary rounded-lg transition-all border border-transparent hover:border-primary/30">
-<span class="text-sm font-medium text-white group-hover:text-primary">Rating</span>
-<span class="material-symbols-outlined text-base text-gray-400 group-hover:text-primary">sort</span>
-</button>
-<button class="group flex items-center gap-2 px-4 py-2 bg-[#2e2839] hover:bg-primary/20 hover:text-primary rounded-lg transition-all border border-transparent hover:border-primary/30">
-<span class="text-sm font-medium text-white group-hover:text-primary">Name (A-Z)</span>
-<span class="material-symbols-outlined text-base text-gray-400 group-hover:text-primary">azm</span>
-</button>
-<button class="group flex items-center gap-2 px-4 py-2 bg-[#2e2839] hover:bg-primary/20 hover:text-primary rounded-lg transition-all border border-transparent hover:border-primary/30">
-<span class="text-sm font-medium text-white group-hover:text-primary">Date Added</span>
-<span class="material-symbols-outlined text-base text-gray-400 group-hover:text-primary">calendar_month</span>
-</button>
-<div class="flex-grow"></div>
-<div class="relative w-full sm:w-auto">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">search</span>
-<input class="w-full sm:w-64 bg-[#1e1a2b] border border-[#2e2839] text-white text-sm rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary placeholder-gray-500" placeholder="Find a game..." type="text"/>
-</div>
-</div>
-</div>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-<div class="group h-[420px] w-full perspective-1000 cursor-pointer">
-<div class="relative h-full w-full rounded-xl transition-all duration-500 preserve-3d rotate-y-180 shadow-xl shadow-primary/20">
-<div class="absolute inset-0 h-full w-full rounded-xl backface-hidden overflow-hidden bg-surface-dark border border-[#2e2839]">
-<div class="h-full w-full bg-cover bg-center" data-alt="Cyberpunk 2077 futuristic city skyline neon lights" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAriqgnuR59IaEb-AHor7eIw-b9l50crlLQb6vkLm4ySrsf9gepk1uEuqrnGCofDZ715d_BtTuJ-xMcpipxYZVmV8zveDmNTb-gOh4V8TWehqIZ5YVMGvQTalstngeY237rk1BYWA6QpgDbSWGdSC9ysUVmNRGTR6u7f88EXy1dbnTWt8svkvS2Gv6Dv2AFxklEugDWDDCZYGCXB93EXfQAbew5EQIn-GfHmxbuwj4YR85almFNZWi7EeL-NzzudaVGVJM7OxH3jwo');">
-<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
-<div class="absolute bottom-5 left-5 right-5">
-<h3 class="text-white text-2xl font-bold leading-tight">Cyberpunk 2077</h3>
-<div class="flex items-center gap-1 mt-2 text-yellow-400">
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star_half</span>
-<span class="material-symbols-outlined text-sm">star</span>
-</div>
-</div>
-</div>
-</div>
-<div class="absolute inset-0 h-full w-full rounded-xl bg-surface-dark border border-[#2e2839] p-6 rotate-y-180 backface-hidden flex flex-col justify-between">
-<div>
-<h3 class="text-white text-xl font-bold mb-1">Cyberpunk 2077</h3>
-<p class="text-xs text-gray-400 mb-6">RPG / Open World</p>
-<div class="flex flex-col gap-3">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Narrative</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">World</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Visuals</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Gameplay</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star_half</span>
-<span class="text-gray-300 text-sm font-medium">Performance</span>
-</div>
-</div>
-</div>
-<div class="bg-[#161022] rounded-lg p-4 flex items-center justify-between border border-primary/20">
-<span class="text-gray-400 text-sm font-semibold uppercase tracking-wider">Total Score</span>
-<span class="text-2xl font-black text-white">4.5<span class="text-gray-500 text-lg font-medium">/5</span></span>
-</div>
-</div>
-</div>
-</div>
-<div class="group h-[420px] w-full perspective-1000 cursor-pointer">
-<div class="relative h-full w-full rounded-xl transition-all duration-500 preserve-3d group-hover:rotate-y-180 shadow-xl group-hover:shadow-primary/20">
-<div class="absolute inset-0 h-full w-full rounded-xl backface-hidden overflow-hidden bg-surface-dark border border-[#2e2839]">
-<div class="h-full w-full bg-cover bg-center" data-alt="Dark fantasy landscape with giant glowing tree" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDHWjHYFkYZyvCCvoftrWTrSHKtjdO0K-hCokt7WAYOr7QO8bFOMXMqUUwYMKgkV5HX7pd8cm2F7Rv3faN0f9XZn6RC0hhxn5VBiWchwNrY9nN86b-OL3QmIk84CljD5ty0xNFCXs4pEskqUDtBJ--c6zGC45eWUFpIVphKA9IRyk_gh9il-nEeCd-KisI2qQWapW4qPK64OALJao17Fl-hrOzAQHbgzldtiJcYR56QD7I_xuruoDlbGolWrdgjaJ8OIQ0WHGlC6Y0');">
-<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
-<div class="absolute bottom-5 left-5 right-5">
-<h3 class="text-white text-2xl font-bold leading-tight">Elden Ring</h3>
-<div class="flex items-center gap-1 mt-2 text-yellow-400">
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-</div>
-</div>
-</div>
-</div>
-<div class="absolute inset-0 h-full w-full rounded-xl bg-surface-dark border border-[#2e2839] p-6 rotate-y-180 backface-hidden flex flex-col justify-between">
-<div>
-<h3 class="text-white text-xl font-bold mb-1">Elden Ring</h3>
-<p class="text-xs text-gray-400 mb-6">Action RPG / Souls-like</p>
-<div class="flex flex-col gap-3">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">World Design</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Challenge</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Lore</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Art Style</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Freedom</span>
-</div>
-</div>
-</div>
-<div class="bg-[#161022] rounded-lg p-4 flex items-center justify-between border border-primary/20">
-<span class="text-gray-400 text-sm font-semibold uppercase tracking-wider">Total Score</span>
-<span class="text-2xl font-black text-white">5.0<span class="text-gray-500 text-lg font-medium">/5</span></span>
-</div>
-</div>
-</div>
-</div>
-<div class="group h-[420px] w-full perspective-1000 cursor-pointer">
-<div class="relative h-full w-full rounded-xl transition-all duration-500 preserve-3d group-hover:rotate-y-180 shadow-xl group-hover:shadow-primary/20">
-<div class="absolute inset-0 h-full w-full rounded-xl backface-hidden overflow-hidden bg-surface-dark border border-[#2e2839]">
-<div class="h-full w-full bg-cover bg-center" data-alt="Pixel art farm landscape with crops and sun" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCE58bxz4w3Y3QuoUIbEQua4vbmXSkgHJfehYq0qv9XXOvqiW4YyzxgO-6fjRvQSXrAO7eQqzCrwO4IChrxyEKlfFTQVSa1Qj_ZUuY6NxIX4AiKKc6pmSDKkFCyu8A4Cl4D-YqEqYeza1Pm5kaAbV2our9pua6Hti28xEd_xi4gjQerSwRpcIKV0Z4XhUokALOEORIm3qNIGjY03fZ4ZyoTj98Rh6PYqsBk7tN-HCuWvJoA5WBG-4c9iQNV0N0lTNJFj9atOx0PH4I');">
-<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
-<div class="absolute bottom-5 left-5 right-5">
-<h3 class="text-white text-2xl font-bold leading-tight">Stardew Valley</h3>
-<div class="flex items-center gap-1 mt-2 text-yellow-400">
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star_half</span>
-</div>
-</div>
-</div>
-</div>
-<div class="absolute inset-0 h-full w-full rounded-xl bg-surface-dark border border-[#2e2839] p-6 rotate-y-180 backface-hidden flex flex-col justify-between">
-<div>
-<h3 class="text-white text-xl font-bold mb-1">Stardew Valley</h3>
-<p class="text-xs text-gray-400 mb-6">Simulation / Farming</p>
-<div class="flex flex-col gap-3">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Relaxation</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Content</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Charm</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Music</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star_half</span>
-<span class="text-gray-300 text-sm font-medium">Combat</span>
-</div>
-</div>
-</div>
-<div class="bg-[#161022] rounded-lg p-4 flex items-center justify-between border border-primary/20">
-<span class="text-gray-400 text-sm font-semibold uppercase tracking-wider">Total Score</span>
-<span class="text-2xl font-black text-white">4.5<span class="text-gray-500 text-lg font-medium">/5</span></span>
-</div>
-</div>
-</div>
-</div>
-<div class="group h-[420px] w-full perspective-1000 cursor-pointer">
-<div class="relative h-full w-full rounded-xl transition-all duration-500 preserve-3d group-hover:rotate-y-180 shadow-xl group-hover:shadow-primary/20">
-<div class="absolute inset-0 h-full w-full rounded-xl backface-hidden overflow-hidden bg-surface-dark border border-[#2e2839]">
-<div class="h-full w-full bg-cover bg-center" data-alt="Red hellscape with stylized mythological figures" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuANr8i1GbXbukbjuicbWT1eqSGzb9DiCbaqYQ0TS3o81pWfyHwVakdnao8kVakCQgXgsgHyl7YisdgrjWfaHrM4xcxl9mocUpLjILdhX66Cv6ecuay8enYQEe5VNdBWrtCLhdWurLRddhZL4TU9_Atmx4YxazIsrjtGMI_pJPXRX5n9bMhpBoKS49R40oxW9y2ck7IT994qgqkCv5H1Lh8PVMaCQ0r46B3JFZwL4XOEorI4PLANvl_d9ehbTpxY4WwqOzP8nLjN6HA');">
-<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
-<div class="absolute bottom-5 left-5 right-5">
-<h3 class="text-white text-2xl font-bold leading-tight">Hades</h3>
-<div class="flex items-center gap-1 mt-2 text-yellow-400">
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-</div>
-</div>
-</div>
-</div>
-<div class="absolute inset-0 h-full w-full rounded-xl bg-surface-dark border border-[#2e2839] p-6 rotate-y-180 backface-hidden flex flex-col justify-between">
-<div>
-<h3 class="text-white text-xl font-bold mb-1">Hades</h3>
-<p class="text-xs text-gray-400 mb-6">Roguelike / Dungeon Crawler</p>
-<div class="flex flex-col gap-3">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Combat Loop</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Narrative</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Art Style</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Voice Acting</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Replayability</span>
-</div>
-</div>
-</div>
-<div class="bg-[#161022] rounded-lg p-4 flex items-center justify-between border border-primary/20">
-<span class="text-gray-400 text-sm font-semibold uppercase tracking-wider">Total Score</span>
-<span class="text-2xl font-black text-white">5.0<span class="text-gray-500 text-lg font-medium">/5</span></span>
-</div>
-</div>
-</div>
-</div>
-<div class="group h-[420px] w-full perspective-1000 cursor-pointer">
-<div class="relative h-full w-full rounded-xl transition-all duration-500 preserve-3d group-hover:rotate-y-180 shadow-xl group-hover:shadow-primary/20">
-<div class="absolute inset-0 h-full w-full rounded-xl backface-hidden overflow-hidden bg-surface-dark border border-[#2e2839]">
-<div class="h-full w-full bg-cover bg-center" data-alt="Blue and dark moody underground cavern hand drawn" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCQdJ0RYP4vlFSV6T493KRvAo7ktL93LSwXk6xCN3m8TENPArhjjDYkz8RDOA9Ew-VPFVcpRW6eww3004KmLPadNxODZ9WNdFwaTtL8aM0Fzk4FwHJv0zoxH9c7fnrh0-dOrYoq3uoaukE8DX0oBPeENPr_HjctiLFApaP0ZSdbhfIifEW3kxgwuwpkUMJIuCnqmfEvI0NpbHj0msVCLlzpPigEI7Dst6NzQX0P9oUIgfK7WIFZUHZsz6bAHhbHvKj4GJwdB1KE5-M');">
-<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
-<div class="absolute bottom-5 left-5 right-5">
-<h3 class="text-white text-2xl font-bold leading-tight">Hollow Knight</h3>
-<div class="flex items-center gap-1 mt-2 text-yellow-400">
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star_half</span>
-</div>
-</div>
-</div>
-</div>
-<div class="absolute inset-0 h-full w-full rounded-xl bg-surface-dark border border-[#2e2839] p-6 rotate-y-180 backface-hidden flex flex-col justify-between">
-<div>
-<h3 class="text-white text-xl font-bold mb-1">Hollow Knight</h3>
-<p class="text-xs text-gray-400 mb-6">Metroidvania / Platformer</p>
-<div class="flex flex-col gap-3">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Atmosphere</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Combat</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Exploration</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Art</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star_half</span>
-<span class="text-gray-300 text-sm font-medium">Difficulty Curve</span>
-</div>
-</div>
-</div>
-<div class="bg-[#161022] rounded-lg p-4 flex items-center justify-between border border-primary/20">
-<span class="text-gray-400 text-sm font-semibold uppercase tracking-wider">Total Score</span>
-<span class="text-2xl font-black text-white">4.5<span class="text-gray-500 text-lg font-medium">/5</span></span>
-</div>
-</div>
-</div>
-</div>
-<div class="group h-[420px] w-full perspective-1000 cursor-pointer">
-<div class="relative h-full w-full rounded-xl transition-all duration-500 preserve-3d group-hover:rotate-y-180 shadow-xl group-hover:shadow-primary/20">
-<div class="absolute inset-0 h-full w-full rounded-xl backface-hidden overflow-hidden bg-surface-dark border border-[#2e2839]">
-<div class="h-full w-full bg-cover bg-center" data-alt="Abstract blue and orange portals on white panels" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAlpmG4QjxrYwHEwjKQq9tBcmwXZdHt66IdLtHz1_suqtf2PsNnBpr2ebteHgP-Zq54CvKBO4SiRKbpHdPYQ7jpkNwtrQoxWbh8NyBpIo4uqD8PfBz2rfhvHauVckKe-H_caQmsOKwXWX25V-thRSwwRkbhiykqhVYzNyLRUMhgvD0leUI8o8Rhjtq23XY3aZRjTONwQCAYCmQuQW9vPlK7XqQoRS0KbwJfZ9GHzJ-2uoqJXdYquALf_UGldbKec2ro6jOmSdvBqLc');">
-<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
-<div class="absolute bottom-5 left-5 right-5">
-<h3 class="text-white text-2xl font-bold leading-tight">Portal 2</h3>
-<div class="flex items-center gap-1 mt-2 text-yellow-400">
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-<span class="material-symbols-outlined fill-1 text-sm">star</span>
-</div>
-</div>
-</div>
-</div>
-<div class="absolute inset-0 h-full w-full rounded-xl bg-surface-dark border border-[#2e2839] p-6 rotate-y-180 backface-hidden flex flex-col justify-between">
-<div>
-<h3 class="text-white text-xl font-bold mb-1">Portal 2</h3>
-<p class="text-xs text-gray-400 mb-6">Puzzle / Platformer</p>
-<div class="flex flex-col gap-3">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Innovation</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Writing</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Level Design</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Humor</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-[20px]">star</span>
-<span class="text-gray-300 text-sm font-medium">Co-op</span>
-</div>
-</div>
-</div>
-<div class="bg-[#161022] rounded-lg p-4 flex items-center justify-between border border-primary/20">
-<span class="text-gray-400 text-sm font-semibold uppercase tracking-wider">Total Score</span>
-<span class="text-2xl font-black text-white">5.0<span class="text-gray-500 text-lg font-medium">/5</span></span>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="mt-12 flex justify-center">
-<button class="flex items-center gap-2 px-6 py-3 border border-[#2e2839] hover:bg-[#2e2839] text-white rounded-lg transition-all text-sm font-medium">
-<span>Load More</span>
-<span class="material-symbols-outlined text-lg">expand_more</span>
-</button>
-</div>
-</main>
-<footer class="relative z-10 border-t border-[#2e2839] bg-background-dark/90 backdrop-blur-sm py-8">
-<div class="max-w-[1200px] mx-auto px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-<p class="text-gray-500 text-sm">© 2023 The Gamer Page. Crafted by a Developer.</p>
-<div class="flex gap-6">
-<a class="text-gray-500 hover:text-primary transition-colors" href="#">
-<span class="material-symbols-outlined">code</span>
-</a>
-<a class="text-gray-500 hover:text-primary transition-colors" href="#">
-<span class="material-symbols-outlined">alternate_email</span>
-</a>
-</div>
-</div>
-</footer>
-</body></html>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display min-h-screen flex flex-col overflow-x-hidden">
+    
+    <header class="w-full border-b border-[#2e2839] bg-background-dark/95 backdrop-blur-sm sticky top-0 z-50">
+        <div class="w-full px-6 md:px-12 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3 text-white">
+                <div class="text-primary flex items-center">
+                    <span class="material-symbols-outlined !text-[28px]">sports_esports</span>
+                </div>
+                <h2 class="text-white text-xl font-bold tracking-tighter transition-all hover:text-primary cursor-default">
+                    The Gamer
+                </h2>
+            </div>
+            
+            <nav class="flex items-center gap-6 md:gap-10">
+                <a class="text-gray-400 hover:text-white text-sm font-medium transition-colors" href="index.html">Home</a>
+                <a class="text-white text-sm font-bold border-b-2 border-primary pb-1" href="#">The Gamer</a>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="relative z-10 flex-grow w-full px-6 md:px-12 py-12">
+        <div class="w-full flex flex-col md:flex-row items-center justify-between mb-12 gap-6">
+            <div class="text-center md:text-left">
+                <h1 class="text-white text-5xl md:text-7xl font-black tracking-tight mb-4">Played & Rated</h1>
+                <p class="text-[#a69db9] text-lg max-w-2xl">A curated collection of digital worlds I've explored.</p>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <div class="bg-surface-dark/50 border border-white/10 rounded-2xl p-6 flex flex-col items-center min-w-[120px]">
+                    <span id="game-count" class="text-4xl font-black text-primary">0</span>
+                    <span class="text-gray-500 text-xs uppercase font-bold tracking-widest mt-1">Games</span>
+                </div>
+                <button onclick="toggleModal(true)" class="w-12 h-12 rounded-xl bg-surface-dark/50 border border-white/10 flex items-center justify-center hover:bg-primary/20 hover:border-primary transition-all group shadow-lg">
+                    <span class="material-symbols-outlined text-gray-500 group-hover:text-white">help</span>
+                </button>
+            </div>
+        </div>
+
+        <section id="top-5-section" class="hidden w-full mb-12">
+            <div class="mb-8 flex items-center gap-4">
+                <span class="material-symbols-outlined text-yellow-500 !text-3xl" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+                <h2 class="text-white text-2xl font-black uppercase tracking-widest">Hall of Fame</h2>
+                <div class="h-[1px] flex-grow bg-gradient-to-r from-yellow-500/50 to-transparent"></div>
+            </div>
+            <div id="top-5-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                </div>
+        </section>
+
+        <div class="w-full flex flex-wrap items-center justify-between gap-4 mb-10 pb-6 border-b border-white/5">
+            <div class="flex flex-wrap items-center gap-3">
+                <span class="text-gray-500 text-xs font-bold uppercase tracking-widest mr-2">Sort Library:</span>
+                <button onclick="sortGames('rating')" class="bg-[#2e2839] hover:bg-primary text-white text-sm px-4 py-2 rounded-lg transition-all flex items-center gap-2 group">
+                    <span class="material-symbols-outlined text-sm">star</span> Rating
+                </button>
+                <button onclick="sortGames('name')" class="bg-[#2e2839] hover:bg-primary text-white text-sm px-4 py-2 rounded-lg transition-all flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">sort_by_alpha</span> Name
+                </button>
+                <button onclick="sortGames('newest')" class="bg-[#2e2839] hover:bg-primary text-white text-sm px-4 py-2 rounded-lg transition-all flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">calendar_today</span> Newest
+                </button>
+            </div>
+            
+            <div class="relative">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">search</span>
+                <input type="text" oninput="searchGames(this.value)" placeholder="Find a game..." 
+                       class="bg-[#1e1a2b] border border-white/10 rounded-lg py-2 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-primary w-64 transition-all">
+            </div>
+        </div>
+    
+        <div id="games-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-12 gap-x-6 justify-items-center">
+            <p class="text-gray-500 col-span-full text-center">Loading games...</p>
+        </div>
+    </main>
+
+    <div id="info-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-6 bg-black/90 backdrop-blur-sm">
+        <div class="bg-surface-dark border border-white/10 w-full max-w-2xl rounded-[32px] p-8 md:p-12 relative shadow-2xl">
+            <button onclick="toggleModal(false)" class="absolute top-6 right-6 text-gray-500 hover:text-white bg-white/5 w-10 h-10 rounded-full flex items-center justify-center transition-all">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <h2 class="text-3xl font-black mb-2 text-white text-left">Rating System</h2>
+            <p class="text-gray-500 text-sm mb-10 italic text-left">How I evaluate the games I play.</p>
+            <div class="modal-content space-y-8 overflow-y-auto max-h-[60vh] pr-4 text-left">
+                <div>
+                    <h3 class="text-primary font-bold text-xs uppercase tracking-widest mb-2">1. Gameplay & Mechanics</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">This is the heart of the experience. Beyond how a game looks, I focus on how it feels in my hands. I look for fluid controls, an engaging gameplay loop, and a satisfying balance of difficulty and depth.</p>
+                </div>
+                <div>
+                    <h3 class="text-primary font-bold text-xs uppercase tracking-widest mb-2">2. Narrative & World Building</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Every game has a "context." I look for original stories and characters with depth. In non-linear games, I evaluate the world’s rules and how well the atmosphere pulls me in.</p>
+                </div>
+                <div>
+                    <h3 class="text-primary font-bold text-xs uppercase tracking-widest mb-2">3. Visual & Audio Presentation</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">This isn't about raw graphics power; it’s about art direction. I check if the style fits the game's soul, if the soundtrack elevates the mood, and if the sound effects enhance immersion.</p>
+                </div>
+                <div>
+                    <h3 class="text-primary font-bold text-xs uppercase tracking-widest mb-2">4. Technical State & UX</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">I measure how "smooth" the experience is. I look for technical polish—checking for bugs, FPS stability, clean UI design, and overall optimization.</p>
+                </div>
+                <div>
+                    <h3 class="text-primary font-bold text-xs uppercase tracking-widest mb-2">5. Impact & Lasting Value</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">The "Wow" factor. Does the game stay with me after the credits roll? I evaluate if it was truly worth the time invested and if it brings something fresh to its genre.</p>
+                </div>
+            </div>
+            <button onclick="toggleModal(false)" class="w-full mt-10 bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-primary/20">Got it</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SB_URL = 'https://rhnjzjwbnukwgfpdkpqk.supabase.co';
+        const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJobmp6andibnVrd2dmcGRrcHFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0OTI0MTMsImV4cCI6MjA4MjA2ODQxM30.PxkMYz8db04M4yzQWkw_ZmMEIU0d3RAbNoVAFsfm778';
+        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+    
+        let allGames = []; 
+
+        function toggleModal(show) {
+            const modal = document.getElementById('info-modal');
+            if (show) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.style.overflow = 'auto';
+            }
+        }
+    
+        async function fetchGames() {
+            const { data, error } = await supabaseClient.from('games').select('*').order('created_at', { ascending: false });
+            
+            if (error) { 
+                console.error('Veri çekme hatası:', error); 
+                return; 
+            }
+
+            // 1. Tüm oyunları ana listeye ata (Hata buradaydı, artık tüm veriyi alıyoruz)
+            allGames = data; 
+
+            // 2. Sadece "Top 5" olanları filtrele ve render et
+            const top5 = data.filter(g => g.is_featured).slice(0, 5);
+            renderTop5(top5);
+
+            // 3. Genel listeyi ve sayacı güncelle
+            updateGameCount(allGames.length);
+            renderGames(allGames);
+        }
+
+        function renderTop5(games) {
+            const container = document.getElementById('top-5-container');
+            const section = document.getElementById('top-5-section');
+            if (games.length > 0) section.classList.remove('hidden');
+    
+            container.innerHTML = games.map((game, index) => `
+                <div class="gold-card rounded-2xl overflow-hidden group transition-all hover:scale-105 duration-500 aspect-[3/4] relative">
+                    <div class="gold-glow"></div>
+                    <img src="${game.image_URL}" class="absolute inset-0 w-full h-full object-cover transition-all duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                    <div class="absolute top-2 left-2 bg-yellow-500 text-black text-[10px] font-black px-2 py-0.5 rounded shadow-lg">#${index + 1}</div>
+                    <div class="absolute bottom-4 left-4 right-4 text-center">
+                        <h3 class="text-white text-sm font-bold truncate drop-shadow-lg">${game.title}</h3>
+                    </div>
+                </div>
+            `).join('');
+        }
+    
+        function updateGameCount(count) {
+            const countElement = document.getElementById('game-count');
+            if (countElement) countElement.innerText = allGames.length;
+        }
+    
+        function sortGames(type) {
+            let sorted = [...allGames];
+            if (type === 'rating') sorted.sort((a, b) => b.total_score - a.total_score);
+            else if (type === 'name') sorted.sort((a, b) => a.title.localeCompare(b.title));
+            else if (type === 'newest') sorted.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            renderGames(sorted);
+        }
+    
+        function searchGames(query) {
+            const filtered = allGames.filter(game => game.title.toLowerCase().includes(query.toLowerCase()));
+            renderGames(filtered);
+        }
+    
+        function renderGames(games) {
+            const container = document.getElementById('games-container');
+            container.innerHTML = '';
+            if (games.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 col-span-full text-center">No games found.</p>';
+                return;
+            }
+    
+            games.forEach(game => {
+                // Saat datası kontrolü ve yeni stil (Sağ Üst - Beyaz Text - Neon Koyu Mor BG)
+                const playTimeHtml = game.play_time 
+                    ? `<div class="absolute top-0 right-0 px-3 py-1 bg-[#2d0080] border-l border-b border-primary/50 rounded-tr-2xl rounded-bl-xl shadow-[0_0_15px_rgba(91,19,236,0.3)] z-10">
+                         <span class="text-white text-[10px] font-bold tracking-tight">${game.play_time} Hours</span>
+                       </div>` 
+                    : '';
+
+                container.innerHTML += `
+                <div class="group h-[450px] w-full max-w-[320px] perspective-1000 cursor-pointer" 
+                     onmouseenter="this.querySelector('.preserve-3d').classList.add('rotate-y-180')"
+                     onmouseleave="this.querySelector('.preserve-3d').classList.remove('rotate-y-180')">
+                    
+                    <div class="relative h-full w-full rounded-2xl transition-all duration-700 preserve-3d shadow-2xl shadow-primary/20">
+                        <div class="absolute inset-0 h-full w-full rounded-2xl backface-hidden overflow-hidden bg-[#161022] border border-white/5">
+                            <div class="h-full w-full bg-cover bg-center bg-no-repeat" style="background-image: url('${game.image_URL}');">
+                                <div class="absolute inset-0 bg-gradient-to-t from-[#161022] via-transparent to-transparent opacity-90"></div>
+                                <div class="absolute bottom-6 left-6 right-6 text-left">
+                                    <h3 class="text-white text-2xl font-black leading-tight tracking-tight drop-shadow-md">${game.title}</h3>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="absolute inset-0 h-full w-full rounded-2xl bg-[#1e1a2b] border border-primary/30 px-8 pt-6 pb-8 rotate-y-180 backface-hidden flex flex-col overflow-hidden">
+                            ${playTimeHtml}
+                            <div class="flex-grow flex flex-col justify-start gap-5">
+                                <h3 class="text-white text-xl font-bold border-b border-white/10 pb-2 text-left mb-2 pr-16">${game.title}</h3>
+                                <div class="space-y-5">
+                                    ${renderStat("Gameplay", game.rating_gameplay)}
+                                    ${renderStat("Narrative", game.rating_narrative)}
+                                    ${renderStat("Presentation", game.rating_presentation)}
+                                    ${renderStat("Technical", game.rating_technical)}
+                                    ${renderStat("Impact", game.rating_impact)}
+                                </div>
+                            </div>
+                            <div class="mt-4 bg-black/40 rounded-xl p-4 flex items-center justify-between border border-white/5">
+                                <span class="text-gray-400 text-xs font-bold uppercase tracking-widest">Total Score</span>
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-3xl font-black text-primary">${game.total_score}</span>
+                                    <span class="text-gray-500 font-bold text-sm">/5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            });
+        }
+    
+        function renderStat(label, value) {
+            const fillPercentage = (value / 1) * 100; 
+            return `
+                <div class="flex items-center justify-between group/stat">
+                    <span class="text-gray-300 text-base font-medium tracking-wide group-hover/stat:text-primary transition-colors">${label}</span>
+                    <div class="relative inline-block leading-none">
+                        <span class="material-symbols-outlined text-gray-700 !text-[28px]">star</span>
+                        <span class="material-symbols-outlined absolute top-0 left-0 text-primary !text-[28px] overflow-hidden transition-all duration-1000" 
+                              style="width: ${fillPercentage}%; font-variation-settings: 'FILL' 1;">
+                            star
+                        </span>
+                    </div>
+                </div>`;
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('info-modal');
+            if (event.target == modal) toggleModal(false);
+        }
+    
+        fetchGames();
+    </script>
+</body>
+</html>
