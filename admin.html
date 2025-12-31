@@ -3,22 +3,26 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Admin Panel - Game Library</title>
+    <title>Admin Panel - Portfolio Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&display=swap" rel="stylesheet"/>
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #161022; color: white; scroll-behavior: smooth; }
-        .glass { background: rgba(30, 26, 43, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0f0a18; color: white; scroll-behavior: smooth; }
+        .glass { background: rgba(24, 18, 38, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05); }
         input[type=range] { accent-color: #5b13ec; height: 6px; appearance: none; background: rgba(0,0,0,0.4); border-radius: 999px; }
         input[type=range]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; background: #5b13ec; border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px rgba(91, 19, 236, 0.5); }
+        .hidden { display: none; }
+        
+        /* Checkbox Custom Style */
+        .role-checkbox:checked + div { background-color: #5b13ec; border-color: #5b13ec; color: white; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center py-12 px-6 bg-gradient-to-br from-[#161022] to-[#0a0812]">
+<body class="min-h-screen flex flex-col items-center py-12 px-6 bg-gradient-to-br from-[#0f0a18] to-[#0a0710]">
 
     <div id="login-section" class="w-full max-w-md glass rounded-3xl p-10 shadow-2xl mt-20">
         <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-4 text-purple-500">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-purple-600/10 rounded-2xl mb-4 text-purple-500">
                 <span class="material-symbols-outlined text-4xl">lock</span>
             </div>
             <h1 class="text-3xl font-black uppercase">Admin Login</h1>
@@ -32,46 +36,128 @@
 
     <div id="admin-section" class="w-full max-w-3xl hidden space-y-8">
         
-        <div class="glass rounded-[32px] p-8 md:p-12 shadow-2xl">
-            <div class="flex items-center justify-between mb-10">
-                <h1 id="form-title" class="text-3xl font-black">Add New Game</h1>
-                <button onclick="handleLogout()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all">
-                    <span class="material-symbols-outlined text-lg">logout</span> Logout
-                </button>
-            </div>
-
-            <form id="game-form" class="space-y-6">
-                <input type="hidden" id="editing-id" value="">
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <input type="text" id="title" required placeholder="Game Title" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-purple-500 focus:outline-none">
-                    <input type="url" id="image_URL" required placeholder="Poster URL (Vertical)" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-purple-500 focus:outline-none">
-                </div>
-                
-                <input type="text" id="play_time" placeholder="Play Time (e.g. +900 hours) - Optional" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-purple-500 focus:outline-none">
-
-                <div id="sliders-container" class="space-y-6 bg-black/20 p-6 rounded-2xl border border-white/5">
-                    </div>
-
-                <div class="flex items-center justify-between p-6 bg-purple-600/10 rounded-2xl border border-purple-500/20">
-                    <span class="font-bold uppercase text-sm text-purple-300 tracking-widest">Live Total Score</span>
-                    <span id="total-preview" class="text-5xl font-black">2.5</span>
-                </div>
-
-                <button type="submit" id="save-btn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-black py-5 rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3">
-                    <span class="material-symbols-outlined">save</span> SAVE TO LIBRARY
-                </button>
-                <button type="button" id="cancel-edit" onclick="resetForm()" class="w-full hidden text-gray-400 hover:text-white text-sm font-bold">Cancel Editing</button>
-            </form>
+        <div class="flex items-center justify-between">
+            <h1 class="text-2xl font-black tracking-tighter flex items-center gap-2">
+                <span class="material-symbols-outlined text-purple-500">dashboard</span> ADMIN PANEL
+            </h1>
+            <button onclick="handleLogout()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all">
+                <span class="material-symbols-outlined text-lg">logout</span> Logout
+            </button>
         </div>
 
-        <div class="glass rounded-[32px] p-8 shadow-2xl">
-            <h2 class="text-xl font-black mb-6 flex items-center gap-2">
-                <span class="material-symbols-outlined text-purple-500">inventory_2</span> 
-                Current Games
-            </h2>
-            <div id="admin-game-list" class="grid grid-cols-1 gap-3">
-                </div>
+        <div class="flex gap-4 p-2 bg-black/20 rounded-2xl border border-white/5">
+            <button onclick="switchAdminTab('gamer')" id="tab-gamer-btn" class="flex-1 py-3 rounded-xl font-bold text-sm transition-all bg-purple-600 text-white shadow-lg flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-lg">sports_esports</span> GAMER
+            </button>
+            <button onclick="switchAdminTab('developer')" id="tab-developer-btn" class="flex-1 py-3 rounded-xl font-bold text-sm transition-all text-gray-400 hover:bg-white/5 flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-lg">code</span> DEVELOPER
+            </button>
+        </div>
+
+        <div id="gamer-admin-content" class="space-y-8">
+            <div class="glass rounded-[32px] p-8 md:p-12 shadow-2xl">
+                <h1 id="form-title" class="text-3xl font-black mb-8">Add New Game</h1>
+                <form id="game-form" class="space-y-6">
+                    <input type="hidden" id="editing-id" value="">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <input type="text" id="title" required placeholder="Game Title" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-purple-500 focus:outline-none">
+                        <input type="url" id="image_URL" required placeholder="Poster URL (Vertical)" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-purple-500 focus:outline-none">
+                    </div>
+                    <input type="text" id="play_time" placeholder="Play Time (e.g. +900 hours)" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-purple-500 focus:outline-none">
+                    <div id="sliders-container" class="space-y-6 bg-black/20 p-6 rounded-2xl border border-white/5"></div>
+                    <div class="flex items-center justify-between p-6 bg-purple-600/10 rounded-2xl border border-purple-500/20">
+                        <span class="font-bold uppercase text-sm text-purple-300 tracking-widest">Live Total Score</span>
+                        <span id="total-preview" class="text-5xl font-black">2.5</span>
+                    </div>
+                    <button type="submit" id="save-btn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-black py-5 rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3">
+                        <span class="material-symbols-outlined">save</span> SAVE TO LIBRARY
+                    </button>
+                    <button type="button" id="cancel-edit" onclick="resetForm()" class="w-full hidden text-gray-400 hover:text-white text-sm font-bold">Cancel Editing</button>
+                </form>
+            </div>
+
+            <div class="glass rounded-[32px] p-8 shadow-2xl">
+                <h2 class="text-xl font-black mb-6 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-purple-500">inventory_2</span> Current Games
+                </h2>
+                <div id="admin-game-list" class="grid grid-cols-1 gap-3"></div>
+            </div>
+        </div>
+
+        <div id="developer-admin-content" class="hidden space-y-8">
+            <div class="glass rounded-[32px] p-8 md:p-12 shadow-2xl">
+                <h1 class="text-3xl font-black mb-10">Add New Project</h1>
+                <form id="project-form" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <input type="text" id="p-title" required placeholder="Project Title" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-blue-500 focus:outline-none">
+                        <select id="p-status" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-blue-500 focus:outline-none text-gray-400">
+                            <option value="Completed">Completed</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Beta">Beta</option>
+                            <option value="Prototype">Prototype</option>
+                        </select>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <input type="text" id="p-youtube" placeholder="YouTube Video ID (örn: dQw4w9WgXcQ)" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-blue-500 focus:outline-none">
+                        <input type="text" id="p-images" required placeholder="Gallery URLs (Virgülle ayırın)" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-blue-500 focus:outline-none">
+                    </div>
+
+                    <!-- Roles Selection -->
+                    <div class="bg-black/20 p-6 rounded-2xl border border-white/5">
+                        <label class="block text-sm font-bold text-gray-400 mb-4 uppercase tracking-wider">My Roles in Project</label>
+                        <div class="flex flex-wrap gap-3">
+                            <!-- Role Items -->
+                            <label class="cursor-pointer">
+                                <input type="checkbox" name="roles" value="Developer" class="role-checkbox hidden">
+                                <div class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-bold text-gray-400 transition-all hover:bg-white/10 select-none">
+                                    Developer
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" name="roles" value="Game Designer" class="role-checkbox hidden">
+                                <div class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-bold text-gray-400 transition-all hover:bg-white/10 select-none">
+                                    Game Designer
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" name="roles" value="Level Designer" class="role-checkbox hidden">
+                                <div class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-bold text-gray-400 transition-all hover:bg-white/10 select-none">
+                                    Level Designer
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" name="roles" value="Narrative Designer" class="role-checkbox hidden">
+                                <div class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-bold text-gray-400 transition-all hover:bg-white/10 select-none">
+                                    Narrative Designer
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" name="roles" value="Artist" class="role-checkbox hidden">
+                                <div class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-bold text-gray-400 transition-all hover:bg-white/10 select-none">
+                                    Artist
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" name="roles" value="Sound Designer" class="role-checkbox hidden">
+                                <div class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-bold text-gray-400 transition-all hover:bg-white/10 select-none">
+                                    Sound Designer
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <textarea id="p-desc" required placeholder="Project Description" rows="4" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-blue-500 focus:outline-none"></textarea>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <input type="url" id="p-demo" placeholder="Live Demo URL" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-blue-500 focus:outline-none">
+                        <input type="url" id="p-github" placeholder="GitHub Repo URL" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-blue-500 focus:outline-none">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-5 rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3">
+                        <span class="material-symbols-outlined">rocket_launch</span> DEPLOY PROJECT
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -83,7 +169,7 @@
 
         const stats = ['gameplay', 'narrative', 'presentation', 'technical', 'impact'];
 
-        // Sliderları oluştur
+        // --- GAMER LOGIC ---
         const container = document.getElementById('sliders-container');
         stats.forEach(s => {
             container.innerHTML += `
@@ -107,14 +193,13 @@
             document.getElementById('total-preview').innerText = sum.toFixed(1);
         }
 
-        // OTURUM KONTROLÜ
+        // --- AUTH CONTROL ---
         _supabase.auth.onAuthStateChange((event, session) => {
             document.getElementById('login-section').classList.toggle('hidden', !!session);
             document.getElementById('admin-section').classList.toggle('hidden', !session);
             if (session) loadAdminGames();
         });
 
-        // GİRİŞ
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const { error } = await _supabase.auth.signInWithPassword({
@@ -126,7 +211,27 @@
 
         async function handleLogout() { await _supabase.auth.signOut(); }
 
-        // LİSTELEME
+        // --- TAB SWITCHING ---
+        function switchAdminTab(tab) {
+            const gamerCont = document.getElementById('gamer-admin-content');
+            const devCont = document.getElementById('developer-admin-content');
+            const gamerBtn = document.getElementById('tab-gamer-btn');
+            const devBtn = document.getElementById('tab-developer-btn');
+
+            if(tab === 'gamer') {
+                gamerCont.classList.remove('hidden');
+                devCont.classList.add('hidden');
+                gamerBtn.className = "flex-1 py-3 rounded-xl font-bold text-sm transition-all bg-purple-600 text-white shadow-lg flex items-center justify-center gap-2";
+                devBtn.className = "flex-1 py-3 rounded-xl font-bold text-sm transition-all text-gray-400 hover:bg-white/5 flex items-center justify-center gap-2";
+            } else {
+                gamerCont.classList.add('hidden');
+                devCont.classList.remove('hidden');
+                devBtn.className = "flex-1 py-3 rounded-xl font-bold text-sm transition-all bg-blue-600 text-white shadow-lg flex items-center justify-center gap-2";
+                gamerBtn.className = "flex-1 py-3 rounded-xl font-bold text-sm transition-all text-gray-400 hover:bg-white/5 flex items-center justify-center gap-2";
+            }
+        }
+
+        // --- DATA OPERATIONS (GAMER) ---
         async function loadAdminGames() {
             const { data } = await _supabase.from('games').select('*').order('created_at', { ascending: false });
             const list = document.getElementById('admin-game-list');
@@ -140,44 +245,13 @@
                         </div>
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="toggleFeatured('${g.id}', ${g.is_featured})" 
-                                class="p-2 ${g.is_featured ? 'text-yellow-500 bg-yellow-500/10' : 'text-gray-500 hover:bg-white/5'} rounded-xl transition-all"
-                                title="Top 5 Game">
-                            <span class="material-symbols-outlined" style="${g.is_featured ? "font-variation-settings: 'FILL' 1;" : ''}">crown</span>
-                        </button>
-                        <button onclick="editGame('${g.id}')" class="p-2 hover:bg-purple-500/20 text-purple-400 rounded-xl transition-all">
-                            <span class="material-symbols-outlined">edit</span>
-                        </button>
+                        <button onclick="toggleFeatured('${g.id}', ${g.is_featured})" class="p-2 ${g.is_featured ? 'text-yellow-500 bg-yellow-500/10' : 'text-gray-500 hover:bg-white/5'} rounded-xl transition-all"><span class="material-symbols-outlined">crown</span></button>
+                        <button onclick="editGame('${g.id}')" class="p-2 hover:bg-purple-500/20 text-purple-400 rounded-xl transition-all"><span class="material-symbols-outlined">edit</span></button>
                     </div>
                 </div>
             `).join('');
         }
-        // DÜZENLEME MODU
-        async function editGame(id) {
-            const { data } = await _supabase.from('games').select('*').eq('id', id).single();
-            document.getElementById('editing-id').value = data.id;
-            document.getElementById('title').value = data.title;
-            document.getElementById('image_URL').value = data.image_URL;
-            document.getElementById('play_time').value = data.play_time || '';
-            stats.forEach(s => document.getElementById('rating_' + s).value = data['rating_' + s]);
-            
-            updateScores();
-            document.getElementById('form-title').innerText = "Edit Game";
-            document.getElementById('save-btn').innerText = "UPDATE GAME";
-            document.getElementById('cancel-edit').classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
 
-        function resetForm() {
-            document.getElementById('game-form').reset();
-            document.getElementById('editing-id').value = '';
-            document.getElementById('form-title').innerText = "Add New Game";
-            document.getElementById('save-btn').innerText = "SAVE TO LIBRARY";
-            document.getElementById('cancel-edit').classList.add('hidden');
-            updateScores();
-        }
-
-        // KAYDET VEYA GÜNCELLE
         document.getElementById('game-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const id = document.getElementById('editing-id').value;
@@ -194,24 +268,82 @@
                 : await _supabase.from('games').insert([gameData]);
 
             if (error) alert(error.message);
-            else {
-                alert(id ? "Updated!" : "Saved!");
-                resetForm();
-                loadAdminGames();
+            else { alert(id ? "Updated!" : "Saved!"); resetForm(); loadAdminGames(); }
+        });
+
+        async function editGame(id) {
+            const { data } = await _supabase.from('games').select('*').eq('id', id).single();
+            document.getElementById('editing-id').value = data.id;
+            document.getElementById('title').value = data.title;
+            document.getElementById('image_URL').value = data.image_URL;
+            document.getElementById('play_time').value = data.play_time || '';
+            stats.forEach(s => document.getElementById('rating_' + s).value = data['rating_' + s]);
+            updateScores();
+            document.getElementById('form-title').innerText = "Edit Game";
+            document.getElementById('save-btn').innerText = "UPDATE GAME";
+            document.getElementById('cancel-edit').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetForm() {
+            document.getElementById('game-form').reset();
+            document.getElementById('editing-id').value = '';
+            document.getElementById('form-title').innerText = "Add New Game";
+            document.getElementById('save-btn').innerText = "SAVE TO LIBRARY";
+            document.getElementById('cancel-edit').classList.add('hidden');
+            updateScores();
+        }
+
+        // --- DATA OPERATIONS (DEVELOPER) ---
+        // YouTube ID Ayıklama Fonksiyonu
+        function extractYouTubeID(url) {
+            if (!url) return null;
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : url;
+        }
+
+        document.getElementById('project-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Seçili rolleri topla
+            const selectedRoles = Array.from(document.querySelectorAll('input[name="roles"]:checked'))
+                .map(cb => cb.value)
+                .join(', ');
+    
+            const rawYoutube = document.getElementById('p-youtube').value;
+            const youtubeId = extractYouTubeID(rawYoutube);
+
+            const projectData = {
+                title: document.getElementById('p-title').value,
+                youtube_id: youtubeId,
+                image_url: document.getElementById('p-images').value,
+                description: document.getElementById('p-desc').value,
+                tags: selectedRoles,
+                status: document.getElementById('p-status').value,
+                demo_url: document.getElementById('p-demo').value || "",
+                github_url: document.getElementById('p-github').value || ""
+            };
+
+            const { data, error } = await _supabase.from('projects').insert([projectData]);
+
+            if (error) {
+                console.error("Supabase Error:", error);
+                alert("Hata: " + error.message);
+            } else {
+                alert("Project Deployed Successfully!");
+                document.getElementById('project-form').reset();
+                document.querySelectorAll('input[name="roles"]').forEach(cb => cb.checked = false);
             }
         });
 
         async function toggleFeatured(id, currentStatus) {
             if (!currentStatus) {
                 const { count } = await _supabase.from('games').select('*', { count: 'exact', head: true }).eq('is_featured', true);
-                if (count >= 5) {
-                    alert("Zaten 5 oyun seçili! Yeni eklemek için önce birini listeden çıkarmalısın.");
-                    return;
-                }
+                if (count >= 5) { alert("Zaten 5 oyun seçili!"); return; }
             }
-            const { error } = await _supabase.from('games').update({ is_featured: !currentStatus }).eq('id', id);
-            if (error) alert(error.message);
-            else loadAdminGames();
+            await _supabase.from('games').update({ is_featured: !currentStatus }).eq('id', id);
+            loadAdminGames();
         }
     </script>
 </body>
