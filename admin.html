@@ -52,8 +52,12 @@
             <button onclick="switchAdminTab('developer')" id="tab-developer-btn" class="flex-1 py-3 rounded-xl font-bold text-sm transition-all text-gray-400 hover:bg-white/5 flex items-center justify-center gap-2">
                 <span class="material-symbols-outlined text-lg">code</span> DEVELOPER
             </button>
+            <button onclick="switchAdminTab('devlog')" id="tab-devlog-btn" class="flex-1 py-3 rounded-xl font-bold text-sm transition-all text-gray-400 hover:bg-white/5 flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-lg">history_edu</span> DEVLOG
+            </button>
         </div>
 
+        <!-- GAMER CONTENT -->
         <div id="gamer-admin-content" class="space-y-8">
             <div class="glass rounded-[32px] p-8 md:p-12 shadow-2xl">
                 <h1 id="form-title" class="text-3xl font-black mb-8">Add New Game</h1>
@@ -84,6 +88,7 @@
             </div>
         </div>
 
+        <!-- DEVELOPER CONTENT -->
         <div id="developer-admin-content" class="hidden space-y-8">
             <div class="glass rounded-[32px] p-8 md:p-12 shadow-2xl">
                 <h1 class="text-3xl font-black mb-10">Add New Project</h1>
@@ -107,42 +112,29 @@
                     <div class="bg-black/20 p-6 rounded-2xl border border-white/5">
                         <label class="block text-sm font-bold text-gray-400 mb-4 uppercase tracking-wider">My Roles in Project</label>
                         <div class="flex flex-wrap gap-3">
-                            <!-- Role Items -->
                             <label class="cursor-pointer">
                                 <input type="checkbox" name="roles" value="Developer" class="role-checkbox hidden">
-                                <div class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-bold text-gray-400 transition-all hover:bg-white/10 select-none">
-                                    Developer
-                                </div>
+                                <div class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-bold text-gray-400 transition-all hover:bg-white/10 select-none">Developer</div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="checkbox" name="roles" value="Game Designer" class="role-checkbox hidden">
-                                <div class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-bold text-gray-400 transition-all hover:bg-white/10 select-none">
-                                    Game Designer
-                                </div>
+                                <div class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-bold text-gray-400 transition-all hover:bg-white/10 select-none">Game Designer</div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="checkbox" name="roles" value="Level Designer" class="role-checkbox hidden">
-                                <div class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-bold text-gray-400 transition-all hover:bg-white/10 select-none">
-                                    Level Designer
-                                </div>
+                                <div class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-bold text-gray-400 transition-all hover:bg-white/10 select-none">Level Designer</div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="checkbox" name="roles" value="Narrative Designer" class="role-checkbox hidden">
-                                <div class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-bold text-gray-400 transition-all hover:bg-white/10 select-none">
-                                    Narrative Designer
-                                </div>
+                                <div class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-bold text-gray-400 transition-all hover:bg-white/10 select-none">Narrative Designer</div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="checkbox" name="roles" value="Artist" class="role-checkbox hidden">
-                                <div class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-bold text-gray-400 transition-all hover:bg-white/10 select-none">
-                                    Artist
-                                </div>
+                                <div class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-bold text-gray-400 transition-all hover:bg-white/10 select-none">Artist</div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="checkbox" name="roles" value="Sound Designer" class="role-checkbox hidden">
-                                <div class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-bold text-gray-400 transition-all hover:bg-white/10 select-none">
-                                    Sound Designer
-                                </div>
+                                <div class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-bold text-gray-400 transition-all hover:bg-white/10 select-none">Sound Designer</div>
                             </label>
                         </div>
                     </div>
@@ -159,6 +151,39 @@
                 </form>
             </div>
         </div>
+
+        <!-- DEVLOG CONTENT -->
+        <div id="devlog-admin-content" class="hidden space-y-8">
+            <div class="glass rounded-[32px] p-8 md:p-12 shadow-2xl">
+                <h1 class="text-3xl font-black mb-10">Add New Devlog</h1>
+                <form id="devlog-form" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <input type="text" id="d-title" required placeholder="Log Title (e.g. Fixed collision bug)" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-green-500 focus:outline-none">
+                        <select id="d-category" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-green-500 focus:outline-none text-gray-400">
+                            <option value="Bug Fix">Bug Fix</option>
+                            <option value="Feature">Feature</option>
+                            <option value="Learning">Learning</option>
+                            <option value="Refactor">Refactor</option>
+                            <option value="Milestone">Milestone</option>
+                        </select>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <input type="text" id="d-icon" placeholder="Icon Name (e.g. bug_report, code, school)" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-green-500 focus:outline-none">
+                        <input type="text" id="d-color" placeholder="Color Class (e.g. text-red-400)" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-green-500 focus:outline-none">
+                    </div>
+
+                    <textarea id="d-content" required placeholder="Log Content..." rows="4" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-green-500 focus:outline-none"></textarea>
+                    
+                    <textarea id="d-code" placeholder="Code Snippet (Optional)" rows="4" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-green-500 focus:outline-none font-mono text-sm"></textarea>
+                    
+                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-black py-5 rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3">
+                        <span class="material-symbols-outlined">history_edu</span> PUBLISH LOG
+                    </button>
+                </form>
+            </div>
+        </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -215,19 +240,25 @@
         function switchAdminTab(tab) {
             const gamerCont = document.getElementById('gamer-admin-content');
             const devCont = document.getElementById('developer-admin-content');
+            const devlogCont = document.getElementById('devlog-admin-content');
+            
             const gamerBtn = document.getElementById('tab-gamer-btn');
             const devBtn = document.getElementById('tab-developer-btn');
+            const devlogBtn = document.getElementById('tab-devlog-btn');
+
+            // Reset all
+            [gamerCont, devCont, devlogCont].forEach(el => el.classList.add('hidden'));
+            [gamerBtn, devBtn, devlogBtn].forEach(el => el.className = "flex-1 py-3 rounded-xl font-bold text-sm transition-all text-gray-400 hover:bg-white/5 flex items-center justify-center gap-2");
 
             if(tab === 'gamer') {
                 gamerCont.classList.remove('hidden');
-                devCont.classList.add('hidden');
                 gamerBtn.className = "flex-1 py-3 rounded-xl font-bold text-sm transition-all bg-purple-600 text-white shadow-lg flex items-center justify-center gap-2";
-                devBtn.className = "flex-1 py-3 rounded-xl font-bold text-sm transition-all text-gray-400 hover:bg-white/5 flex items-center justify-center gap-2";
-            } else {
-                gamerCont.classList.add('hidden');
+            } else if(tab === 'developer') {
                 devCont.classList.remove('hidden');
                 devBtn.className = "flex-1 py-3 rounded-xl font-bold text-sm transition-all bg-blue-600 text-white shadow-lg flex items-center justify-center gap-2";
-                gamerBtn.className = "flex-1 py-3 rounded-xl font-bold text-sm transition-all text-gray-400 hover:bg-white/5 flex items-center justify-center gap-2";
+            } else {
+                devlogCont.classList.remove('hidden');
+                devlogBtn.className = "flex-1 py-3 rounded-xl font-bold text-sm transition-all bg-green-600 text-white shadow-lg flex items-center justify-center gap-2";
             }
         }
 
@@ -295,7 +326,6 @@
         }
 
         // --- DATA OPERATIONS (DEVELOPER) ---
-        // YouTube ID Ayıklama Fonksiyonu
         function extractYouTubeID(url) {
             if (!url) return null;
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -306,7 +336,6 @@
         document.getElementById('project-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Seçili rolleri topla
             const selectedRoles = Array.from(document.querySelectorAll('input[name="roles"]:checked'))
                 .map(cb => cb.value)
                 .join(', ');
@@ -334,6 +363,30 @@
                 alert("Project Deployed Successfully!");
                 document.getElementById('project-form').reset();
                 document.querySelectorAll('input[name="roles"]').forEach(cb => cb.checked = false);
+            }
+        });
+
+        // --- DATA OPERATIONS (DEVLOG) ---
+        document.getElementById('devlog-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const devlogData = {
+                title: document.getElementById('d-title').value,
+                category: document.getElementById('d-category').value,
+                icon: document.getElementById('d-icon').value || 'article',
+                color_class: document.getElementById('d-color').value || 'text-gray-400',
+                content: document.getElementById('d-content').value,
+                code_snippet: document.getElementById('d-code').value || null
+            };
+
+            const { data, error } = await _supabase.from('devlogs').insert([devlogData]);
+
+            if (error) {
+                console.error("Supabase Error:", error);
+                alert("Hata: " + error.message);
+            } else {
+                alert("Devlog Published!");
+                document.getElementById('devlog-form').reset();
             }
         });
 
