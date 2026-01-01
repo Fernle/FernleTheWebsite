@@ -45,15 +45,18 @@
             </button>
         </div>
 
-        <div class="flex gap-4 p-2 bg-black/20 rounded-2xl border border-white/5">
-            <button onclick="switchAdminTab('gamer')" id="tab-gamer-btn" class="flex-1 py-3 rounded-xl font-bold text-sm transition-all bg-purple-600 text-white shadow-lg flex items-center justify-center gap-2">
+        <div class="flex gap-4 p-2 bg-black/20 rounded-2xl border border-white/5 overflow-x-auto">
+            <button onclick="switchAdminTab('gamer')" id="tab-gamer-btn" class="flex-1 py-3 px-4 rounded-xl font-bold text-sm transition-all bg-purple-600 text-white shadow-lg flex items-center justify-center gap-2 whitespace-nowrap">
                 <span class="material-symbols-outlined text-lg">sports_esports</span> GAMER
             </button>
-            <button onclick="switchAdminTab('developer')" id="tab-developer-btn" class="flex-1 py-3 rounded-xl font-bold text-sm transition-all text-gray-400 hover:bg-white/5 flex items-center justify-center gap-2">
+            <button onclick="switchAdminTab('developer')" id="tab-developer-btn" class="flex-1 py-3 px-4 rounded-xl font-bold text-sm transition-all text-gray-400 hover:bg-white/5 flex items-center justify-center gap-2 whitespace-nowrap">
                 <span class="material-symbols-outlined text-lg">code</span> DEVELOPER
             </button>
-            <button onclick="switchAdminTab('devlog')" id="tab-devlog-btn" class="flex-1 py-3 rounded-xl font-bold text-sm transition-all text-gray-400 hover:bg-white/5 flex items-center justify-center gap-2">
+            <button onclick="switchAdminTab('devlog')" id="tab-devlog-btn" class="flex-1 py-3 px-4 rounded-xl font-bold text-sm transition-all text-gray-400 hover:bg-white/5 flex items-center justify-center gap-2 whitespace-nowrap">
                 <span class="material-symbols-outlined text-lg">history_edu</span> DEVLOG
+            </button>
+            <button onclick="switchAdminTab('socials')" id="tab-socials-btn" class="flex-1 py-3 px-4 rounded-xl font-bold text-sm transition-all text-gray-400 hover:bg-white/5 flex items-center justify-center gap-2 whitespace-nowrap">
+                <span class="material-symbols-outlined text-lg">share</span> SOCIALS
             </button>
         </div>
 
@@ -162,6 +165,7 @@
                         <select id="d-category" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-green-500 focus:outline-none text-gray-400">
                             <option value="Bug Fix">Bug Fix</option>
                             <option value="Feature">Feature</option>
+                            <option value="Update">Update</option>
                             <option value="Learning">Learning</option>
                             <option value="Refactor">Refactor</option>
                             <option value="Milestone">Milestone</option>
@@ -181,6 +185,35 @@
                         <span class="material-symbols-outlined">history_edu</span> PUBLISH LOG
                     </button>
                 </form>
+            </div>
+        </div>
+
+        <!-- SOCIALS CONTENT -->
+        <div id="socials-admin-content" class="hidden space-y-8">
+            <div class="glass rounded-[32px] p-8 md:p-12 shadow-2xl">
+                <h1 class="text-3xl font-black mb-10">Manage Socials</h1>
+                <form id="social-form" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <input type="text" id="s-platform" required placeholder="Platform Name (e.g. GitHub)" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-pink-500 focus:outline-none">
+                        <input type="url" id="s-url" required placeholder="Profile URL" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-pink-500 focus:outline-none">
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <input type="text" id="s-icon" required placeholder="Icon Name (e.g. terminal, work)" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-pink-500 focus:outline-none">
+                        <input type="text" id="s-color" placeholder="Color Class (e.g. text-blue-400)" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-pink-500 focus:outline-none">
+                    </div>
+
+                    <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-black py-5 rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3">
+                        <span class="material-symbols-outlined">share</span> ADD SOCIAL LINK
+                    </button>
+                </form>
+            </div>
+
+            <div class="glass rounded-[32px] p-8 shadow-2xl">
+                <h2 class="text-xl font-black mb-6 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-pink-500">link</span> Active Links
+                </h2>
+                <div id="admin-socials-list" class="grid grid-cols-1 gap-3"></div>
             </div>
         </div>
 
@@ -222,7 +255,10 @@
         _supabase.auth.onAuthStateChange((event, session) => {
             document.getElementById('login-section').classList.toggle('hidden', !!session);
             document.getElementById('admin-section').classList.toggle('hidden', !session);
-            if (session) loadAdminGames();
+            if (session) {
+                loadAdminGames();
+                loadAdminSocials();
+            }
         });
 
         document.getElementById('login-form').addEventListener('submit', async (e) => {
@@ -238,28 +274,35 @@
 
         // --- TAB SWITCHING ---
         function switchAdminTab(tab) {
-            const gamerCont = document.getElementById('gamer-admin-content');
-            const devCont = document.getElementById('developer-admin-content');
-            const devlogCont = document.getElementById('devlog-admin-content');
+            const contents = {
+                'gamer': document.getElementById('gamer-admin-content'),
+                'developer': document.getElementById('developer-admin-content'),
+                'devlog': document.getElementById('devlog-admin-content'),
+                'socials': document.getElementById('socials-admin-content')
+            };
             
-            const gamerBtn = document.getElementById('tab-gamer-btn');
-            const devBtn = document.getElementById('tab-developer-btn');
-            const devlogBtn = document.getElementById('tab-devlog-btn');
+            const btns = {
+                'gamer': document.getElementById('tab-gamer-btn'),
+                'developer': document.getElementById('tab-developer-btn'),
+                'devlog': document.getElementById('tab-devlog-btn'),
+                'socials': document.getElementById('tab-socials-btn')
+            };
 
             // Reset all
-            [gamerCont, devCont, devlogCont].forEach(el => el.classList.add('hidden'));
-            [gamerBtn, devBtn, devlogBtn].forEach(el => el.className = "flex-1 py-3 rounded-xl font-bold text-sm transition-all text-gray-400 hover:bg-white/5 flex items-center justify-center gap-2");
+            Object.values(contents).forEach(el => el.classList.add('hidden'));
+            Object.values(btns).forEach(el => el.className = "flex-1 py-3 px-4 rounded-xl font-bold text-sm transition-all text-gray-400 hover:bg-white/5 flex items-center justify-center gap-2 whitespace-nowrap");
 
-            if(tab === 'gamer') {
-                gamerCont.classList.remove('hidden');
-                gamerBtn.className = "flex-1 py-3 rounded-xl font-bold text-sm transition-all bg-purple-600 text-white shadow-lg flex items-center justify-center gap-2";
-            } else if(tab === 'developer') {
-                devCont.classList.remove('hidden');
-                devBtn.className = "flex-1 py-3 rounded-xl font-bold text-sm transition-all bg-blue-600 text-white shadow-lg flex items-center justify-center gap-2";
-            } else {
-                devlogCont.classList.remove('hidden');
-                devlogBtn.className = "flex-1 py-3 rounded-xl font-bold text-sm transition-all bg-green-600 text-white shadow-lg flex items-center justify-center gap-2";
-            }
+            // Activate selected
+            contents[tab].classList.remove('hidden');
+            
+            const colors = {
+                'gamer': 'bg-purple-600',
+                'developer': 'bg-blue-600',
+                'devlog': 'bg-green-600',
+                'socials': 'bg-pink-600'
+            };
+            
+            btns[tab].className = `flex-1 py-3 px-4 rounded-xl font-bold text-sm transition-all ${colors[tab]} text-white shadow-lg flex items-center justify-center gap-2 whitespace-nowrap`;
         }
 
         // --- DATA OPERATIONS (GAMER) ---
@@ -389,6 +432,58 @@
                 document.getElementById('devlog-form').reset();
             }
         });
+
+        // --- DATA OPERATIONS (SOCIALS) ---
+        async function loadAdminSocials() {
+            const { data } = await _supabase.from('socials').select('*').order('created_at', { ascending: true });
+            const list = document.getElementById('admin-socials-list');
+            list.innerHTML = data.map(s => `
+                <div class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-pink-500/30 transition-all">
+                    <div class="flex items-center gap-4">
+                        <div class="flex size-10 items-center justify-center rounded-lg bg-white/5 text-white">
+                            <span class="material-symbols-outlined">${s.icon}</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="font-bold text-sm">${s.platform}</span>
+                            <span class="text-xs text-gray-500 truncate max-w-[200px]">${s.url}</span>
+                        </div>
+                    </div>
+                    <button onclick="deleteSocial('${s.id}')" class="p-2 hover:bg-red-500/20 text-red-400 rounded-xl transition-all">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('social-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const socialData = {
+                platform: document.getElementById('s-platform').value,
+                url: document.getElementById('s-url').value,
+                icon: document.getElementById('s-icon').value,
+                color_class: document.getElementById('s-color').value || 'text-white',
+                is_active: true
+            };
+
+            const { data, error } = await _supabase.from('socials').insert([socialData]);
+
+            if (error) {
+                console.error("Supabase Error:", error);
+                alert("Hata: " + error.message);
+            } else {
+                alert("Social Link Added!");
+                document.getElementById('social-form').reset();
+                loadAdminSocials();
+            }
+        });
+
+        async function deleteSocial(id) {
+            if(confirm('Are you sure you want to delete this link?')) {
+                await _supabase.from('socials').delete().eq('id', id);
+                loadAdminSocials();
+            }
+        }
 
         async function toggleFeatured(id, currentStatus) {
             if (!currentStatus) {

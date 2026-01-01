@@ -96,11 +96,11 @@
             <p class="text-text-secondary text-lg max-w-2xl">Building digital architectures and documenting every step of the journey.</p>
         </div>
 
-        <div class="flex gap-8 border-b border-white/5 mb-10">
-            <button onclick="switchTab('projects')" id="tab-projects-btn" class="pb-4 text-sm font-bold uppercase tracking-widest text-primary border-b-4 border-primary transition-all">
+        <div class="flex gap-8 border-b border-white/5 mb-10 items-end">
+            <button onclick="switchTab('projects')" id="tab-projects-btn" class="pb-4 text-sm font-bold uppercase tracking-widest text-primary border-b-4 border-primary transition-all -translate-y-1">
                 My Projects
             </button>
-            <button onclick="switchTab('journey')" id="tab-journey-btn" class="pb-4 text-sm font-bold uppercase tracking-widest text-text-secondary hover:text-white transition-all">
+            <button onclick="switchTab('journey')" id="tab-journey-btn" class="pb-4 text-sm font-bold uppercase tracking-widest text-text-secondary hover:text-white border-b-4 border-transparent transition-all">
                 My Journey
             </button>
         </div>
@@ -132,16 +132,22 @@
             const projBtn = document.getElementById('tab-projects-btn');
             const jourBtn = document.getElementById('tab-journey-btn');
             
+            // Ortak sınıflar
+            const activeClasses = ['text-primary', 'border-primary', '-translate-y-1'];
+            const inactiveClasses = ['text-text-secondary', 'border-transparent'];
+            
             if(tab === 'projects') {
-                projBtn.classList.add('text-primary', 'border-primary');
-                projBtn.classList.remove('text-text-secondary');
-                jourBtn.classList.add('text-text-secondary');
-                jourBtn.classList.remove('text-primary', 'border-primary');
+                projBtn.classList.add(...activeClasses);
+                projBtn.classList.remove(...inactiveClasses);
+                
+                jourBtn.classList.add(...inactiveClasses);
+                jourBtn.classList.remove(...activeClasses);
             } else {
-                jourBtn.classList.add('text-primary', 'border-primary');
-                jourBtn.classList.remove('text-text-secondary');
-                projBtn.classList.add('text-text-secondary');
-                projBtn.classList.remove('text-primary', 'border-primary');
+                jourBtn.classList.add(...activeClasses);
+                jourBtn.classList.remove(...inactiveClasses);
+                
+                projBtn.classList.add(...inactiveClasses);
+                projBtn.classList.remove(...activeClasses);
             }
         }
 
