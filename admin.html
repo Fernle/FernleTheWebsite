@@ -7,6 +7,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&display=swap" rel="stylesheet"/>
+    <!-- EasyMDE CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0f0a18; color: white; scroll-behavior: smooth; }
         .glass { background: rgba(24, 18, 38, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05); }
@@ -16,6 +19,22 @@
         
         /* Checkbox Custom Style */
         .role-checkbox:checked + div { background-color: #5b13ec; border-color: #5b13ec; color: white; }
+
+        /* Calendar Styles */
+        .calendar-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 8px; transition: all 0.2s; }
+        .calendar-day:hover { background-color: rgba(255,255,255,0.1); }
+        .calendar-day.active { background-color: #5b13ec; color: white; font-weight: bold; }
+        .calendar-day.has-log { border: 1px solid #5b13ec; }
+
+        /* EasyMDE Dark Theme Overrides */
+        .EasyMDEContainer { background: transparent; border: none; }
+        .editor-toolbar { background-color: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.1) !important; color: #fff !important; }
+        .editor-toolbar i { color: #ccc !important; }
+        .editor-toolbar i:hover { color: #fff !important; }
+        .editor-toolbar button:hover { background: rgba(255,255,255,0.1) !important; }
+        .CodeMirror { background-color: rgba(0,0,0,0.3) !important; border-color: rgba(255,255,255,0.1) !important; color: #ddd !important; }
+        .CodeMirror-cursor { border-left: 1px solid #fff !important; }
+        .editor-preview { background-color: #1e192b !important; color: #ddd !important; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center py-12 px-6 bg-gradient-to-br from-[#0f0a18] to-[#0a0710]">
@@ -157,9 +176,43 @@
 
         <!-- DEVLOG CONTENT -->
         <div id="devlog-admin-content" class="hidden space-y-8">
+            <!-- Calendar & List Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Calendar -->
+                <div class="glass rounded-[32px] p-6 shadow-2xl">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 id="current-month" class="text-xl font-bold">Month Year</h2>
+                        <div class="flex gap-2">
+                            <button onclick="changeMonth(-1)" class="p-2 hover:bg-white/10 rounded-full"><span class="material-symbols-outlined">chevron_left</span></button>
+                            <button onclick="changeMonth(1)" class="p-2 hover:bg-white/10 rounded-full"><span class="material-symbols-outlined">chevron_right</span></button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-7 gap-2 text-center text-sm font-bold text-gray-500 mb-2">
+                        <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+                    </div>
+                    <div id="calendar-grid" class="grid grid-cols-7 gap-2"></div>
+                </div>
+
+                <!-- Log List for Selected Date -->
+                <div class="glass rounded-[32px] p-6 shadow-2xl flex flex-col">
+                    <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-green-500">event_note</span>
+                        Logs for <span id="selected-date-display" class="text-green-400">Today</span>
+                    </h2>
+                    <div id="day-logs-list" class="flex-1 overflow-y-auto max-h-[300px] space-y-3 pr-2">
+                        <p class="text-gray-500 text-center py-10">Select a date to view logs.</p>
+                    </div>
+                    <button onclick="resetDevlogForm()" class="mt-4 w-full bg-white/5 hover:bg-white/10 text-white py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined">add</span> Create New Log
+                    </button>
+                </div>
+            </div>
+
+            <!-- Editor Form -->
             <div class="glass rounded-[32px] p-8 md:p-12 shadow-2xl">
-                <h1 class="text-3xl font-black mb-10">Add New Devlog</h1>
+                <h1 id="devlog-form-title" class="text-3xl font-black mb-10">Add New Devlog</h1>
                 <form id="devlog-form" class="space-y-6">
+                    <input type="hidden" id="d-id" value="">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <input type="text" id="d-title" required placeholder="Log Title (e.g. Fixed collision bug)" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-green-500 focus:outline-none">
                         <select id="d-category" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-green-500 focus:outline-none text-gray-400">
@@ -167,7 +220,8 @@
                             <option value="Feature">Feature</option>
                             <option value="Update">Update</option>
                             <option value="Learning">Learning</option>
-                            <option value="Refactor">Refactor</option>
+                            <option value="Planning">Planning</option>
+                            <option value="AFK & Gaming">AFK & Gaming</option>
                             <option value="Milestone">Milestone</option>
                         </select>
                     </div>
@@ -177,11 +231,22 @@
                         <input type="text" id="d-color" placeholder="Color Class (e.g. text-red-400)" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-green-500 focus:outline-none">
                     </div>
 
-                    <textarea id="d-content" required placeholder="Log Content..." rows="4" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-green-500 focus:outline-none"></textarea>
+                    <!-- Custom Toolbar & EasyMDE Editor -->
+                    <div class="flex flex-col gap-2">
+                        <div class="flex gap-2 bg-black/20 p-2 rounded-t-xl border border-white/10 border-b-0">
+                            <button type="button" onclick="insertCustomLink()" class="p-2 hover:bg-white/10 rounded text-gray-400 hover:text-white" title="Insert Link">
+                                <span class="material-symbols-outlined text-sm">link</span>
+                            </button>
+                            <button type="button" onclick="insertCustomCode()" class="p-2 hover:bg-white/10 rounded text-gray-400 hover:text-white" title="Insert Code">
+                                <span class="material-symbols-outlined text-sm">code</span>
+                            </button>
+                        </div>
+                        <textarea id="d-content"></textarea>
+                    </div>
                     
                     <textarea id="d-code" placeholder="Code Snippet (Optional)" rows="4" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-green-500 focus:outline-none font-mono text-sm"></textarea>
                     
-                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-black py-5 rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3">
+                    <button type="submit" id="d-submit-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-black py-5 rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3">
                         <span class="material-symbols-outlined">history_edu</span> PUBLISH LOG
                     </button>
                 </form>
@@ -227,6 +292,9 @@
 
         const stats = ['gameplay', 'narrative', 'presentation', 'technical', 'impact'];
 
+        // EasyMDE Instance
+        let easyMDE;
+
         // --- GAMER LOGIC ---
         const container = document.getElementById('sliders-container');
         stats.forEach(s => {
@@ -258,6 +326,18 @@
             if (session) {
                 loadAdminGames();
                 loadAdminSocials();
+                initCalendar();
+                
+                // Initialize EasyMDE only once
+                if (!easyMDE) {
+                    easyMDE = new EasyMDE({ 
+                        element: document.getElementById('d-content'),
+                        spellChecker: false,
+                        status: false,
+                        placeholder: "Write your devlog here...",
+                        toolbar: ["bold", "italic", "heading", "|", "quote", "unordered-list", "ordered-list"], // Link ve Code kaldırıldı
+                    });
+                }
             }
         });
 
@@ -303,6 +383,11 @@
             };
             
             btns[tab].className = `flex-1 py-3 px-4 rounded-xl font-bold text-sm transition-all ${colors[tab]} text-white shadow-lg flex items-center justify-center gap-2 whitespace-nowrap`;
+            
+            // Refresh EasyMDE if devlog tab is active (sometimes needed for layout)
+            if(tab === 'devlog' && easyMDE) {
+                setTimeout(() => easyMDE.codemirror.refresh(), 100);
+            }
         }
 
         // --- DATA OPERATIONS (GAMER) ---
@@ -410,26 +495,198 @@
         });
 
         // --- DATA OPERATIONS (DEVLOG) ---
+        // Custom Toolbar Functions
+        function insertCustomLink() {
+            const cm = easyMDE.codemirror;
+            const selection = cm.getSelection();
+            
+            // URL'yi sor
+            const url = prompt("Enter URL:", "https://");
+            
+            if (url) {
+                if (selection) {
+                    // Seçili metin varsa: [Seçili Metin](URL)
+                    cm.replaceSelection(`[${selection}](${url})`);
+                } else {
+                    // Seçili metin yoksa: [Link](URL)
+                    cm.replaceSelection(`[Link](${url})`);
+                }
+            }
+            cm.focus();
+        }
+
+        function insertCustomCode() {
+            const cm = easyMDE.codemirror;
+            const selection = cm.getSelection();
+            if (selection) {
+                cm.replaceSelection(`\`${selection}\``);
+            } else {
+                cm.replaceSelection(`\`\``);
+                const cursor = cm.getCursor();
+                cm.setCursor({line: cursor.line, ch: cursor.ch - 1});
+            }
+            cm.focus();
+        }
+
+        // Calendar Logic
+        let currentDate = new Date();
+        let selectedDate = new Date();
+
+        async function initCalendar() {
+            renderCalendar();
+            loadLogsForDate(selectedDate);
+        }
+
+        function changeMonth(delta) {
+            currentDate.setMonth(currentDate.getMonth() + delta);
+            renderCalendar();
+        }
+
+        async function renderCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            
+            document.getElementById('current-month').innerText = new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            const grid = document.getElementById('calendar-grid');
+            grid.innerHTML = '';
+
+            // Fetch logs for this month to mark days
+            const startOfMonth = new Date(year, month, 1).toISOString();
+            const endOfMonth = new Date(year, month + 1, 0, 23, 59, 59).toISOString();
+            
+            const { data: logs } = await _supabase
+                .from('devlogs')
+                .select('created_at')
+                .gte('created_at', startOfMonth)
+                .lte('created_at', endOfMonth);
+
+            const logDays = new Set(logs?.map(l => new Date(l.created_at).getDate()));
+
+            // Empty slots
+            for(let i = 0; i < firstDay; i++) {
+                grid.innerHTML += `<div></div>`;
+            }
+
+            // Days
+            for(let day = 1; day <= daysInMonth; day++) {
+                const isSelected = selectedDate.getDate() === day && selectedDate.getMonth() === month && selectedDate.getFullYear() === year;
+                const hasLog = logDays.has(day);
+                
+                const dayEl = document.createElement('div');
+                dayEl.className = `calendar-day ${isSelected ? 'active' : ''} ${hasLog ? 'has-log' : ''}`;
+                dayEl.innerText = day;
+                dayEl.onclick = () => selectDate(day);
+                grid.appendChild(dayEl);
+            }
+        }
+
+        function selectDate(day) {
+            selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+            renderCalendar();
+            loadLogsForDate(selectedDate);
+        }
+
+        async function loadLogsForDate(date) {
+            document.getElementById('selected-date-display').innerText = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+            
+            const startOfDay = new Date(date.setHours(0,0,0,0)).toISOString();
+            const endOfDay = new Date(date.setHours(23,59,59,999)).toISOString();
+
+            const { data: logs } = await _supabase
+                .from('devlogs')
+                .select('*')
+                .gte('created_at', startOfDay)
+                .lte('created_at', endOfDay)
+                .order('created_at', { ascending: false });
+
+            const list = document.getElementById('day-logs-list');
+            if (!logs || logs.length === 0) {
+                list.innerHTML = '<p class="text-gray-500 text-center py-10">No logs for this date.</p>';
+                return;
+            }
+
+            list.innerHTML = logs.map(log => `
+                <div class="bg-white/5 p-4 rounded-xl border border-white/5 flex justify-between items-start group hover:border-green-500/30 transition-all">
+                    <div>
+                        <h4 class="font-bold text-sm text-white">${log.title}</h4>
+                        <span class="text-xs text-gray-500">${log.category}</span>
+                    </div>
+                    <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button onclick="editDevlog('${log.id}')" class="text-blue-400 hover:text-white"><span class="material-symbols-outlined text-lg">edit</span></button>
+                        <button onclick="deleteDevlog('${log.id}')" class="text-red-400 hover:text-white"><span class="material-symbols-outlined text-lg">delete</span></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function editDevlog(id) {
+            const { data } = await _supabase.from('devlogs').select('*').eq('id', id).single();
+            
+            document.getElementById('d-id').value = data.id;
+            document.getElementById('d-title').value = data.title;
+            document.getElementById('d-category').value = data.category;
+            document.getElementById('d-icon').value = data.icon;
+            document.getElementById('d-color').value = data.color_class;
+            
+            // EasyMDE'ye içeriği yükle
+            if(easyMDE) easyMDE.value(data.content);
+            
+            document.getElementById('d-code').value = data.code_snippet || '';
+            
+            document.getElementById('devlog-form-title').innerText = "Edit Devlog";
+            document.getElementById('d-submit-btn').innerText = "UPDATE LOG";
+            document.getElementById('d-submit-btn').classList.replace('bg-green-600', 'bg-blue-600');
+            document.getElementById('d-submit-btn').classList.replace('hover:bg-green-700', 'hover:bg-blue-700');
+        }
+
+        function resetDevlogForm() {
+            document.getElementById('devlog-form').reset();
+            if(easyMDE) easyMDE.value(""); // Editörü temizle
+            document.getElementById('d-id').value = '';
+            document.getElementById('devlog-form-title').innerText = "Add New Devlog";
+            document.getElementById('d-submit-btn').innerText = "PUBLISH LOG";
+            document.getElementById('d-submit-btn').classList.replace('bg-blue-600', 'bg-green-600');
+            document.getElementById('d-submit-btn').classList.replace('hover:bg-blue-700', 'hover:bg-green-700');
+        }
+
+        async function deleteDevlog(id) {
+            if(confirm('Delete this log?')) {
+                await _supabase.from('devlogs').delete().eq('id', id);
+                loadLogsForDate(selectedDate);
+                renderCalendar(); // Refresh calendar dots
+            }
+        }
+
         document.getElementById('devlog-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            const id = document.getElementById('d-id').value;
             const devlogData = {
                 title: document.getElementById('d-title').value,
                 category: document.getElementById('d-category').value,
                 icon: document.getElementById('d-icon').value || 'article',
                 color_class: document.getElementById('d-color').value || 'text-gray-400',
-                content: document.getElementById('d-content').value,
-                code_snippet: document.getElementById('d-code').value || null
+                content: easyMDE ? easyMDE.value() : document.getElementById('d-content').value, // EasyMDE'den değeri al
+                code_snippet: document.getElementById('d-code').value || null,
+                ...(id ? {} : { created_at: selectedDate.toISOString() })
             };
 
-            const { data, error } = await _supabase.from('devlogs').insert([devlogData]);
+            const { error } = id 
+                ? await _supabase.from('devlogs').update(devlogData).eq('id', id)
+                : await _supabase.from('devlogs').insert([devlogData]);
 
             if (error) {
                 console.error("Supabase Error:", error);
                 alert("Hata: " + error.message);
             } else {
-                alert("Devlog Published!");
-                document.getElementById('devlog-form').reset();
+                alert(id ? "Log Updated!" : "Log Published!");
+                resetDevlogForm();
+                loadLogsForDate(selectedDate);
+                renderCalendar();
             }
         });
 

@@ -42,6 +42,8 @@
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <!-- Marked.js for Markdown Parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     
     <style>
         /* Swiper Customization for Steam-like feel */
@@ -67,6 +69,14 @@
             display: flex; align-items: center; justify-content: center; transition: all 0.3s;
             border: 2px solid white;
         }
+
+        /* Markdown Content Styles */
+        .markdown-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+        .markdown-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
+        .markdown-content p { margin-bottom: 0.75rem; }
+        .markdown-content strong { color: white; font-weight: 700; }
+        .markdown-content a { color: #5b13ec; text-decoration: underline; }
+        .markdown-content code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; rounded: 0.25rem; font-family: monospace; font-size: 0.9em; }
     </style> 
 </head>
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased min-h-screen flex flex-col">
@@ -321,6 +331,9 @@
                         const iconColorClass = log.color_class ? log.color_class.replace('text-', 'bg-').replace('400', '500/20').replace('500', '500/20') : 'bg-primary/20';
                         const textColorClass = log.color_class || 'text-primary';
                         
+                        // Markdown içeriğini HTML'e çevir
+                        const parsedContent = marked.parse(log.content);
+
                         return `
                         <div class="group grid grid-cols-[40px_1fr] gap-x-4 sm:gap-x-6 pb-12 last:pb-0">
                             <!-- Left Column (Line & Icon) -->
@@ -341,7 +354,7 @@
                                 </div>
                                 <div class="bg-white dark:bg-surface-dark border border-gray-200 dark:border-[#2e2839] rounded-xl p-6 shadow-sm">
                                     <h4 class="text-xl font-bold dark:text-white mb-2">${log.title}</h4>
-                                    <p class="text-text-secondary leading-relaxed mb-4">${log.content}</p>
+                                    <div class="text-text-secondary leading-relaxed mb-4 markdown-content">${parsedContent}</div>
                                     ${log.code_snippet ? `
                                         <div class="rounded-lg bg-gray-900 dark:bg-surface-darker border border-gray-800 p-4 font-mono text-xs sm:text-sm overflow-x-auto text-gray-300 code-block">
                                             <pre><code>${log.code_snippet}</code></pre>
