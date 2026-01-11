@@ -75,7 +75,8 @@
         .markdown-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
         .markdown-content p { margin-bottom: 0.75rem; }
         .markdown-content strong { color: white; font-weight: 700; }
-        .markdown-content a { color: #5b13ec; text-decoration: underline; }
+        .markdown-content a { color: #5b13ec; text-decoration: underline; transition: color 0.2s; }
+        .markdown-content a:hover { color: #8b5cf6; }
         .markdown-content code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; rounded: 0.25rem; font-family: monospace; font-size: 0.9em; }
     </style> 
 </head>
@@ -133,6 +134,15 @@
         const SB_URL = 'https://rhnjzjwbnukwgfpdkpqk.supabase.co';
         const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJobmp6andibnVrd2dmcGRrcHFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0OTI0MTMsImV4cCI6MjA4MjA2ODQxM30.PxkMYz8db04M4yzQWkw_ZmMEIU0d3RAbNoVAFsfm778'; 
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+
+        // Configure Marked.js to open links in new tab
+        const renderer = new marked.Renderer();
+        const linkRenderer = renderer.link;
+        renderer.link = (href, title, text) => {
+            const html = linkRenderer.call(renderer, href, title, text);
+            return html.replace(/^<a /, '<a target="_blank" rel="noopener noreferrer" ');
+        };
+        marked.setOptions({ renderer: renderer });
 
         function switchTab(tab) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -323,11 +333,10 @@
             for (const [date, dayLogs] of Object.entries(groupedLogs)) {
                 html += `
                 <div class="relative">
-                    <div class="sticky top-20 z-10 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur py-2 mb-6 border-b border-dashed border-gray-300 dark:border-gray-700">
+                    <div class="bg-background-light/95 dark:bg-background-dark/95 backdrop-blur py-2 mb-6 border-b border-dashed border-gray-300 dark:border-gray-700">
                         <h3 class="text-lg font-bold dark:text-white">${date}</h3>
                     </div>
                     ${dayLogs.map(log => {
-                        const time = new Date(log.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
                         const iconColorClass = log.color_class ? log.color_class.replace('text-', 'bg-').replace('400', '500/20').replace('500', '500/20') : 'bg-primary/20';
                         const textColorClass = log.color_class || 'text-primary';
                         
@@ -346,8 +355,6 @@
                             <!-- Right Column (Card Content) -->
                             <div class="flex flex-col gap-4 pt-1">
                                 <div class="flex flex-wrap items-center gap-3">
-                                    <span class="text-sm font-mono text-text-secondary">${time}</span>
-                                    <div class="h-1 w-1 rounded-full bg-gray-500"></div>
                                     <div class="flex items-center justify-center rounded-full bg-white/5 px-3 py-0.5 border border-white/10">
                                         <p class="${textColorClass} text-xs font-bold uppercase tracking-wide">${log.category}</p>
                                     </div>

@@ -135,6 +135,10 @@
                         <label class="block text-sm font-bold text-gray-400 mb-4 uppercase tracking-wider">My Roles in Project</label>
                         <div class="flex flex-wrap gap-3">
                             <label class="cursor-pointer">
+                                <input type="checkbox" name="roles" value="Solo Developer" class="role-checkbox hidden">
+                                <div class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-bold text-gray-400 transition-all hover:bg-white/10 select-none">Solo Developer</div>
+                            </label>
+                            <label class="cursor-pointer">
                                 <input type="checkbox" name="roles" value="Developer" class="role-checkbox hidden">
                                 <div class="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-bold text-gray-400 transition-all hover:bg-white/10 select-none">Developer</div>
                             </label>
@@ -237,9 +241,6 @@
                             <button type="button" onclick="insertCustomLink()" class="p-2 hover:bg-white/10 rounded text-gray-400 hover:text-white" title="Insert Link">
                                 <span class="material-symbols-outlined text-sm">link</span>
                             </button>
-                            <button type="button" onclick="insertCustomCode()" class="p-2 hover:bg-white/10 rounded text-gray-400 hover:text-white" title="Insert Code">
-                                <span class="material-symbols-outlined text-sm">code</span>
-                            </button>
                         </div>
                         <textarea id="d-content"></textarea>
                     </div>
@@ -294,6 +295,7 @@
 
         // EasyMDE Instance
         let easyMDE;
+        let calendarInitialized = false; // Flag to prevent duplicate calendar init
 
         // --- GAMER LOGIC ---
         const container = document.getElementById('sliders-container');
@@ -318,6 +320,9 @@
             });
             document.getElementById('total-preview').innerText = sum.toFixed(1);
         }
+        
+        // FIX: Call updateScores immediately to set initial values correctly
+        updateScores();
 
         // --- AUTH CONTROL ---
         _supabase.auth.onAuthStateChange((event, session) => {
@@ -326,7 +331,12 @@
             if (session) {
                 loadAdminGames();
                 loadAdminSocials();
-                initCalendar();
+                
+                // Prevent duplicate calendar initialization
+                if (!calendarInitialized) {
+                    initCalendar();
+                    calendarInitialized = true;
+                }
                 
                 // Initialize EasyMDE only once
                 if (!easyMDE) {
@@ -511,19 +521,6 @@
                     // Seçili metin yoksa: [Link](URL)
                     cm.replaceSelection(`[Link](${url})`);
                 }
-            }
-            cm.focus();
-        }
-
-        function insertCustomCode() {
-            const cm = easyMDE.codemirror;
-            const selection = cm.getSelection();
-            if (selection) {
-                cm.replaceSelection(`\`${selection}\``);
-            } else {
-                cm.replaceSelection(`\`\``);
-                const cursor = cm.getCursor();
-                cm.setCursor({line: cursor.line, ch: cursor.ch - 1});
             }
             cm.focus();
         }
