@@ -414,6 +414,7 @@
                         </div>
                     </div>
                     <div class="flex gap-2">
+                        <button onclick="toggleTooOld('${g.id}', ${g.is_too_old})" class="p-2 ${g.is_too_old ? 'text-orange-500 bg-orange-500/10' : 'text-gray-500 hover:bg-white/5'} rounded-xl transition-all" title="Tried but too old"><span class="material-symbols-outlined">hourglass_disabled</span></button>
                         <button onclick="toggleFeatured('${g.id}', ${g.is_featured})" class="p-2 ${g.is_featured ? 'text-yellow-500 bg-yellow-500/10' : 'text-gray-500 hover:bg-white/5'} rounded-xl transition-all"><span class="material-symbols-outlined">crown</span></button>
                         <button onclick="editGame('${g.id}')" class="p-2 hover:bg-purple-500/20 text-purple-400 rounded-xl transition-all"><span class="material-symbols-outlined">edit</span></button>
                     </div>
@@ -745,6 +746,11 @@
                 if (count >= 5) { alert("Zaten 5 oyun seçili!"); return; }
             }
             await _supabase.from('games').update({ is_featured: !currentStatus }).eq('id', id);
+            loadAdminGames();
+        }
+
+        async function toggleTooOld(id, currentStatus) {
+            await _supabase.from('games').update({ is_too_old: !currentStatus }).eq('id', id);
             loadAdminGames();
         }
     </script>

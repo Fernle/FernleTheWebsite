@@ -258,6 +258,15 @@
                        </div>` 
                     : '';
 
+                // "Tried but too old" Şeridi
+                const tooOldRibbon = game.is_too_old
+                    ? `<div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-20">
+                         <div class="absolute top-[20px] -left-[40px] w-[150px] bg-orange-600 text-white text-[9px] font-black uppercase tracking-widest py-1 text-center -rotate-45 shadow-lg border-y border-orange-400">
+                           Tried but too old
+                         </div>
+                       </div>`
+                    : '';
+
                 container.innerHTML += `
                 <div class="group h-[450px] w-full max-w-[320px] perspective-1000 cursor-pointer" 
                      onmouseenter="this.querySelector('.preserve-3d').classList.add('rotate-y-180')"
@@ -273,7 +282,8 @@
                             </div>
                         </div>
     
-                        <div class="absolute inset-0 h-full w-full rounded-2xl bg-[#1e1a2b] border border-primary/30 px-8 pt-6 pb-8 rotate-y-180 backface-hidden flex flex-col overflow-hidden">
+                        <div class="absolute inset-0 h-full w-full rounded-2xl bg-[#1e1a2b] border border-primary/30 px-8 pt-6 pb-8 rotate-y-180 backface-hidden flex flex-col overflow-hidden relative">
+                            ${tooOldRibbon}
                             ${playTimeHtml}
                             <div class="flex-grow flex flex-col justify-start gap-5">
                                 <h3 class="text-white text-xl font-bold border-b border-white/10 pb-2 text-left mb-2 pr-16">${game.title}</h3>
