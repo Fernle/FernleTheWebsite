@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html class="dark" lang="en">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>The Gamer Page</title>
-    <link href="https://fonts.googleapis.com" rel="preconnect"/>
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
         tailwind.config = {
@@ -18,7 +21,7 @@
                         "primary": "#5b13ec",
                         "background-light": "#f6f6f8",
                         "background-dark": "#0f0a18",
-                        "surface-dark": "#181226", 
+                        "surface-dark": "#181226",
                     },
                     fontFamily: {
                         "display": ["Plus Jakarta Sans", "sans-serif"]
@@ -28,69 +31,114 @@
         }
     </script>
     <style>
-        .perspective-1000 { perspective: 1000px; }
-        .preserve-3d { transform-style: preserve-3d; }
-        .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-        .rotate-y-180 { transform: rotateY(180deg); }
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+
+        .preserve-3d {
+            transform-style: preserve-3d;
+        }
+
+        .backface-hidden {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+
         @media (min-width: 1920px) {
-            .grid-cols-3xl { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+            .grid-cols-3xl {
+                grid-template-columns: repeat(6, minmax(0, 1fr));
+            }
         }
-        .modal-content::-webkit-scrollbar { width: 6px; }
-        .modal-content::-webkit-scrollbar-track { background: transparent; }
-        .modal-content::-webkit-scrollbar-thumb { background: #5b13ec; border-radius: 10px; }
+
+        .modal-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #5b13ec;
+            border-radius: 10px;
+        }
+
         .gold-card {
-        position: relative;
-        border: 2px solid #ffd700;
-        box-shadow: 0 0 20px rgba(255, 215, 0, 0.3), inset 0 0 15px rgba(255, 215, 0, 0.1);
-        background: linear-gradient(145deg, #1e1a2b, #161022);
+            position: relative;
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3), inset 0 0 15px rgba(255, 215, 0, 0.1);
+            background: linear-gradient(145deg, #1e1a2b, #161022);
         }
+
         .gold-glow {
             position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
             pointer-events: none;
             animation: pulse-gold 4s infinite alternate;
         }
+
         @keyframes pulse-gold {
-            0% { opacity: 0.3; transform: scale(0.9); }
-            100% { opacity: 0.6; transform: scale(1.1); }
+            0% {
+                opacity: 0.3;
+                transform: scale(0.9);
+            }
+
+            100% {
+                opacity: 0.6;
+                transform: scale(1.1);
+            }
         }
     </style>
 </head>
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display min-h-screen flex flex-col overflow-x-hidden">
-    
+
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display min-h-screen flex flex-col overflow-x-hidden">
+
     <header class="w-full border-b border-[#2e2839] bg-background-dark/95 backdrop-blur-sm sticky top-0 z-50">
         <div class="w-full px-6 md:px-12 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3 text-white">
                 <div class="text-primary flex items-center">
                     <span class="material-symbols-outlined !text-[28px]">sports_esports</span>
                 </div>
-                <h2 class="text-white text-xl font-bold tracking-tighter transition-all hover:text-primary cursor-default">
+                <h2
+                    class="text-white text-xl font-bold tracking-tighter transition-all hover:text-primary cursor-default">
                     The Gamer
                 </h2>
             </div>
-            
+
             <nav class="flex items-center gap-6 md:gap-10">
-                <a class="text-gray-400 hover:text-white text-sm font-medium transition-colors" href="index.html">Home</a>
+                <a class="text-gray-400 hover:text-white text-sm font-medium transition-colors"
+                    href="index.html">Home</a>
                 <a class="text-white text-sm font-bold border-b-2 border-primary pb-1" href="#">The Gamer</a>
-                <a class="text-gray-400 hover:text-white text-sm font-medium transition-colors" href="developer.html">The Developer</a>
+                <a class="text-gray-400 hover:text-white text-sm font-medium transition-colors"
+                    href="developer.html">The Developer</a>
             </nav>
         </div>
     </header>
-    
+
     <main class="relative z-10 flex-grow w-full px-6 md:px-12 py-12">
         <div class="w-full flex flex-col md:flex-row items-center justify-between mb-12 gap-6">
             <div class="text-center md:text-left">
                 <h1 class="text-white text-5xl md:text-7xl font-black tracking-tight mb-4">Played & Rated</h1>
                 <p class="text-[#a69db9] text-lg max-w-2xl">A curated collection of digital worlds I've explored.</p>
             </div>
-            
+
             <div class="flex items-center gap-4">
-                <div class="bg-surface-dark/50 border border-white/10 rounded-2xl p-6 flex flex-col items-center min-w-[120px]">
+                <div
+                    class="bg-surface-dark/50 border border-white/10 rounded-2xl p-6 flex flex-col items-center min-w-[120px]">
                     <span id="game-count" class="text-4xl font-black text-primary">0</span>
                     <span class="text-gray-500 text-xs uppercase font-bold tracking-widest mt-1">Games</span>
                 </div>
-                <button onclick="toggleModal(true)" class="w-12 h-12 rounded-xl bg-surface-dark/50 border border-white/10 flex items-center justify-center hover:bg-primary/20 hover:border-primary transition-all group shadow-lg">
+                <button onclick="toggleModal(true)"
+                    class="w-12 h-12 rounded-xl bg-surface-dark/50 border border-white/10 flex items-center justify-center hover:bg-primary/20 hover:border-primary transition-all group shadow-lg">
                     <span class="material-symbols-outlined text-gray-500 group-hover:text-white">help</span>
                 </button>
             </div>
@@ -98,70 +146,96 @@
 
         <section id="top-5-section" class="hidden w-full mb-12">
             <div class="mb-8 flex items-center gap-4">
-                <span class="material-symbols-outlined text-yellow-500 !text-3xl" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+                <span class="material-symbols-outlined text-yellow-500 !text-3xl"
+                    style="font-variation-settings: 'FILL' 1;">military_tech</span>
                 <h2 class="text-white text-2xl font-black uppercase tracking-widest">Hall of Fame</h2>
                 <div class="h-[1px] flex-grow bg-gradient-to-r from-yellow-500/50 to-transparent"></div>
             </div>
             <div id="top-5-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                </div>
+            </div>
         </section>
 
         <div class="w-full flex flex-wrap items-center justify-between gap-4 mb-10 pb-6 border-b border-white/5">
             <div class="flex flex-wrap items-center gap-3">
                 <span class="text-gray-500 text-xs font-bold uppercase tracking-widest mr-2">Sort Library:</span>
-                <button onclick="sortGames('rating')" class="bg-[#2e2839] hover:bg-primary text-white text-sm px-4 py-2 rounded-lg transition-all flex items-center gap-2 group">
+                <button onclick="sortGames('rating')"
+                    class="bg-[#2e2839] hover:bg-primary text-white text-sm px-4 py-2 rounded-lg transition-all flex items-center gap-2 group">
                     <span class="material-symbols-outlined text-sm">star</span> Rating
                 </button>
-                <button onclick="sortGames('name')" class="bg-[#2e2839] hover:bg-primary text-white text-sm px-4 py-2 rounded-lg transition-all flex items-center gap-2">
+                <button onclick="sortGames('name')"
+                    class="bg-[#2e2839] hover:bg-primary text-white text-sm px-4 py-2 rounded-lg transition-all flex items-center gap-2">
                     <span class="material-symbols-outlined text-sm">sort_by_alpha</span> Name
                 </button>
-                <button onclick="sortGames('newest')" class="bg-[#2e2839] hover:bg-primary text-white text-sm px-4 py-2 rounded-lg transition-all flex items-center gap-2">
+                <button onclick="sortGames('newest')"
+                    class="bg-[#2e2839] hover:bg-primary text-white text-sm px-4 py-2 rounded-lg transition-all flex items-center gap-2">
                     <span class="material-symbols-outlined text-sm">calendar_today</span> Newest
                 </button>
             </div>
-            
+
             <div class="relative">
-                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">search</span>
-                <input type="text" oninput="searchGames(this.value)" placeholder="Find a game..." 
-                       class="bg-[#1e1a2b] border border-white/10 rounded-lg py-2 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-primary w-64 transition-all">
+                <span
+                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">search</span>
+                <input type="text" oninput="searchGames(this.value)" placeholder="Find a game..."
+                    class="bg-[#1e1a2b] border border-white/10 rounded-lg py-2 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-primary w-64 transition-all">
             </div>
         </div>
-    
-        <div id="games-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-12 gap-x-6 justify-items-center">
+
+        <div id="games-container"
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-12 gap-x-6 justify-items-center">
             <p class="text-gray-500 col-span-full text-center">Loading games...</p>
         </div>
     </main>
 
-    <div id="info-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-6 bg-black/90 backdrop-blur-sm">
-        <div class="bg-surface-dark border border-white/10 w-full max-w-2xl rounded-[32px] p-8 md:p-12 relative shadow-2xl">
-            <button onclick="toggleModal(false)" class="absolute top-6 right-6 text-gray-500 hover:text-white bg-white/5 w-10 h-10 rounded-full flex items-center justify-center transition-all">
+    <div id="info-modal"
+        class="fixed inset-0 z-[100] hidden items-center justify-center p-6 bg-black/90 backdrop-blur-sm">
+        <div
+            class="bg-surface-dark border border-white/10 w-full max-w-2xl rounded-[32px] p-8 md:p-12 relative shadow-2xl">
+            <button onclick="toggleModal(false)"
+                class="absolute top-6 right-6 text-gray-500 hover:text-white bg-white/5 w-10 h-10 rounded-full flex items-center justify-center transition-all">
                 <span class="material-symbols-outlined">close</span>
             </button>
             <h2 class="text-3xl font-black mb-2 text-white text-left">Rating System</h2>
             <p class="text-gray-500 text-sm mb-10 italic text-left">How I evaluate the games I play.</p>
             <div class="modal-content space-y-8 overflow-y-auto max-h-[60vh] pr-4 text-left">
                 <div>
-                    <h3 class="text-primary font-bold text-xs uppercase tracking-widest mb-2">1. Gameplay & Mechanics</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">This is the heart of the experience. Beyond how a game looks, I focus on how it feels in my hands. I look for fluid controls, an engaging gameplay loop, and a satisfying balance of difficulty and depth.</p>
+                    <h3 class="text-primary font-bold text-xs uppercase tracking-widest mb-2">1. Gameplay & Mechanics
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">This is the heart of the experience. Beyond how a
+                        game looks, I focus on how it feels in my hands. I look for fluid controls, an engaging gameplay
+                        loop, and a satisfying balance of difficulty and depth.</p>
                 </div>
                 <div>
-                    <h3 class="text-primary font-bold text-xs uppercase tracking-widest mb-2">2. Narrative & World Building</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Every game has a "context." I look for original stories and characters with depth. In non-linear games, I evaluate the world’s rules and how well the atmosphere pulls me in.</p>
+                    <h3 class="text-primary font-bold text-xs uppercase tracking-widest mb-2">2. Narrative & World
+                        Building</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Every game has a "context." I look for original
+                        stories and characters with depth. In non-linear games, I evaluate the world’s rules and how
+                        well the atmosphere pulls me in.</p>
                 </div>
                 <div>
-                    <h3 class="text-primary font-bold text-xs uppercase tracking-widest mb-2">3. Visual & Audio Presentation</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">This isn't about raw graphics power; it’s about art direction. I check if the style fits the game's soul, if the soundtrack elevates the mood, and if the sound effects enhance immersion.</p>
+                    <h3 class="text-primary font-bold text-xs uppercase tracking-widest mb-2">3. Visual & Audio
+                        Presentation</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">This isn't about raw graphics power; it’s about art
+                        direction. I check if the style fits the game's soul, if the soundtrack elevates the mood, and
+                        if the sound effects enhance immersion.</p>
                 </div>
                 <div>
-                    <h3 class="text-primary font-bold text-xs uppercase tracking-widest mb-2">4. Technical State & UX</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">I measure how "smooth" the experience is. I look for technical polish—checking for bugs, FPS stability, clean UI design, and overall optimization.</p>
+                    <h3 class="text-primary font-bold text-xs uppercase tracking-widest mb-2">4. Technical State & UX
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">I measure how "smooth" the experience is. I look
+                        for technical polish—checking for bugs, FPS stability, clean UI design, and overall
+                        optimization.</p>
                 </div>
                 <div>
-                    <h3 class="text-primary font-bold text-xs uppercase tracking-widest mb-2">5. Impact & Lasting Value</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">The "Wow" factor. Does the game stay with me after the credits roll? I evaluate if it was truly worth the time invested and if it brings something fresh to its genre.</p>
+                    <h3 class="text-primary font-bold text-xs uppercase tracking-widest mb-2">5. Impact & Lasting Value
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">The "Wow" factor. Does the game stay with me after
+                        the credits roll? I evaluate if it was truly worth the time invested and if it brings something
+                        fresh to its genre.</p>
                 </div>
             </div>
-            <button onclick="toggleModal(false)" class="w-full mt-10 bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-primary/20">Got it</button>
+            <button onclick="toggleModal(false)"
+                class="w-full mt-10 bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-primary/20">Got
+                it</button>
         </div>
     </div>
 
@@ -170,8 +244,8 @@
         const SB_URL = 'https://rhnjzjwbnukwgfpdkpqk.supabase.co';
         const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJobmp6andibnVrd2dmcGRrcHFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0OTI0MTMsImV4cCI6MjA4MjA2ODQxM30.PxkMYz8db04M4yzQWkw_ZmMEIU0d3RAbNoVAFsfm778';
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
-    
-        let allGames = []; 
+
+        let allGames = [];
 
         function toggleModal(show) {
             const modal = document.getElementById('info-modal');
@@ -185,17 +259,17 @@
                 document.body.style.overflow = 'auto';
             }
         }
-    
+
         async function fetchGames() {
             const { data, error } = await supabaseClient.from('games').select('*').order('created_at', { ascending: false });
-            
-            if (error) { 
-                console.error('Veri çekme hatası:', error); 
-                return; 
+
+            if (error) {
+                console.error('Veri çekme hatası:', error);
+                return;
             }
 
             // 1. Tüm oyunları ana listeye ata (Hata buradaydı, artık tüm veriyi alıyoruz)
-            allGames = data; 
+            allGames = data;
 
             // 2. Sadece "Top 5" olanları filtrele ve render et
             const top5 = data.filter(g => g.is_featured).slice(0, 5);
@@ -210,25 +284,29 @@
             const container = document.getElementById('top-5-container');
             const section = document.getElementById('top-5-section');
             if (games.length > 0) section.classList.remove('hidden');
-    
+
             container.innerHTML = games.map((game, index) => `
                 <div class="gold-card rounded-2xl overflow-hidden group transition-all hover:scale-105 duration-500 aspect-[3/4] relative">
                     <div class="gold-glow"></div>
                     <img src="${game.image_URL}" class="absolute inset-0 w-full h-full object-cover transition-all duration-700">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                    <div class="absolute top-2 left-2 bg-yellow-500 text-black text-[10px] font-black px-2 py-0.5 rounded shadow-lg">#${index + 1}</div>
+                    <div class="absolute top-2 left-2 bg-yellow-500 text-black p-1.5 rounded-full shadow-lg flex items-center justify-center" title="Hall of Fame">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                            <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
+                        </svg>
+                    </div>
                     <div class="absolute bottom-4 left-4 right-4 text-center">
                         <h3 class="text-white text-sm font-bold truncate drop-shadow-lg">${game.title}</h3>
                     </div>
                 </div>
             `).join('');
         }
-    
+
         function updateGameCount(count) {
             const countElement = document.getElementById('game-count');
             if (countElement) countElement.innerText = allGames.length;
         }
-    
+
         function sortGames(type) {
             let sorted = [...allGames];
             if (type === 'rating') sorted.sort((a, b) => b.total_score - a.total_score);
@@ -236,12 +314,12 @@
             else if (type === 'newest') sorted.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
             renderGames(sorted);
         }
-    
+
         function searchGames(query) {
             const filtered = allGames.filter(game => game.title.toLowerCase().includes(query.toLowerCase()));
             renderGames(filtered);
         }
-    
+
         function renderGames(games) {
             const container = document.getElementById('games-container');
             container.innerHTML = '';
@@ -249,13 +327,13 @@
                 container.innerHTML = '<p class="text-gray-500 col-span-full text-center">No games found.</p>';
                 return;
             }
-    
+
             games.forEach(game => {
                 // Saat datası kontrolü ve yeni stil (Sağ Üst - Beyaz Text - Neon Koyu Mor BG)
-                const playTimeHtml = game.play_time 
+                const playTimeHtml = game.play_time
                     ? `<div class="absolute top-0 right-0 px-3 py-1 bg-[#2d0080] border-l border-b border-primary/50 rounded-tr-2xl rounded-bl-xl shadow-[0_0_15px_rgba(91,19,236,0.3)] z-10">
                          <span class="text-white text-[15px] font-bold tracking-tight">${game.play_time} Hours</span>
-                       </div>` 
+                       </div>`
                     : '';
 
                 // "Tried but too old" Şeridi - GÜNCELLENDİ (Yazı hizalaması)
@@ -307,9 +385,9 @@
                 </div>`;
             });
         }
-    
+
         function renderStat(label, value) {
-            const fillPercentage = (value / 1) * 100; 
+            const fillPercentage = (value / 1) * 100;
             return `
                 <div class="flex items-center justify-between group/stat">
                     <span class="text-gray-300 text-base font-medium tracking-wide group-hover/stat:text-primary transition-colors">${label}</span>
@@ -323,12 +401,13 @@
                 </div>`;
         }
 
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             const modal = document.getElementById('info-modal');
             if (event.target == modal) toggleModal(false);
         }
-    
+
         fetchGames();
     </script>
 </body>
+
 </html>
