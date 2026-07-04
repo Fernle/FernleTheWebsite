@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html class="dark" lang="en">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>The Developer - My Portfolio</title>
-    <link href="https://fonts.googleapis.com" rel="preconnect"/>
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
         tailwind.config = {
@@ -31,56 +34,192 @@
         }
     </script>
     <style>
-        .active-tab { border-bottom: 3px solid #5b13ec; color: white !important; }
-        .tab-content { display: none; animation: fadeIn 0.4s ease-out; }
-        .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
+        .active-tab {
+            border-bottom: 3px solid #5b13ec;
+            color: white !important;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         /* Custom Scrollbar for Code Blocks */
-        .code-block::-webkit-scrollbar { height: 4px; }
-        .code-block::-webkit-scrollbar-thumb { background: #5b13ec; border-radius: 10px; }
+        .code-block::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .code-block::-webkit-scrollbar-thumb {
+            background: #5b13ec;
+            border-radius: 10px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <!-- Marked.js for Markdown Parsing -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    
+
     <style>
         /* Swiper Customization for Steam-like feel */
-        .swiper { width: 100%; border-radius: 8px; }
-        .mainSwiper { width: 100%; aspect-ratio: 16/9; margin-bottom: 8px; background: #000; }
-        .thumbSwiper { height: 60px; box-sizing: border-box; }
-        .thumbSwiper .swiper-slide { width: 20%; height: 100%; opacity: 0.6; cursor: pointer; border-radius: 4px; overflow: hidden; transition: all 0.2s; border: 2px solid transparent; }
-        .thumbSwiper .swiper-slide-thumb-active { opacity: 1; border-color: #5b13ec; }
-        .thumbSwiper .swiper-slide:hover { opacity: 1; }
-        .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
-        .swiper-slide iframe { width: 100%; height: 100%; border: none; }
-        
-        .swiper-button-next, .swiper-button-prev { color: white; background: rgba(0,0,0,0.5); width: 32px; height: 32px; border-radius: 4px; }
-        .swiper-button-next:after, .swiper-button-prev:after { font-size: 14px; font-weight: bold; }
-        .swiper-button-next:hover, .swiper-button-prev:hover { background: #5b13ec; }
+        .swiper {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .mainSwiper {
+            width: 100%;
+            aspect-ratio: 16/9;
+            margin-bottom: 8px;
+            background: #000;
+        }
+
+        .thumbSwiper {
+            height: 60px;
+            box-sizing: border-box;
+        }
+
+        .thumbSwiper .swiper-slide {
+            width: 20%;
+            height: 100%;
+            opacity: 0.6;
+            cursor: pointer;
+            border-radius: 4px;
+            overflow: hidden;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .thumbSwiper .swiper-slide-thumb-active {
+            opacity: 1;
+            border-color: #5b13ec;
+        }
+
+        .thumbSwiper .swiper-slide:hover {
+            opacity: 1;
+        }
+
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .swiper-slide iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: white;
+            background: rgba(0, 0, 0, 0.5);
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+        }
+
+        .swiper-button-next:after,
+        .swiper-button-prev:after {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .swiper-button-next:hover,
+        .swiper-button-prev:hover {
+            background: #5b13ec;
+        }
 
         /* Video Play Button Overlay */
-        .video-placeholder { position: relative; width: 100%; height: 100%; cursor: pointer; group: true; }
-        .video-placeholder:hover .play-btn { transform: translate(-50%, -50%) scale(1.1); background-color: #5b13ec; }
+        .video-placeholder {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            group: true;
+        }
+
+        .video-placeholder:hover .play-btn {
+            transform: translate(-50%, -50%) scale(1.1);
+            background-color: #5b13ec;
+        }
+
         .play-btn {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 64px; height: 64px; background-color: rgba(0,0,0,0.7); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; transition: all 0.3s;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 64px;
+            height: 64px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
             border: 2px solid white;
         }
 
         /* Markdown Content Styles */
-        .markdown-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
-        .markdown-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
-        .markdown-content p { margin-bottom: 0.75rem; }
-        .markdown-content strong { color: white; font-weight: 700; }
-        .markdown-content a { color: #5b13ec; text-decoration: underline; transition: color 0.2s; }
-        .markdown-content a:hover { color: #8b5cf6; }
-        .markdown-content code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; rounded: 0.25rem; font-family: monospace; font-size: 0.9em; }
-    </style> 
+        .markdown-content ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .markdown-content ol {
+            list-style-type: decimal;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .markdown-content p {
+            margin-bottom: 0.75rem;
+        }
+
+        .markdown-content strong {
+            color: white;
+            font-weight: 700;
+        }
+
+        .markdown-content a {
+            color: #5b13ec;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+
+        .markdown-content a:hover {
+            color: #8b5cf6;
+        }
+
+        .markdown-content code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.2rem 0.4rem;
+            rounded: 0.25rem;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+    </style>
 </head>
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased min-h-screen flex flex-col">
+
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased min-h-screen flex flex-col">
 
     <header class="w-full border-b border-[#2e2839] bg-background-dark/95 backdrop-blur-sm sticky top-0 z-50">
         <div class="w-full px-6 md:px-12 py-4 flex items-center justify-between">
@@ -88,15 +227,19 @@
                 <div class="text-primary flex items-center">
                     <span class="material-symbols-outlined !text-[28px]">terminal</span>
                 </div>
-                <h2 class="text-white text-xl font-bold tracking-tighter transition-all hover:text-primary cursor-default">
+                <h2
+                    class="text-white text-xl font-bold tracking-tighter transition-all hover:text-primary cursor-default">
                     The Developer
                 </h2>
             </div>
-            
+
             <nav class="flex items-center gap-6 md:gap-10">
-                <a class="text-gray-400 hover:text-white text-sm font-medium transition-colors" href="index.html">Home</a>
-                <a class="text-gray-400 hover:text-white text-sm font-medium transition-colors" href="gamer.html">The Gamer</a>
-                <a class="text-white text-sm font-bold border-b-2 border-primary pb-1" href="developer.html">The Developer</a>
+                <a class="text-gray-400 hover:text-white text-sm font-medium transition-colors"
+                    href="index.html">Home</a>
+                <a class="text-gray-400 hover:text-white text-sm font-medium transition-colors" href="gamer.html">The
+                    Gamer</a>
+                <a class="text-white text-sm font-bold border-b-2 border-primary pb-1" href="developer.html">The
+                    Developer</a>
             </nav>
         </div>
     </header>
@@ -104,27 +247,15 @@
     <main class="flex-grow w-full max-w-[1200px] mx-auto px-6 py-12">
         <div class="mb-12">
             <h1 class="text-5xl md:text-6xl font-black tracking-tight mb-4">Code & Craft</h1>
-            <p class="text-text-secondary text-lg max-w-2xl">Building digital architectures and documenting every step of the journey.</p>
+            <p class="text-text-secondary text-lg max-w-2xl">Building digital architectures and documenting every step
+                of the journey.</p>
         </div>
 
-        <div class="flex gap-8 border-b border-white/5 mb-10 items-end">
-            <button onclick="switchTab('projects')" id="tab-projects-btn" class="pb-4 text-sm font-bold uppercase tracking-widest text-primary border-b-4 border-primary transition-all -translate-y-1">
-                My Projects
-            </button>
-            <button onclick="switchTab('journey')" id="tab-journey-btn" class="pb-4 text-sm font-bold uppercase tracking-widest text-text-secondary hover:text-white border-b-4 border-transparent transition-all">
-                My Journey
-            </button>
-        </div>
+        <div class="border-b border-white/5 mb-10"></div>
 
-        <div id="projects-content" class="tab-content active space-y-8">
+        <div id="projects-content" class="space-y-8">
             <div id="projects-list" class="flex flex-col gap-12">
                 <p class="text-text-secondary text-center py-10">Loading projects...</p>
-            </div>
-        </div>
-
-        <div id="journey-content" class="tab-content space-y-12">
-            <div id="journey-list" class="relative">
-                <p class="text-text-secondary text-center py-10">Loading devlogs...</p>
             </div>
         </div>
     </main>
@@ -132,7 +263,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SB_URL = 'https://rhnjzjwbnukwgfpdkpqk.supabase.co';
-        const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJobmp6andibnVrd2dmcGRrcHFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0OTI0MTMsImV4cCI6MjA4MjA2ODQxM30.PxkMYz8db04M4yzQWkw_ZmMEIU0d3RAbNoVAFsfm778'; 
+        const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJobmp6andibnVrd2dmcGRrcHFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0OTI0MTMsImV4cCI6MjA4MjA2ODQxM30.PxkMYz8db04M4yzQWkw_ZmMEIU0d3RAbNoVAFsfm778';
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
         // Configure Marked.js to open links in new tab
@@ -144,32 +275,7 @@
         };
         marked.setOptions({ renderer: renderer });
 
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.getElementById(tab + '-content').classList.add('active');
-            
-            // UI Update
-            const projBtn = document.getElementById('tab-projects-btn');
-            const jourBtn = document.getElementById('tab-journey-btn');
-            
-            // Ortak sınıflar
-            const activeClasses = ['text-primary', 'border-primary', '-translate-y-1'];
-            const inactiveClasses = ['text-text-secondary', 'border-transparent'];
-            
-            if(tab === 'projects') {
-                projBtn.classList.add(...activeClasses);
-                projBtn.classList.remove(...inactiveClasses);
-                
-                jourBtn.classList.add(...inactiveClasses);
-                jourBtn.classList.remove(...activeClasses);
-            } else {
-                jourBtn.classList.add(...activeClasses);
-                jourBtn.classList.remove(...inactiveClasses);
-                
-                projBtn.classList.add(...inactiveClasses);
-                projBtn.classList.remove(...activeClasses);
-            }
-        }
+
 
         async function loadProjects() {
             const { data, error } = await supabaseClient
@@ -193,16 +299,16 @@
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
-        window.playVideo = function(containerId, videoId) {
+        window.playVideo = function (containerId, videoId) {
             const container = document.getElementById(containerId);
-            if(container) {
+            if (container) {
                 container.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
             }
         }
 
         function renderProjects(projects) {
             const container = document.getElementById('projects-list');
-            
+
             if (!projects || projects.length === 0) {
                 container.innerHTML = '<p class="text-text-secondary text-center py-10">Henüz proje eklenmemiş.</p>';
                 return;
@@ -213,7 +319,7 @@
                 const roles = p.tags ? p.tags.split(',').map(r => r.trim()) : [];
                 const cleanYoutubeId = getSafeYouTubeID(p.youtube_id);
                 const videoContainerId = `video-container-${index}`;
-                
+
                 return `
                 <article class="bg-surface-dark/50 border border-white/5 rounded-xl overflow-hidden p-6 shadow-xl hover:border-white/10 transition-all">
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -308,94 +414,18 @@
                         }
                     });
                 });
-            }, 100); 
+            }, 100);
         }
 
-        // Devlogları (Journey) Render Etme Fonksiyonu
-        function renderJourney(logs) {
-            const container = document.getElementById('journey-list');
-            
-            if (!logs || logs.length === 0) {
-                container.innerHTML = '<p class="text-text-secondary text-center py-10">Henüz bir devlog girişi yok.</p>';
-                return;
-            }
 
-            // Tarihe göre gruplama
-            const groupedLogs = {};
-            logs.forEach(log => {
-                const date = new Date(log.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-                if (!groupedLogs[date]) groupedLogs[date] = [];
-                groupedLogs[date].push(log);
-            });
-
-            let html = '';
-            
-            for (const [date, dayLogs] of Object.entries(groupedLogs)) {
-                html += `
-                <div class="relative">
-                    <div class="bg-background-light/95 dark:bg-background-dark/95 backdrop-blur py-2 mb-6 border-b border-dashed border-gray-300 dark:border-gray-700">
-                        <h3 class="text-lg font-bold dark:text-white">${date}</h3>
-                    </div>
-                    ${dayLogs.map(log => {
-                        const iconColorClass = log.color_class ? log.color_class.replace('text-', 'bg-').replace('400', '500/20').replace('500', '500/20') : 'bg-primary/20';
-                        const textColorClass = log.color_class || 'text-primary';
-                        
-                        // Markdown içeriğini HTML'e çevir
-                        const parsedContent = marked.parse(log.content);
-
-                        return `
-                        <div class="group grid grid-cols-[40px_1fr] gap-x-4 sm:gap-x-6 pb-12 last:pb-0">
-                            <!-- Left Column (Line & Icon) -->
-                            <div class="flex flex-col items-center">
-                                <div class="flex h-10 w-10 items-center justify-center rounded-full ${iconColorClass} ${textColorClass} ring-4 ring-background-light dark:ring-background-dark">
-                                    <span class="material-symbols-outlined text-[20px]">${log.icon || 'article'}</span>
-                                </div>
-                                <div class="w-[2px] bg-gray-200 dark:bg-[#433b54] h-full grow my-2 group-last:bg-gradient-to-b group-last:from-[#433b54] group-last:to-transparent"></div>
-                            </div>
-                            <!-- Right Column (Card Content) -->
-                            <div class="flex flex-col gap-4 pt-1">
-                                <div class="flex flex-wrap items-center gap-3">
-                                    <div class="flex items-center justify-center rounded-full bg-white/5 px-3 py-0.5 border border-white/10">
-                                        <p class="${textColorClass} text-xs font-bold uppercase tracking-wide">${log.category}</p>
-                                    </div>
-                                </div>
-                                <div class="bg-white dark:bg-surface-dark border border-gray-200 dark:border-[#2e2839] rounded-xl p-6 shadow-sm">
-                                    <h4 class="text-xl font-bold dark:text-white mb-2">${log.title}</h4>
-                                    <div class="text-text-secondary leading-relaxed mb-4 markdown-content">${parsedContent}</div>
-                                    ${log.code_snippet ? `
-                                        <div class="rounded-lg bg-gray-900 dark:bg-surface-darker border border-gray-800 p-4 font-mono text-xs sm:text-sm overflow-x-auto text-gray-300 code-block">
-                                            <pre><code>${log.code_snippet}</code></pre>
-                                        </div>
-                                    ` : ''}
-                                </div>
-                            </div>
-                        </div>`;
-                    }).join('')}
-                </div>`;
-            }
-
-            container.innerHTML = html;
-        }
 
         async function fetchData() {
             // Projects
             loadProjects();
-
-            // Devlogs
-            const { data: logs, error } = await supabaseClient
-                .from('devlogs')
-                .select('*')
-                .order('created_at', { ascending: false });
-            
-            if (error) {
-                console.error("Devlog Hatası:", error);
-                document.getElementById('journey-list').innerHTML = `<p class="text-red-500 text-center">Devloglar yüklenemedi: ${error.message}</p>`;
-            } else {
-                renderJourney(logs);
-            }
         }
 
         fetchData();
     </script>
 </body>
+
 </html>
