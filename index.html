@@ -1,40 +1,44 @@
 <!DOCTYPE html>
 <html class="dark" lang="en">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Portfolio Homepage</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Noto+Sans:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "primary": "#5b13ec",
-              "background-light": "#f6f6f8",
-              "background-dark": "#0f0a18",
-              "surface-dark": "#181226",
-              "border-dark": "#2e2839",
-              "text-secondary": "#a69db9",
-              "neon-purple": "#8b5cf6",
-              "neon-pink": "#ec4899",
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#5b13ec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0f0a18",
+                        "surface-dark": "#181226",
+                        "border-dark": "#2e2839",
+                        "text-secondary": "#a69db9",
+                        "neon-purple": "#8b5cf6",
+                        "neon-pink": "#ec4899",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "Noto Sans", "sans-serif"],
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "url(\"data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40' stroke='rgba(91, 19, 236, 0.05)' stroke-width='2'/%3E%3C/g%3E%3C/svg%3E\")",
+                        'dot-pattern': "url(\"data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='1' height='1' x='1' y='1' fill='rgba(139, 92, 246, 0.15)'/%3E%3C/svg%3E\")",
+                    }
+                },
             },
-            fontFamily: {
-              "display": ["Plus Jakarta Sans", "Noto Sans", "sans-serif"],
-            },
-            backgroundImage: {
-               'grid-pattern': "url(\"data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40' stroke='rgba(91, 19, 236, 0.05)' stroke-width='2'/%3E%3C/g%3E%3C/svg%3E\")",
-               'dot-pattern': "url(\"data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='1' height='1' x='1' y='1' fill='rgba(139, 92, 246, 0.15)'/%3E%3C/svg%3E\")",
-            }
-          },
-        },
-      }
+        }
     </script>
-<style type="text/tailwindcss">
-    @layer utilities {
+    <style type="text/tailwindcss">
+        @layer utilities {
         .text-glow {
             text-shadow: 0 0 10px rgba(91, 19, 236, 0.5);
         }
@@ -64,216 +68,410 @@
             @apply bg-primary border-primary text-white scale-[1.02];
             box-shadow: 0 0 25px rgba(91, 19, 236, 0.5);
         }
+        html {
+            scroll-behavior: smooth;
+        }
     }
 </style>
 </head>
+
 <body class="font-display">
-<div class="relative flex min-h-screen w-full flex-col bg-background-light dark:bg-background-dark dark:bg-dot-pattern group/design-root overflow-x-hidden">
-    <header class="w-full border-b border-[#2e2839] bg-background-dark/95 backdrop-blur-sm sticky top-0 z-50">
-        <div class="w-full px-6 md:px-12 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-3 text-white">
-                <div class="text-primary flex items-center">
-                    <span class="material-symbols-outlined !text-[28px]">rocket_launch</span>
+    <div
+        class="relative flex min-h-screen w-full flex-col bg-background-light dark:bg-background-dark dark:bg-dot-pattern group/design-root overflow-x-hidden">
+        <header class="w-full border-b border-[#2e2839] bg-background-dark/95 backdrop-blur-sm sticky top-0 z-50">
+            <div class="w-full px-6 md:px-12 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-3 text-white">
+                    <div class="text-primary flex items-center">
+                        <span class="material-symbols-outlined !text-[28px]">rocket_launch</span>
+                    </div>
+                    <h2
+                        class="text-white text-xl font-bold tracking-tighter transition-all hover:text-primary cursor-default">
+                        Portfolio
+                    </h2>
                 </div>
-                <h2 class="text-white text-xl font-bold tracking-tighter transition-all hover:text-primary cursor-default">
-                    Portfolio
-                </h2>
+
+                <nav class="flex items-center gap-6 md:gap-10">
+                    <a class="text-gray-400 hover:text-white text-sm font-medium transition-colors"
+                        href="gamer.html">The Gamer</a>
+                    <a class="text-gray-400 hover:text-white text-sm font-medium transition-colors"
+                        href="developer.html">The Developer</a>
+                </nav>
             </div>
-            
-            <nav class="flex items-center gap-6 md:gap-10">
-                <a class="text-gray-400 hover:text-white text-sm font-medium transition-colors" href="gamer.html">The Gamer</a>
-                <a class="text-gray-400 hover:text-white text-sm font-medium transition-colors" href="developer.html">The Developer</a>
-            </nav>
+        </header>
+        <div class="flex flex-1 flex-col">
+            <section id="welcome-section"
+                class="relative w-full overflow-hidden h-[calc(100vh-73px)] min-h-[calc(100vh-73px)] flex flex-col items-center justify-center text-center px-4 py-6">
+                <div
+                    class="absolute top-0 right-0 -z-10 h-[600px] w-[600px] bg-primary/40 opacity-40 blur-[130px] rounded-full translate-x-1/3 -translate-y-1/4 pointer-events-none mix-blend-screen">
+                </div>
+                <div
+                    class="absolute bottom-0 left-0 -z-10 h-[500px] w-[500px] bg-neon-pink/30 opacity-40 blur-[120px] rounded-full -translate-x-1/3 translate-y-1/4 pointer-events-none mix-blend-screen">
+                </div>
+                <div
+                    class="absolute top-1/2 left-1/2 -z-10 h-[400px] w-[400px] bg-cyan-500/20 opacity-30 blur-[100px] rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none mix-blend-screen">
+                </div>
+                <div
+                    class="mx-auto max-w-[1400px] w-full px-4 sm:px-6 lg:px-12 flex flex-col items-center justify-center space-y-8 sm:space-y-12 md:space-y-14 text-center my-auto">
+                    <h1
+                        class="text-[clamp(2.2rem,6.8vw,6.5rem)] font-black tracking-tight neon-gradient-text drop-shadow-[0_0_35px_rgba(139,92,246,0.5)] whitespace-nowrap">
+                        Welcome to my universe
+                    </h1>
+                    <h1
+                        class="text-[clamp(1.2rem,3.2vw,3.2rem)] font-bold tracking-tight text-white/90 whitespace-nowrap">
+                        Hello, I’m Ahmet "Fernle" Emir.
+                    </h1>
+                </div>
+
+                <div id="scroll-indicator"
+                    onclick="document.getElementById('orbital-section').scrollIntoView({behavior: 'smooth'})"
+                    class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-gray-500 opacity-70 animate-bounce cursor-pointer pointer-events-auto transition-all duration-500 z-30">
+                    <span class="text-xs uppercase font-medium tracking-widest">Scroll</span>
+                    <span class="material-symbols-outlined text-xl">keyboard_arrow_down</span>
+                </div>
+            </section>
+
+
+            <!-- Interactive Orbital Carousel Section -->
+            <section id="orbital-section" onclick="closeInfoCards()"
+                class="snap-section relative w-full h-[calc(100vh-73px)] min-h-[calc(100vh-73px)] overflow-hidden bg-transparent text-white flex items-center justify-center p-0 cursor-pointer">
+                <!-- Ambient glowing backgrounds -->
+                <div
+                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 w-[600px] md:w-[800px] h-[600px] md:h-[800px] bg-primary/20 opacity-30 blur-[150px] rounded-full pointer-events-none">
+                </div>
+
+                <div
+                    class="mx-auto max-w-[1440px] px-4 md:px-8 w-full flex items-center justify-center lg:justify-between relative z-20">
+
+                    <!-- Left Side Info Card Container -->
+                    <div id="info-card-left" onclick="event.stopPropagation()"
+                        class="hidden lg:block w-[300px] xl:w-[350px] p-6 rounded-2xl bg-surface-dark/95 border border-white/10 shadow-2xl backdrop-blur-md opacity-0 -translate-x-6 transition-all duration-500 pointer-events-none z-30 cursor-default">
+                        <!-- Dynamic Left Card Content -->
+                    </div>
+
+                    <!-- Center Orbital Canvas Container -->
+                    <div id="orbital-wrapper"
+                        class="relative w-full max-w-[min(560px,56vh)] aspect-square flex items-center justify-center select-none mx-auto lg:mx-0">
+                        <!-- Dynamic SVG connecting lines -->
+                        <svg id="orbital-svg"
+                            class="absolute inset-0 w-full h-full pointer-events-none z-10 overflow-visible"></svg>
+
+                        <!-- Center Core Ring -->
+                        <div id="center-ring" onclick="closeInfoCards()"
+                            class="relative z-30 size-24 sm:size-32 md:size-36 rounded-full bg-surface-dark border-2 border-primary shadow-[0_0_40px_rgba(91,19,236,0.6)] flex flex-col items-center justify-center text-center p-3 transition-transform duration-300 hover:scale-110 cursor-pointer">
+                            <div
+                                class="absolute inset-0 rounded-full bg-gradient-to-br from-primary/30 via-neon-pink/20 to-transparent animate-pulse -z-10">
+                            </div>
+                            <span
+                                class="material-symbols-outlined text-primary text-3xl sm:text-4xl md:text-5xl">rocket_launch</span>
+                            <span class="text-xs sm:text-sm font-extrabold text-white mt-1 tracking-tight">FERNLE</span>
+                        </div>
+
+                        <!-- Orbit Track Outline Visual -->
+                        <div
+                            class="absolute rounded-full border border-white/10 pointer-events-none w-[76%] h-[76%] z-0">
+                        </div>
+
+                        <!-- Dynamic Outer Nodes Container -->
+                        <div id="orbital-nodes-container" class="absolute inset-0 z-20 pointer-events-none"></div>
+                    </div>
+
+                    <!-- Right Side Info Card Container -->
+                    <div id="info-card-right" onclick="event.stopPropagation()"
+                        class="hidden lg:block w-[300px] xl:w-[350px] p-6 rounded-2xl bg-surface-dark/95 border border-white/10 shadow-2xl backdrop-blur-md opacity-0 translate-x-6 transition-all duration-500 pointer-events-none z-30 cursor-default">
+                        <!-- Dynamic Right Card Content -->
+                    </div>
+
+                </div>
+            </section>
+
         </div>
-    </header>
-<div class="flex flex-1 flex-col">
-<section class="relative w-full overflow-hidden py-12 md:py-24 lg:py-32">
-<div class="absolute top-0 right-0 -z-10 h-[600px] w-[600px] bg-primary/40 opacity-40 blur-[130px] rounded-full translate-x-1/3 -translate-y-1/4 pointer-events-none mix-blend-screen"></div>
-<div class="absolute bottom-0 left-0 -z-10 h-[500px] w-[500px] bg-neon-pink/30 opacity-40 blur-[120px] rounded-full -translate-x-1/3 translate-y-1/4 pointer-events-none mix-blend-screen"></div>
-<div class="absolute top-1/2 left-1/2 -z-10 h-[400px] w-[400px] bg-cyan-500/20 opacity-30 blur-[100px] rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none mix-blend-screen"></div>
-<div class="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
-<div class="grid gap-12 lg:grid-cols-2 lg:gap-8 items-center">
-<div class="flex flex-col justify-center space-y-8">
-<div class="space-y-4">
-<div class="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary dark:text-primary-foreground dark:shadow-[0_0_10px_rgba(91,19,236,0.3)]">
-<span>Welcome to my universe</span>
-</div>
-<h1 class="text-4xl font-black tracking-tight text-gray-900 dark:text-white sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
-Building Worlds & <span class="neon-gradient-text">Conquering Them</span>
-</h1>
-<p class="max-w-[600px] text-lg text-gray-600 dark:text-text-secondary md:text-xl leading-relaxed">
-    Hello, I’m Ahmet "Fernle" Emir.<br><br>I graduated in 2025 from Istanbul Bilgi University with <span class="text-[#8200db] font-bold">a degree in Digital Game Design</span>. In my early university years, I focused on improving myself in software development.<br><br>In 2023, together with my friends, we founded <span class="text-[#8200db] font-bold">the BOLF Games</span> team, where I started improving myself in areas like game design, project management, and team management.<br><br>These days, I’m mostly focused on improving myself further in these areas.
-</p>
-</div>
-<div class="flex flex-col sm:flex-row gap-4">
-<a class="btn-universal group" href="gamer.html">
-<span class="material-symbols-outlined text-[20px]">sports_esports</span>
-<span>Explore The Gamer</span>
-</a>
-<a class="btn-universal group" href="developer.html">
-<span class="material-symbols-outlined text-[20px]">code</span>
-<span>Explore The Developer</span>
-</a>
-</div>
-</div>
-<div class="relative mx-auto aspect-square w-full max-w-[500px] lg:max-w-none">
-<div class="absolute inset-0 bg-gradient-to-tr from-primary to-neon-pink rounded-2xl transform opacity-60 moving-glow"></div>
-<div class="relative h-full w-full overflow-hidden rounded-2xl bg-surface-dark shadow-2xl border border-white/10" style="background-image: url('https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=1000'); background-size: cover; background-position: center;">
-<div class="absolute inset-0 bg-gradient-to-t from-background-dark/95 to-transparent"></div>
-<div class="absolute bottom-6 left-6 right-6">
-<div class="flex gap-4">
-<div class="rounded-lg bg-black/70 backdrop-blur-xl p-4 border border-white/10 flex-1 dark:shadow-[0_0_20px_rgba(0,0,0,0.5)]">
-<div class="flex items-center gap-2 mb-2">
-<span class="material-symbols-outlined text-primary text-sm dark:drop-shadow-[0_0_5px_rgba(91,19,236,0.8)]">terminal</span>
-<span class="text-xs font-bold text-white uppercase tracking-wider">Dev Stats</span>
-</div>
-<div id="realtime-project-count" class="text-2xl font-bold text-white">...</div>
-<div class="text-xs text-gray-400">Projects Completed</div>
-</div>
-<div class="rounded-lg bg-black/70 backdrop-blur-xl p-4 border border-white/10 flex-1 dark:shadow-[0_0_20px_rgba(0,0,0,0.5)]">
-<div class="flex items-center gap-2 mb-2">
-<span class="material-symbols-outlined text-primary text-sm dark:drop-shadow-[0_0_5px_rgba(91,19,236,0.8)]">sports_esports</span>
-<span class="text-xs font-bold text-white uppercase tracking-wider">Total Games Played</span>
-</div>
-<div id="realtime-game-count" class="text-2xl font-bold text-white">...</div>
-<div class="text-xs text-gray-400">Lifetime Stats</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section class="w-full py-12 md:py-24 bg-white/50 dark:bg-white/[0.02] border-y border-gray-200 dark:border-white/5 backdrop-blur-sm relative">
-<div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none"></div>
-<div class="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8 relative">
-<div class="flex flex-col gap-10">
-<div class="flex flex-col gap-4 max-w-[720px]">
-<h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">My Expertise</h2>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-<div class="group flex flex-col gap-4 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-surface-dark p-6 transition-all hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg dark:hover:shadow-[0_0_20px_rgba(91,19,236,0.15)]">
-<div class="flex size-12 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-<span class="material-symbols-outlined" style="font-size: 28px;">terminal</span>
-</div>
-<div class="space-y-2">
-<h3 class="text-xl font-bold text-gray-900 dark:text-white">Unity Engineering & Architecture</h3>
-<p class="text-sm leading-relaxed text-gray-600 dark:text-text-secondary">Specializing in game development with Unity and a strong command of C#. I prioritize writing clean, maintainable code by adhering to SOLID principles and applying design patterns. Committed to continuous learning, I constantly refine my architectural approach to build scalable game systems.</p>
-</div>
-</div>
-<div class="group flex flex-col gap-4 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-surface-dark p-6 transition-all hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg dark:hover:shadow-[0_0_20px_rgba(91,19,236,0.15)]">
-<div class="flex size-12 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-<span class="material-symbols-outlined" style="font-size: 28px;">groups</span>
-</div>
-<div class="space-y-2">
-<h3 class="text-xl font-bold text-gray-900 dark:text-white">Project & Team Management</h3>
-<p class="text-sm leading-relaxed text-gray-600 dark:text-text-secondary">As a co-founder of BOLF Games, I have cultivated leadership skills through direct, hands-on experience. My expertise lies in orchestrating development cycles, managing cross-functional teams, and resolving production bottlenecks. I transform complex project requirements into structured workflows, ensuring efficient delivery from concept to launch.</p>
-</div>
-</div>
-<div class="group flex flex-col gap-4 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-surface-dark p-6 transition-all hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg dark:hover:shadow-[0_0_20px_rgba(91,19,236,0.15)]">
-<div class="flex size-12 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-<span class="material-symbols-outlined" style="font-size: 28px;">hub</span>
-</div>
-<div class="space-y-2">
-<h3 class="text-xl font-bold text-gray-900 dark:text-white">Production Pipeline Optimization</h3>
-<p class="text-sm leading-relaxed text-gray-600 dark:text-text-secondary">Possessing a dual background in software engineering and digital game design, I effectively bridge the gap between technical constraints and creative vision. I optimize production pipelines to facilitate seamless collaboration between artists and developers, ensuring that design intent is perfectly translated into technical execution.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section class="w-full py-12 md:py-24 relative overflow-hidden">
-<div class="absolute top-0 left-0 -z-10 h-[400px] w-[400px] bg-primary/20 opacity-40 blur-[100px] rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none mix-blend-screen"></div>
-<div class="absolute bottom-0 right-0 -z-10 h-[400px] w-[400px] bg-neon-purple/20 opacity-40 blur-[100px] rounded-full translate-x-1/2 translate-y-1/2 pointer-events-none mix-blend-screen"></div>
-<div class="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
-<div class="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
-<div class="flex flex-col gap-6">
-<div class="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary w-fit">
-<span>Get in Touch</span>
-</div>
-<h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">Ready to Collaborate?</h2>
-<p class="text-lg text-gray-600 dark:text-text-secondary leading-relaxed">I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions.</p>
-<div class="space-y-4 mt-2">
-<a class="flex items-center gap-4 p-4 rounded-xl border border-gray-200 dark:border-white/10 bg-white/50 dark:bg-surface-dark/50 hover:bg-white dark:hover:bg-surface-dark transition-all hover:shadow-sm group dark:hover:border-primary/30" href="mailto:ahmetemirozde@gmail.com">
-<div class="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-<span class="material-symbols-outlined">mail</span>
-</div>
-<div>
-<p class="text-sm font-medium text-gray-500 dark:text-text-secondary">Email me at</p>
-<p class="text-base font-bold text-gray-900 dark:text-white">ahmetemirozde@gmail.com</p>
-</div>
-</a>
-</div>
-</div>
-<!-- Dynamic Socials Grid -->
-<div id="socials-grid" class="flex flex-wrap gap-4 justify-center sm:justify-start">
-    <!-- Social links will be loaded here -->
-    <p class="text-text-secondary text-sm">Loading socials...</p>
-</div>
-</div>
-</div>
-</section>
-</div>
-<footer class="w-full border-t border-gray-200 dark:border-white/5 bg-background-light dark:bg-background-dark py-12">
-<div class="mx-auto flex max-w-[1280px] flex-col items-center justify-center gap-8 px-4 sm:px-6 lg:px-8">
-<p class="text-sm text-gray-500 dark:text-text-secondary text-center">
-© 2025 Portfolio. All rights reserved.
-</p>
-</div>
-</footer>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-    const SB_URL = 'https://rhnjzjwbnukwgfpdkpqk.supabase.co';
-    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJobmp6andibnVrd2dmcGRrcHFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0OTI0MTMsImV4cCI6MjA4MjA2ODQxM30.PxkMYz8db04M4yzQWkw_ZmMEIU0d3RAbNoVAFsfm778';
-    const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
-    
-    async function fetchStats() {
-        // Fetch Games Count
-        const { count: gameCount, error: gameError } = await supabaseClient
-            .from('games')
-            .select('*', { count: 'exact', head: true });
-        if (!gameError) {
-            document.getElementById('realtime-game-count').innerText = gameCount;
-        }
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Orbital Carousel Data
+        const orbitalData = [
+            {
+                id: "education",
+                label: "Education",
+                icon: "school",
+                badge: "Academic Degree",
+                title: "Istanbul Bilgi University",
+                subtitle: "BACHELOR of SCIENCE in DIGITAL GAME DESIGN (2021 – 2025)",
+                desc: "Focused on software development, C# architecture, SOLID design principles, and game engine mechanics."
+            },
+            {
+                id: "gamer",
+                label: "The Gamer Page",
+                icon: "sports_esports",
+                badge: "Gaming Library",
+                title: "The Gamer Hub",
+                subtitle: "Curated Game Collection",
+                desc: "A dedicated space exploring digital worlds I've played, rated, and evaluated with detailed evaluation scores."
+            },
+            {
+                id: "developer",
+                label: "The Developer Page",
+                icon: "code",
+                badge: "Engineering & Architecture",
+                title: "The Developer Hub",
+                subtitle: "Projects & Production Workflows",
+                desc: "Showcase of Unity projects, game mechanics, C# code samples, production pipeline optimizations, and team management."
+            }
+        ];
 
-        // Fetch Projects Count
-        const { count: projectCount, error: projectError } = await supabaseClient
-            .from('projects')
-            .select('*', { count: 'exact', head: true });
-        if (!projectError) {
-            document.getElementById('realtime-project-count').innerText = projectCount;
-        }
-    }
+        let orbitAngle = 0;
+        let isOrbitHovered = false;
+        let activeCardIndex = null;
 
-    async function fetchSocials() {
-        const { data, error } = await supabaseClient
-            .from('socials')
-            .select('*')
-            .eq('is_active', true)
-            .order('created_at', { ascending: true });
-
-        const container = document.getElementById('socials-grid');
-        
-        if (error || !data || data.length === 0) {
-            container.innerHTML = '<p class="text-text-secondary text-sm">No social links available.</p>';
-            return;
-        }
-
-        container.innerHTML = data.map(s => {
-            // Renk sınıfını işle
-            // Eğer kullanıcı text-gray-800 gibi koyu bir renk girdiyse, bunu daha görünür bir renge (text-gray-400) çeviriyoruz.
-            let colorClass = s.color_class || 'text-white';
-            if (colorClass.includes('gray-800') || colorClass.includes('gray-900') || colorClass.includes('black')) {
-                colorClass = 'text-gray-400';
+        function openInfoCard(index, event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
             }
 
-            const bgClass = colorClass.replace('text-', 'bg-').replace('400', '500/10').replace('500', '500/10').replace('600', '600/10');
-            const borderClass = colorClass.replace('text-', 'border-').replace('400', '500/20').replace('500', '500/20').replace('600', '600/20');
+            const data = orbitalData[index];
+            const wrapper = document.getElementById('orbital-wrapper');
+            const nodeEl = document.getElementById(`orbit-node-${index}`);
+            if (!data || !wrapper || !nodeEl) return;
 
-            return `
+            const wrapperRect = wrapper.getBoundingClientRect();
+            const nodeRect = nodeEl.getBoundingClientRect();
+
+            // Check if node is left or right of center
+            const nodeCenterX = nodeRect.left + nodeRect.width / 2;
+            const wrapperCenterX = wrapperRect.left + wrapperRect.width / 2;
+            const isLeft = nodeCenterX < wrapperCenterX;
+
+            const targetSide = isLeft ? 'left' : 'right';
+            const oppositeSide = isLeft ? 'right' : 'left';
+
+            const targetCard = document.getElementById(`info-card-${targetSide}`);
+            const oppositeCard = document.getElementById(`info-card-${oppositeSide}`);
+
+            if (oppositeCard) {
+                oppositeCard.classList.add('opacity-0', 'pointer-events-none', isLeft ? 'translate-x-6' : '-translate-x-6');
+                oppositeCard.classList.remove('opacity-100', 'translate-x-0', 'pointer-events-auto');
+            }
+
+            if (targetCard) {
+                targetCard.innerHTML = `
+                <div class="flex items-center justify-between mb-3">
+                    <span class="px-3 py-1 rounded-full bg-neon-purple/20 border border-neon-purple/40 text-xs font-bold text-neon-purple shadow-[0_0_10px_rgba(139,92,246,0.25)]">${data.badge}</span>
+                    <button onclick="closeInfoCards()" class="text-gray-400 hover:text-white transition-colors p-1">
+                        <span class="material-symbols-outlined text-lg">close</span>
+                    </button>
+                </div>
+                <h3 class="text-xl font-black text-white tracking-tight">${data.title}</h3>
+                <p class="text-xs font-semibold text-neon-purple mt-1 mb-3">${data.subtitle}</p>
+                <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">${data.desc}</p>
+            `;
+
+                targetCard.classList.remove('opacity-0', 'pointer-events-none', isLeft ? '-translate-x-6' : 'translate-x-6');
+                targetCard.classList.add('opacity-100', 'translate-x-0', 'pointer-events-auto');
+            }
+
+            activeCardIndex = index;
+        }
+
+        function closeInfoCards() {
+            ['left', 'right'].forEach(side => {
+                const card = document.getElementById(`info-card-${side}`);
+                if (card) {
+                    card.classList.add('opacity-0', 'pointer-events-none', side === 'left' ? '-translate-x-6' : 'translate-x-6');
+                    card.classList.remove('opacity-100', 'translate-x-0', 'pointer-events-auto');
+                }
+            });
+            activeCardIndex = null;
+        }
+
+        function initOrbitalSystem() {
+            const container = document.getElementById('orbital-nodes-container');
+            const svg = document.getElementById('orbital-svg');
+            const wrapper = document.getElementById('orbital-wrapper');
+            if (!container || !svg || !wrapper) return;
+
+            container.innerHTML = '';
+            svg.innerHTML = '';
+
+            const total = orbitalData.length;
+
+            orbitalData.forEach((data, index) => {
+                // SVG Line
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('stroke', 'rgba(91, 19, 236, 0.35)');
+                line.setAttribute('stroke-width', '1.5');
+                line.setAttribute('stroke-dasharray', '4 4');
+                line.id = `orbit-line-${index}`;
+                svg.appendChild(line);
+
+                // Node Element
+                const nodeEl = document.createElement('div');
+                nodeEl.className = 'absolute pointer-events-auto cursor-pointer transition-shadow duration-300 hover:scale-125 hover:z-40';
+                nodeEl.id = `orbit-node-${index}`;
+
+                const pulsePeriod = 4.5 + (index * 1.2) % 3.5;
+                const pulsePhase = (index * 1.4) % (Math.PI * 2);
+
+                nodeEl.setAttribute('data-pulse-period', pulsePeriod);
+                nodeEl.setAttribute('data-pulse-phase', pulsePhase);
+                nodeEl.setAttribute('data-base-angle', (index * 2 * Math.PI) / total);
+
+                nodeEl.innerHTML = `
+                <div onclick="openInfoCard(${index}, event)" class="flex flex-col items-center group">
+                    <div class="size-11 sm:size-14 md:size-16 rounded-full bg-surface-dark border border-white/20 dark:border-primary/40 shadow-lg flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-300 group-hover:shadow-[0_0_25px_rgba(91,19,236,0.7)]">
+                        <span class="material-symbols-outlined text-lg sm:text-2xl md:text-2xl">${data.icon}</span>
+                    </div>
+                    <div class="mt-1.5 px-2.5 py-1 rounded-full bg-surface-dark/95 border border-white/10 text-[10px] sm:text-xs font-bold text-white whitespace-nowrap shadow-md group-hover:border-primary group-hover:text-primary transition-all">
+                        ${data.label}
+                    </div>
+                </div>
+            `;
+
+                nodeEl.addEventListener('mouseenter', () => { isOrbitHovered = true; });
+                nodeEl.addEventListener('mouseleave', () => { isOrbitHovered = false; });
+
+                container.appendChild(nodeEl);
+            });
+
+            let lastTime = performance.now();
+            let virtualPulseTime = 0;
+
+            function animateOrbit(time) {
+                const delta = (time - lastTime) / 1000;
+                lastTime = time;
+
+                if (!isOrbitHovered && activeCardIndex === null) {
+                    orbitAngle += delta * 0.10; // Normal smooth 60fps rotation
+                    virtualPulseTime += delta * 1.0; // Normal breathing speed
+                } else if (isOrbitHovered && activeCardIndex === null) {
+                    virtualPulseTime += delta * 0.2; // Hovered gentle float
+                }
+                // When activeCardIndex !== null (card open): freezes in place without subpixel jitter!
+
+                const rect = wrapper.getBoundingClientRect();
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const baseRadius = rect.width * 0.38;
+
+                orbitalData.forEach((_, index) => {
+                    const nodeEl = document.getElementById(`orbit-node-${index}`);
+                    const line = document.getElementById(`orbit-line-${index}`);
+                    if (!nodeEl || !line) return;
+
+                    const baseAngle = parseFloat(nodeEl.getAttribute('data-base-angle'));
+                    const pulsePeriod = parseFloat(nodeEl.getAttribute('data-pulse-period'));
+                    const pulsePhase = parseFloat(nodeEl.getAttribute('data-pulse-phase'));
+
+                    const currentAngle = baseAngle + orbitAngle;
+
+                    // Ultra-slow breathing pulse when card is active
+                    const pulseOffset = Math.sin(virtualPulseTime * (2 * Math.PI / pulsePeriod) + pulsePhase) * (rect.width * 0.025);
+                    const currentRadius = baseRadius + pulseOffset;
+
+                    const x = centerX + Math.cos(currentAngle) * currentRadius;
+                    const y = centerY + Math.sin(currentAngle) * currentRadius;
+
+                    nodeEl.style.left = `${x}px`;
+                    nodeEl.style.top = `${y}px`;
+                    nodeEl.style.transform = `translate(-50%, -50%)`;
+
+                    line.setAttribute('x1', centerX);
+                    line.setAttribute('y1', centerY);
+                    line.setAttribute('x2', x);
+                    line.setAttribute('y2', y);
+                });
+
+                requestAnimationFrame(animateOrbit);
+            }
+
+            requestAnimationFrame(animateOrbit);
+        }
+
+        function handleScrollIndicator() {
+            const el = document.getElementById('scroll-indicator');
+            if (!el) return;
+            if (window.scrollY > 30) {
+                el.classList.add('opacity-0', 'translate-y-4');
+                el.classList.remove('opacity-70');
+            } else {
+                el.classList.remove('opacity-0', 'translate-y-4');
+                el.classList.add('opacity-70');
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initOrbitalSystem();
+            handleScrollIndicator();
+        });
+        window.addEventListener('scroll', handleScrollIndicator);
+        window.addEventListener('resize', initOrbitalSystem);
+
+        // Fast & Fluid Wheel Scroll Handler
+        let lastWheelTime = 0;
+        window.addEventListener('wheel', (e) => {
+            const now = performance.now();
+            if (now - lastWheelTime < 400) return;
+
+            const orbital = document.getElementById('orbital-section');
+            if (!orbital) return;
+
+            if (e.deltaY > 10 && window.scrollY < 100) {
+                lastWheelTime = now;
+                orbital.scrollIntoView({ behavior: 'smooth' });
+            } else if (e.deltaY < -10 && window.scrollY > 50) {
+                lastWheelTime = now;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }, { passive: true });
+
+        const SB_URL = 'https://rhnjzjwbnukwgfpdkpqk.supabase.co';
+        const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJobmp6andibnVrd2dmcGRrcHFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0OTI0MTMsImV4cCI6MjA4MjA2ODQxM30.PxkMYz8db04M4yzQWkw_ZmMEIU0d3RAbNoVAFsfm778';
+        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+
+        async function fetchStats() {
+            // Fetch Games Count
+            const { count: gameCount, error: gameError } = await supabaseClient
+                .from('games')
+                .select('*', { count: 'exact', head: true });
+            if (!gameError) {
+                document.getElementById('realtime-game-count').innerText = gameCount;
+            }
+
+            // Fetch Projects Count
+            const { count: projectCount, error: projectError } = await supabaseClient
+                .from('projects')
+                .select('*', { count: 'exact', head: true });
+            if (!projectError) {
+                document.getElementById('realtime-project-count').innerText = projectCount;
+            }
+        }
+
+        async function fetchSocials() {
+            const { data, error } = await supabaseClient
+                .from('socials')
+                .select('*')
+                .eq('is_active', true)
+                .order('created_at', { ascending: true });
+
+            const container = document.getElementById('socials-grid');
+
+            if (error || !data || data.length === 0) {
+                container.innerHTML = '<p class="text-text-secondary text-sm">No social links available.</p>';
+                return;
+            }
+
+            container.innerHTML = data.map(s => {
+                // Renk sınıfını işle
+                // Eğer kullanıcı text-gray-800 gibi koyu bir renk girdiyse, bunu daha görünür bir renge (text-gray-400) çeviriyoruz.
+                let colorClass = s.color_class || 'text-white';
+                if (colorClass.includes('gray-800') || colorClass.includes('gray-900') || colorClass.includes('black')) {
+                    colorClass = 'text-gray-400';
+                }
+
+                const bgClass = colorClass.replace('text-', 'bg-').replace('400', '500/10').replace('500', '500/10').replace('600', '600/10');
+                const borderClass = colorClass.replace('text-', 'border-').replace('400', '500/20').replace('500', '500/20').replace('600', '600/20');
+
+                return `
             <a href="${s.url}" target="_blank" class="group flex flex-col gap-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white/80 dark:bg-surface-dark/80 backdrop-blur-sm p-6 transition-all hover:border-primary/50 hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(91,19,236,0.1)] min-w-[160px] flex-1 max-w-[200px]">
                 <div class="flex justify-between items-start">
                     <div class="flex size-10 items-center justify-center rounded-lg ${bgClass} ${colorClass} group-hover:bg-primary group-hover:text-white transition-colors border ${borderClass}">
@@ -286,11 +484,12 @@ Building Worlds & <span class="neon-gradient-text">Conquering Them</span>
                     <p class="text-sm text-gray-500 dark:text-text-secondary mt-1">Connect</p>
                 </div>
             </a>`;
-        }).join('');
-    }
-    
-    fetchStats();
-    fetchSocials();
-</script>
+            }).join('');
+        }
+
+        fetchStats();
+        fetchSocials();
+    </script>
 </body>
+
 </html>

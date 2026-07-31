@@ -290,10 +290,14 @@
                     <div class="gold-glow"></div>
                     <img src="${game.image_URL}" class="absolute inset-0 w-full h-full object-cover transition-all duration-700">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                    <div class="absolute top-2 left-2 bg-yellow-500 text-black p-1.5 rounded-full shadow-lg flex items-center justify-center" title="Hall of Fame">
+                    <div class="absolute top-2 left-2 bg-yellow-500 text-black p-1.5 rounded-full shadow-lg flex items-center justify-center z-10" title="Hall of Fame">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
                             <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
                         </svg>
+                    </div>
+                    <div class="absolute top-2 right-2 bg-[#1a1403]/85 backdrop-blur-md border border-yellow-500/50 text-yellow-400 px-2.5 py-1 rounded-full shadow-lg flex items-center gap-1 font-black text-xs z-10" title="Rating">
+                        <span>${game.total_score}</span>
+                        <span class="material-symbols-outlined !text-[14px] text-yellow-400" style="font-variation-settings: 'FILL' 1;">star</span>
                     </div>
                     <div class="absolute bottom-4 left-4 right-4 text-center">
                         <h3 class="text-white text-sm font-bold truncate drop-shadow-lg">${game.title}</h3>
