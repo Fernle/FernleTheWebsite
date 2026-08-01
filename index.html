@@ -216,12 +216,52 @@
                 title: "The Developer Hub",
                 subtitle: "Projects & Production Workflows",
                 desc: "Showcase of Unity projects, game mechanics, C# code samples, production pipeline optimizations, and team management."
+            },
+            {
+                id: "contact",
+                label: "Contact",
+                icon: "mail",
+                badge: "Get In Touch",
+                title: "Contact & Socials",
+                subtitle: "Direct Contact & Profiles",
+                desc: ""
+            },
+            {
+                id: "stats",
+                label: "Stats",
+                icon: "analytics",
+                badge: "Real-Time Metrics",
+                title: "Portfolio Statistics",
+                subtitle: "Projects & Games Overview",
+                desc: ""
             }
         ];
 
         let orbitAngle = 0;
         let isOrbitHovered = false;
         let activeCardIndex = null;
+        let socialsData = [];
+        let statsData = { games: 0, projects: 0 };
+
+        function copyEmail(btn) {
+            const email = "ahmetemirozde@gmail.com";
+            navigator.clipboard.writeText(email).then(() => {
+                const iconEl = btn.querySelector('.copy-icon');
+                const textEl = btn.querySelector('.copy-text');
+                if (iconEl) iconEl.innerText = 'check';
+                if (textEl) textEl.innerText = 'Copied!';
+                btn.classList.add('bg-green-500/20', 'text-green-400', 'border-green-500/40');
+                btn.classList.remove('bg-primary/30', 'text-white', 'border-primary/50');
+                setTimeout(() => {
+                    if (iconEl) iconEl.innerText = 'content_copy';
+                    if (textEl) textEl.innerText = 'Copy';
+                    btn.classList.remove('bg-green-500/20', 'text-green-400', 'border-green-500/40');
+                    btn.classList.add('bg-primary/30', 'text-white', 'border-primary/50');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
 
         function openInfoCard(index, event) {
             if (event) {
@@ -254,17 +294,89 @@
             }
 
             if (targetCard) {
-                targetCard.innerHTML = `
-                <div class="flex items-center justify-between mb-3">
-                    <span class="px-3 py-1 rounded-full bg-neon-purple/20 border border-neon-purple/40 text-xs font-bold text-neon-purple shadow-[0_0_10px_rgba(139,92,246,0.25)]">${data.badge}</span>
-                    <button onclick="closeInfoCards()" class="text-gray-400 hover:text-white transition-colors p-1">
-                        <span class="material-symbols-outlined text-lg">close</span>
-                    </button>
-                </div>
-                <h3 class="text-xl font-black text-white tracking-tight">${data.title}</h3>
-                <p class="text-xs font-semibold text-neon-purple mt-1 mb-3">${data.subtitle}</p>
-                <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">${data.desc}</p>
-            `;
+                if (data.id === 'contact') {
+                    const socialsHtml = socialsData.length > 0
+                        ? socialsData.map(s => {
+                            let colorClass = s.color_class || 'text-white';
+                            if (colorClass.includes('gray-800') || colorClass.includes('gray-900') || colorClass.includes('black')) {
+                                colorClass = 'text-gray-400';
+                            }
+                            return `
+                            <a href="${s.url}" target="_blank" class="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/10 transition-all group">
+                                <div class="flex items-center gap-3">
+                                    <div class="flex size-8 items-center justify-center rounded-lg bg-white/5 ${colorClass}">
+                                        <span class="material-symbols-outlined text-base">${s.icon || 'link'}</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-white group-hover:text-primary transition-colors">${s.platform}</span>
+                                </div>
+                                <span class="material-symbols-outlined text-sm text-gray-400 group-hover:text-white transition-colors">arrow_outward</span>
+                            </a>`;
+                        }).join('')
+                        : '<p class="text-xs text-gray-400 italic">No social links available.</p>';
+
+                    targetCard.innerHTML = `
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="px-3 py-1 rounded-full bg-neon-purple/20 border border-neon-purple/40 text-xs font-bold text-neon-purple shadow-[0_0_10px_rgba(139,92,246,0.25)]">${data.badge}</span>
+                        <button onclick="closeInfoCards()" class="text-gray-400 hover:text-white transition-colors p-1">
+                            <span class="material-symbols-outlined text-lg">close</span>
+                        </button>
+                    </div>
+                    <h3 class="text-xl font-black text-white tracking-tight">${data.title}</h3>
+                    <p class="text-xs font-semibold text-neon-purple mt-1 mb-4">${data.subtitle}</p>
+
+                    <div class="mb-4 p-3 rounded-xl bg-white/5 border border-white/10 flex flex-col gap-2">
+                        <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Email Address</span>
+                        <div class="flex items-center justify-between gap-2 bg-background-dark/80 p-2.5 rounded-lg border border-white/5">
+                            <span class="text-xs font-medium text-white truncate select-all">ahmetemirozde@gmail.com</span>
+                            <button onclick="copyEmail(this)" class="flex items-center gap-1 px-2.5 py-1 text-xs font-bold rounded-md bg-primary/30 hover:bg-primary text-white border border-primary/50 transition-all cursor-pointer shrink-0">
+                                <span class="material-symbols-outlined text-sm copy-icon">content_copy</span>
+                                <span class="copy-text">Copy</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Social Profiles</span>
+                        ${socialsHtml}
+                    </div>
+                    `;
+                } else if (data.id === 'stats') {
+                    targetCard.innerHTML = `
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="px-3 py-1 rounded-full bg-neon-purple/20 border border-neon-purple/40 text-xs font-bold text-neon-purple shadow-[0_0_10px_rgba(139,92,246,0.25)]">${data.badge}</span>
+                        <button onclick="closeInfoCards()" class="text-gray-400 hover:text-white transition-colors p-1">
+                            <span class="material-symbols-outlined text-lg">close</span>
+                        </button>
+                    </div>
+                    <h3 class="text-xl font-black text-white tracking-tight">${data.title}</h3>
+                    <p class="text-xs font-semibold text-neon-purple mt-1 mb-4">${data.subtitle}</p>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col items-center justify-center text-center group hover:border-primary/50 transition-all">
+                            <span class="material-symbols-outlined text-primary text-3xl mb-1">terminal</span>
+                            <span class="text-2xl font-black text-white">${statsData.projects}</span>
+                            <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mt-1">Projects</span>
+                        </div>
+                        <div class="p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col items-center justify-center text-center group hover:border-neon-pink/50 transition-all">
+                            <span class="material-symbols-outlined text-neon-pink text-3xl mb-1">sports_esports</span>
+                            <span class="text-2xl font-black text-white">${statsData.games}</span>
+                            <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mt-1">Games Played</span>
+                        </div>
+                    </div>
+                    `;
+                } else {
+                    targetCard.innerHTML = `
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="px-3 py-1 rounded-full bg-neon-purple/20 border border-neon-purple/40 text-xs font-bold text-neon-purple shadow-[0_0_10px_rgba(139,92,246,0.25)]">${data.badge}</span>
+                        <button onclick="closeInfoCards()" class="text-gray-400 hover:text-white transition-colors p-1">
+                            <span class="material-symbols-outlined text-lg">close</span>
+                        </button>
+                    </div>
+                    <h3 class="text-xl font-black text-white tracking-tight">${data.title}</h3>
+                    <p class="text-xs font-semibold text-neon-purple mt-1 mb-3">${data.subtitle}</p>
+                    <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">${data.desc}</p>
+                `;
+                }
 
                 targetCard.classList.remove('opacity-0', 'pointer-events-none', isLeft ? '-translate-x-6' : 'translate-x-6');
                 targetCard.classList.add('opacity-100', 'translate-x-0', 'pointer-events-auto');
@@ -434,7 +546,9 @@
                 .from('games')
                 .select('*', { count: 'exact', head: true });
             if (!gameError) {
-                document.getElementById('realtime-game-count').innerText = gameCount;
+                statsData.games = gameCount || 0;
+                const el = document.getElementById('realtime-game-count');
+                if (el) el.innerText = gameCount;
             }
 
             // Fetch Projects Count
@@ -442,7 +556,9 @@
                 .from('projects')
                 .select('*', { count: 'exact', head: true });
             if (!projectError) {
-                document.getElementById('realtime-project-count').innerText = projectCount;
+                statsData.projects = projectCount || 0;
+                const el = document.getElementById('realtime-project-count');
+                if (el) el.innerText = projectCount;
             }
         }
 
@@ -453,7 +569,12 @@
                 .eq('is_active', true)
                 .order('created_at', { ascending: true });
 
+            if (!error && data) {
+                socialsData = data;
+            }
+
             const container = document.getElementById('socials-grid');
+            if (!container) return;
 
             if (error || !data || data.length === 0) {
                 container.innerHTML = '<p class="text-text-secondary text-sm">No social links available.</p>';
@@ -461,8 +582,6 @@
             }
 
             container.innerHTML = data.map(s => {
-                // Renk sınıfını işle
-                // Eğer kullanıcı text-gray-800 gibi koyu bir renk girdiyse, bunu daha görünür bir renge (text-gray-400) çeviriyoruz.
                 let colorClass = s.color_class || 'text-white';
                 if (colorClass.includes('gray-800') || colorClass.includes('gray-900') || colorClass.includes('black')) {
                     colorClass = 'text-gray-400';
