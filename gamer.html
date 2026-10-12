@@ -125,10 +125,21 @@
     </header>
 
     <main class="relative z-10 flex-grow w-full px-6 md:px-12 py-12">
-        <div class="w-full flex flex-col md:flex-row items-center justify-between mb-12 gap-6">
+        <div class="w-full flex flex-col md:flex-row items-center justify-between mb-7 gap-6">
             <div class="text-center md:text-left">
                 <h1 class="text-white text-5xl md:text-7xl font-black tracking-tight mb-4">Played & Rated</h1>
                 <p class="text-[#a69db9] text-lg max-w-2xl">A curated collection of digital worlds I've explored.</p>
+                <div id="currently-playing-container" class="hidden mt-7 inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border border-purple-500/30 backdrop-blur-md shadow-lg shadow-purple-950/20">
+                    <span class="relative flex h-2.5 w-2.5">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                    </span>
+                    <span class="text-xs font-bold uppercase tracking-widest text-[#a69db9] flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[16px] text-purple-400">sports_esports</span>
+                        Currently Playing:
+                    </span>
+                    <span id="currently-playing-title" class="text-sm font-black text-white tracking-wide"></span>
+                </div>
             </div>
 
             <div class="flex items-center gap-4">
@@ -260,7 +271,32 @@
             }
         }
 
+        async function fetchCurrentlyPlaying() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('site_settings')
+                    .select('value')
+                    .eq('key', 'currently_playing')
+                    .maybeSingle();
+
+                const container = document.getElementById('currently-playing-container');
+                const titleEl = document.getElementById('currently-playing-title');
+
+                if (!error && data && data.value && data.value.trim() !== '') {
+                    titleEl.textContent = data.value.trim();
+                    container.classList.remove('hidden');
+                    container.classList.add('inline-flex');
+                } else {
+                    container.classList.add('hidden');
+                    container.classList.remove('inline-flex');
+                }
+            } catch (err) {
+                console.warn('Currently playing fetch error:', err);
+            }
+        }
+
         async function fetchGames() {
+            fetchCurrentlyPlaying();
             const { data, error } = await supabaseClient.from('games').select('*').order('created_at', { ascending: false });
 
             if (error) {
@@ -356,8 +392,12 @@
                     
                     <div class="relative h-full w-full rounded-2xl transition-all duration-700 preserve-3d shadow-2xl shadow-primary/20">
                         <div class="absolute inset-0 h-full w-full rounded-2xl backface-hidden overflow-hidden bg-[#161022] border border-white/5">
-                            <div class="h-full w-full bg-cover bg-center bg-no-repeat" style="background-image: url('${game.image_URL}');">
+                            <div class="h-full w-full bg-cover bg-center bg-no-repeat relative" style="background-image: url('${game.image_URL}');">
                                 <div class="absolute inset-0 bg-gradient-to-t from-[#161022] via-transparent to-transparent opacity-90"></div>
+                                <div class="absolute top-3 right-3 bg-[#1a1403]/85 backdrop-blur-md border border-yellow-500/50 text-yellow-400 px-2.5 py-1 rounded-full shadow-lg flex items-center gap-1 font-black text-xs z-10" title="Rating">
+                                    <span>${game.total_score}</span>
+                                    <span class="material-symbols-outlined !text-[14px] text-yellow-400" style="font-variation-settings: 'FILL' 1;">star</span>
+                                </div>
                                 <div class="absolute bottom-6 left-6 right-6 text-left">
                                     <h3 class="text-white text-2xl font-black leading-tight tracking-tight drop-shadow-md">${game.title}</h3>
                                 </div>

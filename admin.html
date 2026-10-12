@@ -81,6 +81,27 @@
 
         <!-- GAMER CONTENT -->
         <div id="gamer-admin-content" class="space-y-8">
+            <div class="glass rounded-[32px] p-6 md:p-8 shadow-2xl border border-purple-500/20 bg-purple-500/5">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-black flex items-center gap-2 text-white">
+                        <span class="material-symbols-outlined text-purple-400">sports_esports</span> Currently Playing
+                    </h2>
+                    <span class="text-xs text-gray-400">Gamer sayfası başlığı altında gösterilir</span>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input type="text" id="currently-playing-input" placeholder="Şu an oynadığın oyun (örn: Elden Ring)" 
+                        class="flex-grow bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-purple-500 focus:outline-none text-white text-sm">
+                    <button type="button" onclick="saveCurrentlyPlaying()" 
+                        class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-6 py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 whitespace-nowrap text-sm">
+                        <span class="material-symbols-outlined text-base">save</span> Kaydet
+                    </button>
+                    <button type="button" onclick="clearCurrentlyPlaying()" 
+                        class="bg-white/5 hover:bg-red-500/20 text-gray-400 hover:text-red-400 border border-white/10 px-4 py-3 rounded-xl transition-all flex items-center justify-center gap-1 text-sm whitespace-nowrap" title="Temizle">
+                        <span class="material-symbols-outlined text-base">close</span> Temizle
+                    </button>
+                </div>
+            </div>
+
             <div class="glass rounded-[32px] p-8 md:p-12 shadow-2xl">
                 <h1 id="form-title" class="text-3xl font-black mb-8">Add New Game</h1>
                 <form id="game-form" class="space-y-6">
@@ -330,6 +351,7 @@
             document.getElementById('admin-section').classList.toggle('hidden', !session);
             if (session) {
                 loadAdminGames();
+                loadCurrentlyPlaying();
                 loadAdminSocials();
                 
                 // Prevent duplicate calendar initialization
@@ -398,6 +420,41 @@
             if(tab === 'devlog' && easyMDE) {
                 setTimeout(() => easyMDE.codemirror.refresh(), 100);
             }
+        }
+
+        // --- DATA OPERATIONS (CURRENTLY PLAYING) ---
+        async function loadCurrentlyPlaying() {
+            try {
+                const { data, error } = await _supabase
+                    .from('site_settings')
+                    .select('value')
+                    .eq('key', 'currently_playing')
+                    .maybeSingle();
+
+                if (!error && data && data.value) {
+                    document.getElementById('currently-playing-input').value = data.value;
+                }
+            } catch (err) {
+                console.error("loadCurrentlyPlaying error:", err);
+            }
+        }
+
+        async function saveCurrentlyPlaying() {
+            const val = document.getElementById('currently-playing-input').value.trim();
+            const { error } = await _supabase
+                .from('site_settings')
+                .upsert({ key: 'currently_playing', value: val });
+
+            if (error) {
+                alert("Hata: " + error.message);
+            } else {
+                alert(val ? "Currently playing güncellendi!" : "Currently playing temizlendi!");
+            }
+        }
+
+        async function clearCurrentlyPlaying() {
+            document.getElementById('currently-playing-input').value = '';
+            await saveCurrentlyPlaying();
         }
 
         // --- DATA OPERATIONS (GAMER) ---
