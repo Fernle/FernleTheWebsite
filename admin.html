@@ -459,12 +459,13 @@
 
         // --- DATA OPERATIONS (GAMER) ---
         async function loadAdminGames() {
-            const { data } = await _supabase.from('games').select('*').order('created_at', { ascending: false });
+            const { data } = await _supabase.from('games').select('*').order('created_at', { ascending: false }).range(0, 4999);
             const list = document.getElementById('admin-game-list');
+            if (!data) return;
             list.innerHTML = data.map(g => `
                 <div class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-purple-500/30 transition-all">
                     <div class="flex items-center gap-4">
-                        <img src="${g.image_URL}" class="w-10 h-14 object-cover rounded-lg">
+                        <img src="${g.image_URL}" alt="${g.title || ''}" loading="lazy" decoding="async" class="w-10 h-14 object-cover rounded-lg">
                         <div class="flex flex-col">
                             <span class="font-bold text-sm">${g.title}</span>
                             ${g.is_featured ? '<span class="text-[10px] text-yellow-500 font-bold uppercase tracking-wider">★ Top 5</span>' : ''}

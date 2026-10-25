@@ -96,6 +96,11 @@
                 transform: scale(1.1);
             }
         }
+
+        .game-card-wrapper {
+            content-visibility: auto;
+            contain-intrinsic-size: 320px 450px;
+        }
     </style>
 </head>
 
@@ -129,9 +134,11 @@
             <div class="text-center md:text-left">
                 <h1 class="text-white text-5xl md:text-7xl font-black tracking-tight mb-4">Played & Rated</h1>
                 <p class="text-[#a69db9] text-lg max-w-2xl">A curated collection of digital worlds I've explored.</p>
-                <div id="currently-playing-container" class="hidden mt-7 inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border border-purple-500/30 backdrop-blur-md shadow-lg shadow-purple-950/20">
+                <div id="currently-playing-container"
+                    class="hidden mt-7 inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border border-purple-500/30 backdrop-blur-md shadow-lg shadow-purple-950/20">
                     <span class="relative flex h-2.5 w-2.5">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
                     </span>
                     <span class="text-xs font-bold uppercase tracking-widest text-[#a69db9] flex items-center gap-1.5">
@@ -195,6 +202,7 @@
             class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-12 gap-x-6 justify-items-center">
             <p class="text-gray-500 col-span-full text-center">Loading games...</p>
         </div>
+        <div id="scroll-sentinel" class="w-full h-10"></div>
     </main>
 
     <div id="info-modal"
@@ -257,6 +265,23 @@
         const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
         let allGames = [];
+        let displayedGames = [];
+        let renderedCount = 0;
+        const PAGE_SIZE = 30;
+        let observer = null;
+        let searchDebounceTimer = null;
+        let currentSortType = '';
+        let currentSearchQuery = '';
+
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
 
         function toggleModal(show) {
             const modal = document.getElementById('info-modal');
@@ -297,18 +322,22 @@
 
         async function fetchGames() {
             fetchCurrentlyPlaying();
-            const { data, error } = await supabaseClient.from('games').select('*').order('created_at', { ascending: false });
+            const { data, error } = await supabaseClient
+                .from('games')
+                .select('*')
+                .order('created_at', { ascending: false })
+                .range(0, 4999);
 
             if (error) {
                 console.error('Veri çekme hatası:', error);
                 return;
             }
 
-            // 1. Tüm oyunları ana listeye ata (Hata buradaydı, artık tüm veriyi alıyoruz)
-            allGames = data;
+            // 1. Tüm oyunları ana listeye ata
+            allGames = data || [];
 
             // 2. Sadece "Top 5" olanları filtrele ve render et
-            const top5 = data.filter(g => g.is_featured).slice(0, 5);
+            const top5 = allGames.filter(g => g.is_featured).slice(0, 5);
             renderTop5(top5);
 
             // 3. Genel listeyi ve sayacı güncelle
@@ -321,10 +350,13 @@
             const section = document.getElementById('top-5-section');
             if (games.length > 0) section.classList.remove('hidden');
 
-            container.innerHTML = games.map((game, index) => `
+            container.innerHTML = games.map((game, index) => {
+                const safeTitle = escapeHtml(game.title);
+                const safeImageUrl = escapeHtml(game.image_URL);
+                return `
                 <div class="gold-card rounded-2xl overflow-hidden group transition-all hover:scale-105 duration-500 aspect-[3/4] relative">
                     <div class="gold-glow"></div>
-                    <img src="${game.image_URL}" class="absolute inset-0 w-full h-full object-cover transition-all duration-700">
+                    <img src="${safeImageUrl}" alt="${safeTitle}" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover transition-all duration-700">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
                     <div class="absolute top-2 left-2 bg-yellow-500 text-black p-1.5 rounded-full shadow-lg flex items-center justify-center z-10" title="Hall of Fame">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
@@ -336,10 +368,11 @@
                         <span class="material-symbols-outlined !text-[14px] text-yellow-400" style="font-variation-settings: 'FILL' 1;">star</span>
                     </div>
                     <div class="absolute bottom-4 left-4 right-4 text-center">
-                        <h3 class="text-white text-sm font-bold truncate drop-shadow-lg">${game.title}</h3>
+                        <h3 class="text-white text-sm font-bold truncate drop-shadow-lg">${safeTitle}</h3>
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
         }
 
         function updateGameCount(count) {
@@ -347,91 +380,148 @@
             if (countElement) countElement.innerText = allGames.length;
         }
 
-        function sortGames(type) {
-            let sorted = [...allGames];
-            if (type === 'rating') sorted.sort((a, b) => b.total_score - a.total_score);
-            else if (type === 'name') sorted.sort((a, b) => a.title.localeCompare(b.title));
-            else if (type === 'newest') sorted.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-            renderGames(sorted);
-        }
-
-        function searchGames(query) {
-            const filtered = allGames.filter(game => game.title.toLowerCase().includes(query.toLowerCase()));
+        function applyFilterAndSort() {
+            let filtered = [...allGames];
+            if (currentSearchQuery.trim() !== '') {
+                const q = currentSearchQuery.toLowerCase();
+                filtered = filtered.filter(game => (game.title || '').toLowerCase().includes(q));
+            }
+            if (currentSortType === 'rating') {
+                filtered.sort((a, b) => (b.total_score || 0) - (a.total_score || 0));
+            } else if (currentSortType === 'name') {
+                filtered.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+            } else if (currentSortType === 'newest') {
+                filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            }
             renderGames(filtered);
         }
 
+        function sortGames(type) {
+            currentSortType = type;
+            applyFilterAndSort();
+        }
+
+        function searchGames(query) {
+            clearTimeout(searchDebounceTimer);
+            searchDebounceTimer = setTimeout(() => {
+                currentSearchQuery = query;
+                applyFilterAndSort();
+            }, 200);
+        }
+
+        function createGameCardHTML(game) {
+            const safeTitle = escapeHtml(game.title);
+            const safePlayTime = escapeHtml(game.play_time);
+            const safeImageUrl = escapeHtml(game.image_URL);
+
+            // Saat datası kontrolü ve yeni stil (Sağ Üst - Beyaz Text - Neon Koyu Mor BG)
+            const playTimeHtml = game.play_time
+                ? `<div class="absolute top-0 right-0 px-3 py-1 bg-[#2d0080] border-l border-b border-primary/50 rounded-tr-2xl rounded-bl-xl shadow-[0_0_15px_rgba(91,19,236,0.3)] z-10">
+                     <span class="text-white text-[15px] font-bold tracking-tight">${safePlayTime} Hours</span>
+                   </div>`
+                : '';
+
+            // "Tried but too old" Şeridi - GÜNCELLENDİ (Yazı hizalaması)
+            const tooOldRibbon = game.is_too_old
+                ? `<div class="absolute top-0 right-0 w-full h-full overflow-hidden pointer-events-none z-20">
+                     <div class="absolute top-[30px] -right-[50px] w-[200px] bg-orange-600 text-white text-[10px] font-black uppercase tracking-widest py-2 pl-2 text-center rotate-45 shadow-lg border-y border-orange-400">
+                       Tried but too old
+                     </div>
+                   </div>`
+                : '';
+
+            return `
+            <div class="game-card-wrapper group h-[450px] w-full max-w-[320px] perspective-1000 cursor-pointer" 
+                 onmouseenter="this.querySelector('.preserve-3d').classList.add('rotate-y-180')"
+                 onmouseleave="this.querySelector('.preserve-3d').classList.remove('rotate-y-180')">
+                
+                <div class="relative h-full w-full rounded-2xl transition-all duration-700 preserve-3d shadow-2xl shadow-primary/20">
+                    <div class="absolute inset-0 h-full w-full rounded-2xl backface-hidden overflow-hidden bg-[#161022] border border-white/5">
+                        <div class="h-full w-full relative">
+                            <img src="${safeImageUrl}" alt="${safeTitle}" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#161022] via-transparent to-transparent opacity-90"></div>
+                            <div class="absolute top-3 right-3 bg-[#1a1403]/85 backdrop-blur-md border border-yellow-500/50 text-yellow-400 px-2.5 py-1 rounded-full shadow-lg flex items-center gap-1 font-black text-xs z-10" title="Rating">
+                                <span>${game.total_score}</span>
+                                <span class="material-symbols-outlined !text-[14px] text-yellow-400" style="font-variation-settings: 'FILL' 1;">star</span>
+                            </div>
+                            <div class="absolute bottom-6 left-6 right-6 text-left">
+                                <h3 class="text-white text-2xl font-black leading-tight tracking-tight drop-shadow-md">${safeTitle}</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="absolute inset-0 h-full w-full rounded-2xl bg-[#1e1a2b] border border-primary/30 px-8 pt-6 pb-8 rotate-y-180 backface-hidden flex flex-col overflow-hidden relative">
+                        ${tooOldRibbon}
+                        ${playTimeHtml}
+                        <div class="flex-grow flex flex-col justify-start gap-5">
+                            <h3 class="text-white text-xl font-bold border-b border-white/10 pb-2 text-left mb-2 pr-16">${safeTitle}</h3>
+                            <div class="space-y-5">
+                                ${renderStat("Gameplay", game.rating_gameplay)}
+                                ${renderStat("Narrative", game.rating_narrative)}
+                                ${renderStat("Presentation", game.rating_presentation)}
+                                ${renderStat("Technical", game.rating_technical)}
+                                ${renderStat("Impact", game.rating_impact)}
+                            </div>
+                        </div>
+                        <div class="mt-4 bg-black/40 rounded-xl p-4 flex items-center justify-between border border-white/5">
+                            <span class="text-gray-400 text-xs font-bold uppercase tracking-widest">Total Score</span>
+                            <div class="flex items-baseline gap-1">
+                                <span class="text-3xl font-black text-primary">${game.total_score}</span>
+                                <span class="text-gray-500 font-bold text-sm">/5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderNextBatch() {
+            if (renderedCount >= displayedGames.length) return;
+            const container = document.getElementById('games-container');
+            const nextGames = displayedGames.slice(renderedCount, renderedCount + PAGE_SIZE);
+            if (nextGames.length === 0) return;
+
+            const cardsHtml = nextGames.map(createGameCardHTML).join('');
+            container.insertAdjacentHTML('beforeend', cardsHtml);
+            renderedCount += nextGames.length;
+        }
+
         function renderGames(games) {
+            displayedGames = games || [];
+            renderedCount = 0;
             const container = document.getElementById('games-container');
             container.innerHTML = '';
-            if (games.length === 0) {
+
+            if (displayedGames.length === 0) {
                 container.innerHTML = '<p class="text-gray-500 col-span-full text-center">No games found.</p>';
                 return;
             }
 
-            games.forEach(game => {
-                // Saat datası kontrolü ve yeni stil (Sağ Üst - Beyaz Text - Neon Koyu Mor BG)
-                const playTimeHtml = game.play_time
-                    ? `<div class="absolute top-0 right-0 px-3 py-1 bg-[#2d0080] border-l border-b border-primary/50 rounded-tr-2xl rounded-bl-xl shadow-[0_0_15px_rgba(91,19,236,0.3)] z-10">
-                         <span class="text-white text-[15px] font-bold tracking-tight">${game.play_time} Hours</span>
-                       </div>`
-                    : '';
+            renderNextBatch();
+            initInfiniteScroll();
+        }
 
-                // "Tried but too old" Şeridi - GÜNCELLENDİ (Yazı hizalaması)
-                const tooOldRibbon = game.is_too_old
-                    ? `<div class="absolute top-0 right-0 w-full h-full overflow-hidden pointer-events-none z-20">
-                         <div class="absolute top-[30px] -right-[50px] w-[200px] bg-orange-600 text-white text-[10px] font-black uppercase tracking-widest py-2 pl-2 text-center rotate-45 shadow-lg border-y border-orange-400">
-                           Tried but too old
-                         </div>
-                       </div>`
-                    : '';
+        function initInfiniteScroll() {
+            const sentinel = document.getElementById('scroll-sentinel');
+            if (!sentinel) return;
 
-                container.innerHTML += `
-                <div class="group h-[450px] w-full max-w-[320px] perspective-1000 cursor-pointer" 
-                     onmouseenter="this.querySelector('.preserve-3d').classList.add('rotate-y-180')"
-                     onmouseleave="this.querySelector('.preserve-3d').classList.remove('rotate-y-180')">
-                    
-                    <div class="relative h-full w-full rounded-2xl transition-all duration-700 preserve-3d shadow-2xl shadow-primary/20">
-                        <div class="absolute inset-0 h-full w-full rounded-2xl backface-hidden overflow-hidden bg-[#161022] border border-white/5">
-                            <div class="h-full w-full bg-cover bg-center bg-no-repeat relative" style="background-image: url('${game.image_URL}');">
-                                <div class="absolute inset-0 bg-gradient-to-t from-[#161022] via-transparent to-transparent opacity-90"></div>
-                                <div class="absolute top-3 right-3 bg-[#1a1403]/85 backdrop-blur-md border border-yellow-500/50 text-yellow-400 px-2.5 py-1 rounded-full shadow-lg flex items-center gap-1 font-black text-xs z-10" title="Rating">
-                                    <span>${game.total_score}</span>
-                                    <span class="material-symbols-outlined !text-[14px] text-yellow-400" style="font-variation-settings: 'FILL' 1;">star</span>
-                                </div>
-                                <div class="absolute bottom-6 left-6 right-6 text-left">
-                                    <h3 class="text-white text-2xl font-black leading-tight tracking-tight drop-shadow-md">${game.title}</h3>
-                                </div>
-                            </div>
-                        </div>
-    
-                        <div class="absolute inset-0 h-full w-full rounded-2xl bg-[#1e1a2b] border border-primary/30 px-8 pt-6 pb-8 rotate-y-180 backface-hidden flex flex-col overflow-hidden relative">
-                            ${tooOldRibbon}
-                            ${playTimeHtml}
-                            <div class="flex-grow flex flex-col justify-start gap-5">
-                                <h3 class="text-white text-xl font-bold border-b border-white/10 pb-2 text-left mb-2 pr-16">${game.title}</h3>
-                                <div class="space-y-5">
-                                    ${renderStat("Gameplay", game.rating_gameplay)}
-                                    ${renderStat("Narrative", game.rating_narrative)}
-                                    ${renderStat("Presentation", game.rating_presentation)}
-                                    ${renderStat("Technical", game.rating_technical)}
-                                    ${renderStat("Impact", game.rating_impact)}
-                                </div>
-                            </div>
-                            <div class="mt-4 bg-black/40 rounded-xl p-4 flex items-center justify-between border border-white/5">
-                                <span class="text-gray-400 text-xs font-bold uppercase tracking-widest">Total Score</span>
-                                <div class="flex items-baseline gap-1">
-                                    <span class="text-3xl font-black text-primary">${game.total_score}</span>
-                                    <span class="text-gray-500 font-bold text-sm">/5</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-            });
+            if (!observer) {
+                observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && renderedCount < displayedGames.length) {
+                            renderNextBatch();
+                        }
+                    });
+                }, {
+                    rootMargin: '400px'
+                });
+            }
+            observer.observe(sentinel);
         }
 
         function renderStat(label, value) {
-            const fillPercentage = (value / 1) * 100;
+            const numValue = Number(value) || 0;
+            const fillPercentage = (numValue / 1) * 100;
             return `
                 <div class="flex items-center justify-between group/stat">
                     <span class="text-gray-300 text-base font-medium tracking-wide group-hover/stat:text-primary transition-colors">${label}</span>
