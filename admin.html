@@ -110,11 +110,20 @@
                         <input type="text" id="title" required placeholder="Game Title" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-purple-500 focus:outline-none">
                         <input type="url" id="image_URL" required placeholder="Poster URL (Vertical)" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-purple-500 focus:outline-none">
                     </div>
-                    <input type="text" id="play_time" placeholder="Play Time (e.g. +900 hours)" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-purple-500 focus:outline-none">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                        <input type="text" id="play_time" placeholder="Play Time (e.g. +900 hours)" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-purple-500 focus:outline-none">
+                        <label class="flex items-center gap-3 p-3 bg-black/30 border border-white/10 rounded-xl cursor-pointer hover:border-purple-500/50 transition-all select-none">
+                            <input type="checkbox" id="is_wheel_pick" class="rounded bg-black/40 border-white/20 text-purple-600 focus:ring-0 w-4 h-4">
+                            <span class="text-sm font-bold text-gray-200 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-purple-400 text-lg">casino</span> Wheel Pick (Çarktan Çıktı)
+                            </span>
+                        </label>
+                    </div>
+                    <textarea id="review_note" rows="3" placeholder="Quick Review / Designer's Takeaway (Optional)" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:border-purple-500 focus:outline-none text-white text-sm"></textarea>
                     <div id="sliders-container" class="space-y-6 bg-black/20 p-6 rounded-2xl border border-white/5"></div>
                     <div class="flex items-center justify-between p-6 bg-purple-600/10 rounded-2xl border border-purple-500/20">
                         <span class="font-bold uppercase text-sm text-purple-300 tracking-widest">Live Total Score</span>
-                        <span id="total-preview" class="text-5xl font-black">2.5</span>
+                        <span id="total-preview" class="text-5xl font-black">7.0</span>
                     </div>
                     <button type="submit" id="save-btn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-black py-5 rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3">
                         <span class="material-symbols-outlined">save</span> SAVE TO LIBRARY
@@ -312,34 +321,102 @@
         const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJobmp6andibnVrd2dmcGRrcHFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0OTI0MTMsImV4cCI6MjA4MjA2ODQxM30.PxkMYz8db04M4yzQWkw_ZmMEIU0d3RAbNoVAFsfm778';
         const _supabase = supabase.createClient(SB_URL, SB_KEY);
 
-        const stats = ['gameplay', 'narrative', 'presentation', 'technical', 'impact'];
+        const stats = [
+            { key: 'gameplay', label: 'Gameplay' },
+            { key: 'narrative', label: 'World & Pacing' },
+            { key: 'presentation', label: 'Presentation' },
+            { key: 'technical', label: 'Polish & UX' },
+            { key: 'impact', label: 'Impact' }
+        ];
 
         // EasyMDE Instance
         let easyMDE;
         let calendarInitialized = false; // Flag to prevent duplicate calendar init
 
         // --- GAMER LOGIC ---
+        function normalizeGame(game) {
+            if (!game) return game;
+            const catKeys = ['rating_gameplay', 'rating_narrative', 'rating_presentation', 'rating_technical', 'rating_impact'];
+            const total = Number(game.total_score) || 0;
+
+            const isOldSystem = total <= 5 && catKeys.every(k => {
+                const val = game[k];
+                return val !== null && val !== undefined && val <= 1 && val >= 0;
+            });
+
+            if (isOldSystem) {
+                catKeys.forEach(k => {
+                    if (game[k] !== null && game[k] !== undefined && game[k] >= 0) {
+                        game[k] = parseFloat((Number(game[k]) * 10).toFixed(1));
+                    }
+                });
+                game.total_score = parseFloat((total * 2).toFixed(1));
+            }
+            return game;
+        }
+
         const container = document.getElementById('sliders-container');
         stats.forEach(s => {
             container.innerHTML += `
-                <div class="space-y-2">
+                <div class="space-y-2 p-3 rounded-xl bg-black/20 border border-white/5 transition-all">
                     <div class="flex justify-between items-center text-sm font-bold">
-                        <label class="capitalize">${s}</label>
-                        <span id="v-${s}" class="text-purple-400 bg-purple-500/10 px-2 py-1 rounded-md text-xs">2.5</span>
+                        <label class="text-gray-200">${s.label}</label>
+                        <div class="flex items-center gap-3">
+                            <label class="flex items-center gap-1.5 text-xs text-gray-400 hover:text-white cursor-pointer select-none">
+                                <input type="checkbox" id="na_${s.key}" onchange="toggleCategoryNA('${s.key}')" class="rounded bg-black/40 border-white/20 text-purple-600 focus:ring-0">
+                                <span>N/A (Exclude)</span>
+                            </label>
+                            <span id="v-${s.key}" class="text-purple-400 bg-purple-500/10 px-2 py-1 rounded-md text-xs font-mono min-w-[2.5rem] text-center">7.0</span>
+                        </div>
                     </div>
-                    <input type="range" id="rating_${s}" min="0" max="1" step="0.5" value="2.5" oninput="updateScores()" class="w-full">
+                    <input type="range" id="rating_${s.key}" min="0" max="10" step="0.5" value="7.0" oninput="updateScores()" class="w-full transition-all">
                 </div>
             `;
         });
 
+        function toggleCategoryNA(key) {
+            const naCheckbox = document.getElementById('na_' + key);
+            const slider = document.getElementById('rating_' + key);
+            const isNA = naCheckbox ? naCheckbox.checked : false;
+
+            if (slider) {
+                slider.disabled = isNA;
+                slider.classList.toggle('opacity-30', isNA);
+                slider.classList.toggle('cursor-not-allowed', isNA);
+                slider.classList.toggle('pointer-events-none', isNA);
+            }
+            updateScores();
+        }
+
         function updateScores() {
             let sum = 0;
+            let count = 0;
             stats.forEach(s => {
-                const val = parseFloat(document.getElementById('rating_' + s).value);
-                document.getElementById('v-' + s).innerText = val;
-                sum += val;
+                const naCheckbox = document.getElementById('na_' + s.key);
+                const slider = document.getElementById('rating_' + s.key);
+                const badge = document.getElementById('v-' + s.key);
+                const isNA = naCheckbox && naCheckbox.checked;
+
+                if (isNA) {
+                    if (badge) {
+                        badge.innerText = 'N/A';
+                        badge.className = 'text-gray-500 bg-white/5 px-2 py-1 rounded-md text-xs font-mono min-w-[2.5rem] text-center';
+                    }
+                } else {
+                    const val = slider ? parseFloat(slider.value) || 0 : 0;
+                    if (badge) {
+                        badge.innerText = val.toFixed(1);
+                        badge.className = 'text-purple-400 bg-purple-500/10 px-2 py-1 rounded-md text-xs font-mono min-w-[2.5rem] text-center';
+                    }
+                    sum += val;
+                    count++;
+                }
             });
-            document.getElementById('total-preview').innerText = sum.toFixed(1);
+
+            const avg = count > 0 ? (sum / count) : 0;
+            const formattedAvg = avg.toFixed(1);
+            const totalPreview = document.getElementById('total-preview');
+            if (totalPreview) totalPreview.innerText = formattedAvg;
         }
         
         // FIX: Call updateScores immediately to set initial values correctly
@@ -462,22 +539,29 @@
             const { data } = await _supabase.from('games').select('*').order('created_at', { ascending: false }).range(0, 4999);
             const list = document.getElementById('admin-game-list');
             if (!data) return;
-            list.innerHTML = data.map(g => `
+            list.innerHTML = data.map(rawGame => {
+                const g = normalizeGame(rawGame);
+                return `
                 <div class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-purple-500/30 transition-all">
                     <div class="flex items-center gap-4">
                         <img src="${g.image_URL}" alt="${g.title || ''}" loading="lazy" decoding="async" class="w-10 h-14 object-cover rounded-lg">
                         <div class="flex flex-col">
                             <span class="font-bold text-sm">${g.title}</span>
-                            ${g.is_featured ? '<span class="text-[10px] text-yellow-500 font-bold uppercase tracking-wider">★ Top 5</span>' : ''}
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs text-purple-400 font-bold">${g.total_score}/10</span>
+                                ${g.is_featured ? '<span class="text-[10px] text-yellow-500 font-bold uppercase tracking-wider">★ Top 5</span>' : ''}
+                                ${g.is_wheel_pick ? '<span class="text-[10px] text-fuchsia-400 font-bold uppercase tracking-wider">🎲 Wheel Pick</span>' : ''}
+                            </div>
                         </div>
                     </div>
                     <div class="flex gap-2">
+                        <button onclick="toggleWheelPick('${g.id}', ${g.is_wheel_pick})" class="p-2 ${g.is_wheel_pick ? 'text-fuchsia-400 bg-fuchsia-500/20 shadow-[0_0_12px_rgba(217,70,239,0.4)] border border-fuchsia-500/40' : 'text-gray-500 hover:bg-white/5'} rounded-xl transition-all" title="Toggle Wheel Pick"><span class="material-symbols-outlined">casino</span></button>
                         <button onclick="toggleTooOld('${g.id}', ${g.is_too_old})" class="p-2 ${g.is_too_old ? 'text-orange-500 bg-orange-500/10' : 'text-gray-500 hover:bg-white/5'} rounded-xl transition-all" title="Tried but too old"><span class="material-symbols-outlined">hourglass_disabled</span></button>
-                        <button onclick="toggleFeatured('${g.id}', ${g.is_featured})" class="p-2 ${g.is_featured ? 'text-yellow-500 bg-yellow-500/10' : 'text-gray-500 hover:bg-white/5'} rounded-xl transition-all"><span class="material-symbols-outlined">crown</span></button>
-                        <button onclick="editGame('${g.id}')" class="p-2 hover:bg-purple-500/20 text-purple-400 rounded-xl transition-all"><span class="material-symbols-outlined">edit</span></button>
+                        <button onclick="toggleFeatured('${g.id}', ${g.is_featured})" class="p-2 ${g.is_featured ? 'text-yellow-500 bg-yellow-500/10' : 'text-gray-500 hover:bg-white/5'} rounded-xl transition-all" title="Toggle Top 5"><span class="material-symbols-outlined">crown</span></button>
+                        <button onclick="editGame('${g.id}')" class="p-2 hover:bg-purple-500/20 text-purple-400 rounded-xl transition-all" title="Edit"><span class="material-symbols-outlined">edit</span></button>
                     </div>
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
         }
 
         document.getElementById('game-form').addEventListener('submit', async (e) => {
@@ -487,9 +571,15 @@
                 title: document.getElementById('title').value,
                 image_URL: document.getElementById('image_URL').value,
                 play_time: document.getElementById('play_time').value,
+                review_note: document.getElementById('review_note').value.trim() || null,
+                is_wheel_pick: document.getElementById('is_wheel_pick').checked,
                 total_score: parseFloat(document.getElementById('total-preview').innerText)
             };
-            stats.forEach(s => gameData['rating_' + s] = parseFloat(document.getElementById('rating_' + s).value));
+            stats.forEach(s => {
+                const naCheckbox = document.getElementById('na_' + s.key);
+                const isNA = naCheckbox && naCheckbox.checked;
+                gameData['rating_' + s.key] = isNA ? -1 : parseFloat(document.getElementById('rating_' + s.key).value);
+            });
 
             const { error } = id 
                 ? await _supabase.from('games').update(gameData).eq('id', id)
@@ -501,11 +591,36 @@
 
         async function editGame(id) {
             const { data } = await _supabase.from('games').select('*').eq('id', id).single();
-            document.getElementById('editing-id').value = data.id;
-            document.getElementById('title').value = data.title;
-            document.getElementById('image_URL').value = data.image_URL;
-            document.getElementById('play_time').value = data.play_time || '';
-            stats.forEach(s => document.getElementById('rating_' + s).value = data['rating_' + s]);
+            if (!data) return;
+            const game = normalizeGame(data);
+
+            document.getElementById('editing-id').value = game.id;
+            document.getElementById('title').value = game.title;
+            document.getElementById('image_URL').value = game.image_URL;
+            document.getElementById('play_time').value = game.play_time || '';
+            document.getElementById('review_note').value = game.review_note || '';
+            document.getElementById('is_wheel_pick').checked = Boolean(game.is_wheel_pick);
+
+            stats.forEach(s => {
+                const val = game['rating_' + s.key];
+                const isNA = (val === -1 || val === '-1');
+                const naCheckbox = document.getElementById('na_' + s.key);
+                const slider = document.getElementById('rating_' + s.key);
+
+                if (naCheckbox) naCheckbox.checked = isNA;
+                if (slider) {
+                    slider.disabled = isNA;
+                    slider.classList.toggle('opacity-30', isNA);
+                    slider.classList.toggle('cursor-not-allowed', isNA);
+                    slider.classList.toggle('pointer-events-none', isNA);
+                    if (!isNA && val !== null && val !== undefined && val !== '') {
+                        slider.value = parseFloat(val);
+                    } else {
+                        slider.value = 7.0;
+                    }
+                }
+            });
+
             updateScores();
             document.getElementById('form-title').innerText = "Edit Game";
             document.getElementById('save-btn').innerText = "UPDATE GAME";
@@ -519,6 +634,18 @@
             document.getElementById('form-title').innerText = "Add New Game";
             document.getElementById('save-btn').innerText = "SAVE TO LIBRARY";
             document.getElementById('cancel-edit').classList.add('hidden');
+            document.getElementById('review_note').value = '';
+            document.getElementById('is_wheel_pick').checked = false;
+            stats.forEach(s => {
+                const naCheckbox = document.getElementById('na_' + s.key);
+                if (naCheckbox) naCheckbox.checked = false;
+                const slider = document.getElementById('rating_' + s.key);
+                if (slider) {
+                    slider.value = 7.0;
+                    slider.disabled = false;
+                    slider.classList.remove('opacity-30', 'cursor-not-allowed', 'pointer-events-none');
+                }
+            });
             updateScores();
         }
 
@@ -809,6 +936,11 @@
 
         async function toggleTooOld(id, currentStatus) {
             await _supabase.from('games').update({ is_too_old: !currentStatus }).eq('id', id);
+            loadAdminGames();
+        }
+
+        async function toggleWheelPick(id, currentStatus) {
+            await _supabase.from('games').update({ is_wheel_pick: !currentStatus }).eq('id', id);
             loadAdminGames();
         }
     </script>
